@@ -127,6 +127,10 @@ class QickPlanAdapter:
         if len(logical_channels) != len(set(logical_channels)):
             raise ValueError("logical channel bindings must be unique")
 
+        generator_channels = [binding.gen_ch for binding in bindings]
+        if len(generator_channels) != len(set(generator_channels)):
+            raise ValueError("QICK generator channel bindings must be unique")
+
         self._device_id = device_id
         self._bindings = {
             binding.logical_channel: binding
