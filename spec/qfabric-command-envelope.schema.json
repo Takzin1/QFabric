@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "QFabric Command Envelope v0.2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "message_type",
+    "protocol_version",
+    "message_id",
+    "device_id",
+    "sent_at",
+    "request"
+  ],
+  "properties": {
+    "message_type": {
+      "const": "command"
+    },
+    "protocol_version": {
+      "const": "0.2.0"
+    },
+    "message_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "device_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sent_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "request": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["commands"],
+      "properties": {
+        "commands": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["channel", "value", "unit"],
+            "properties": {
+              "channel": {
+                "type": "string",
+                "minLength": 1
+              },
+              "value": {
+                "type": "number"
+              },
+              "unit": {
+                "type": "string",
+                "minLength": 1
+              },
+              "duration_s": {
+                "type": ["number", "null"],
+                "minimum": 0
+              },
+              "metadata": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        "metadata": {
+          "type": "object"
+        }
+      }
+    }
+  }
+}

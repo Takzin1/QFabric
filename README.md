@@ -2,39 +2,41 @@
 
 **Hardware-agnostic control and calibration fabric for heterogeneous quantum hardware.**
 
-> **Status:** pre-alpha / experimental. QFabric v0.1 currently provides a vendor-neutral
-> software contract and deterministic reference simulator. It does **not** claim
-> compatibility with physical quantum hardware unless a future adapter explicitly
-> documents and tests that compatibility.
+> **Status:** pre-alpha / experimental. QFabric v0.2 defines a vendor-neutral,
+> versioned software protocol plus a deterministic reference simulator. It does
+> **not** claim compatibility with physical quantum hardware unless an adapter
+> explicitly documents and tests that compatibility.
 
 QFabric explores a thin public control layer between higher-level quantum software
-and heterogeneous hardware backends. The goal is to make control commands,
-capabilities, calibration records, telemetry, and experiment results explicit and
-portable without forcing the core package to depend on one vendor SDK.
+and heterogeneous hardware backends. The public core makes protocol versions,
+control commands, capabilities, calibration provenance, telemetry, and failure modes
+explicit without depending on one vendor SDK.
 
 ## Why QFabric?
 
 Quantum hardware stacks expose different control surfaces, calibration concepts,
-and telemetry formats. QFabric starts from a narrower question:
+and telemetry formats. QFabric asks:
 
-> What is the smallest useful contract that can sit above multiple hardware families
+> What is the smallest useful protocol that can sit above multiple hardware families
 > without pretending their underlying physics is identical?
 
-The v0.1 core therefore focuses on:
+v0.2 focuses on:
 
-- explicit hardware capabilities;
-- validated, unit-carrying control commands;
-- versioned, device-scoped calibration records;
-- normalized experiment requests and results;
-- a strict adapter boundary for vendor- or hardware-specific implementations; and
-- a deterministic simulator for contract tests.
+- versioned command envelopes;
+- deterministic JSON serialization;
+- capability negotiation before execution;
+- timestamped, attributable calibration records;
+- stable machine-readable error codes;
+- a strict vendor-neutral adapter boundary; and
+- non-invasive conformance inspection.
 
 ## Architecture
 
-```text
+~~~text
 Applications / orchestration / digital twins
                     |
-             QFabric domain API
+            QFabric Protocol v0.2
+       envelopes / negotiation / errors
                     |
               DeviceAdapter
         ____________|____________
@@ -43,32 +45,42 @@ Applications / orchestration / digital twins
        |            |            |
              Physical hardware
 
-* Future adapters. No physical-hardware compatibility is claimed in v0.1.
-```
+* Future adapters. No physical-hardware compatibility is claimed in v0.2.
+~~~
 
-See [docs/architecture.md](docs/architecture.md) for design rules and non-goals.
+See [docs/architecture.md](docs/architecture.md) and
+[docs/protocol.md](docs/protocol.md).
+
+The language-neutral command schema lives at
+[spec/qfabric-command-envelope.schema.json](spec/qfabric-command-envelope.schema.json).
 
 ## Quick start
 
 Requires Python 3.11+.
 
-```bash
+~~~bash
 git clone https://github.com/Takzin1/QFabric.git
 cd QFabric
 python -m pip install -e ".[dev]"
 pytest
-```
+~~~
 
 Example:
 
-```python
+~~~python
+from datetime import datetime, timezone
+
 from qfabric.adapters import DeterministicSimulatorAdapter
 from qfabric.models import ControlCommand, ExperimentRequest
+from qfabric.protocol import CommandEnvelope, dumps_command_envelope
 
 adapter = DeterministicSimulatorAdapter()
 
-result = adapter.execute(
-    ExperimentRequest(
+envelope = CommandEnvelope(
+    message_id="msg-001",
+    device_id=adapter.device_id,
+    sent_at=datetime.now(timezone.utc),
+    request=ExperimentRequest(
         commands=(
             ControlCommand(
                 channel="drive",
@@ -77,23 +89,27 @@ result = adapter.execute(
                 duration_s=1e-6,
             ),
         )
-    )
+    ),
 )
 
+print(dumps_command_envelope(envelope))
+result = adapter.execute_envelope(envelope)
 print(result.measurements)
-```
+~~~
 
-The simulator validates the public contract and produces reproducible test output.
-It is intentionally **not** a physics simulator.
+The deterministic simulator validates the public contract and produces reproducible
+test output. It is intentionally **not** a physics simulator.
 
 ## Core invariants
 
 1. The core package does not import vendor SDKs.
 2. Hardware-specific behavior lives behind `DeviceAdapter`.
-3. Capabilities are explicit and machine-readable.
-4. Calibration records are versioned and device-scoped.
-5. Unsupported channels fail closed before execution.
-6. Hardware compatibility claims require adapter-specific documentation and tests.
+3. Cross-boundary commands carry an explicit protocol version and target device.
+4. Capabilities are negotiated explicitly rather than silently degraded.
+5. Calibration records are versioned, timestamped, and carry provenance.
+6. Unsupported channels and device mismatches fail closed with stable error codes.
+7. Generic conformance inspection never executes hardware commands.
+8. Hardware compatibility claims require adapter-specific documentation and tests.
 
 ## Roadmap
 
@@ -105,26 +121,27 @@ It is intentionally **not** a physics simulator.
 - [x] CI contract tests
 
 ### v0.2 — Protocol semantics
-- [ ] Command envelopes and serialization
-- [ ] Capability negotiation
-- [ ] Calibration provenance and timestamps
-- [ ] Error taxonomy
-- [ ] Conformance test suite
+- [x] Command envelopes and deterministic serialization
+- [x] Protocol versioning
+- [x] Capability negotiation
+- [x] Calibration provenance and timestamps
+- [x] Stable error taxonomy
+- [x] Non-invasive conformance inspection
+- [x] Language-neutral JSON Schema
 
-### v0.3 — First hardware adapter
-- [ ] Select one documented hardware/software interface
-- [ ] Implement adapter outside the core contract
+### v0.3 — First documented adapter
+- [ ] Select one public hardware/software interface
+- [ ] Implement the adapter outside the generic core
 - [ ] Add reproducible integration tests
-- [ ] Publish a compatibility statement with explicit limitations
+- [ ] Publish an explicit compatibility statement and limitations
+- [ ] Add a result/telemetry wire envelope only where real integration requires it
 
-## Non-goals for v0.1
+## Open-core boundary
 
-QFabric v0.1 does not implement pulse compilation, optimal control, vendor
-transports, hardware timing guarantees, physics-accurate simulation, or a proprietary
-digital-twin/AI engine.
+QFabric publishes the reusable protocol, SDK boundary, schemas, and adapter contract.
 
-Keeping those concerns out of the initial core is deliberate: the public contract
-should stabilize before hardware-specific complexity is added.
+Physics-accurate digital twins, proprietary inference engines, private training data,
+and commercial evaluation services are intentionally outside this repository.
 
 ## License
 

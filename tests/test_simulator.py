@@ -1,6 +1,12 @@
+from datetime import UTC, datetime
+
+import pytest
+
 from qfabric.adapters import DeterministicSimulatorAdapter
+from qfabric.errors import ErrorCode, ValidationError
 from qfabric.models import (
     CalibrationParameter,
+    CalibrationProvenance,
     CalibrationRecord,
     ControlCommand,
     ExperimentRequest,
@@ -24,18 +30,16 @@ def test_execute_round_trips_supported_commands() -> None:
     assert adapter.read_telemetry() == result.measurements
 
 
-def test_rejects_unsupported_channel() -> None:
+def test_rejects_unsupported_channel_with_stable_error_code() -> None:
     adapter = DeterministicSimulatorAdapter()
     request = ExperimentRequest(
         commands=(ControlCommand(channel="not-real", value=1.0, unit="arb"),)
     )
 
-    try:
+    with pytest.raises(ValidationError) as exc_info:
         adapter.execute(request)
-    except ValueError as exc:
-        assert "Unsupported channel" in str(exc)
-    else:
-        raise AssertionError("unsupported command should be rejected")
+
+    assert exc_info.value.code is ErrorCode.UNSUPPORTED_CHANNEL
 
 
 def test_calibration_is_device_scoped_and_capability_checked() -> None:
@@ -46,8 +50,32 @@ def test_calibration_is_device_scoped_and_capability_checked() -> None:
         parameters=(
             CalibrationParameter(name="gain", value=0.99, unit="ratio", uncertainty=0.01),
         ),
+        created_at=datetime(2026, 9, 29, 4, 0, tzinfo=UTC),
+        provenance=CalibrationProvenance(
+            source="qfabric-test",
+            method="deterministic-reference",
+        ),
     )
 
     adapter.apply_calibration(calibration)
 
     assert adapter.calibration == calibration
+
+
+def test_rejects_calibration_for_another_device() -> None:
+    adapter = DeterministicSimulatorAdapter()
+    calibration = CalibrationRecord(
+        device_id="other-device",
+        version="cal-001",
+        parameters=(CalibrationParameter(name="gain", value=1.0, unit="ratio"),),
+        created_at=datetime(2026, 9, 29, 4, 0, tzinfo=UTC),
+        provenance=CalibrationProvenance(
+            source="qfabric-test",
+            method="deterministic-reference",
+        ),
+    )
+
+    with pytest.raises(ValidationError) as exc_info:
+        adapter.apply_calibration(calibration)
+
+    assert exc_info.value.code is ErrorCode.DEVICE_MISMATCH

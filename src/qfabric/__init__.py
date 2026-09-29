@@ -1,12 +1,20 @@
 """QFabric public API.
 
-QFabric is an experimental, hardware-agnostic control and calibration abstraction.
+QFabric is an experimental, hardware-agnostic control and calibration protocol.
 It does not claim compatibility with physical quantum devices unless an adapter
 explicitly documents and tests that compatibility.
 """
 
+from .errors import (
+    CapabilityError,
+    ErrorCode,
+    ProtocolError,
+    QFabricError,
+    ValidationError,
+)
 from .models import (
     CalibrationParameter,
+    CalibrationProvenance,
     CalibrationRecord,
     ControlCommand,
     DeviceCapabilities,
@@ -15,16 +23,43 @@ from .models import (
     HardwareKind,
     TelemetrySample,
 )
+from .protocol import (
+    CapabilityNegotiationResult,
+    CapabilityRequirement,
+    CommandEnvelope,
+    command_envelope_from_dict,
+    command_envelope_to_dict,
+    dumps_command_envelope,
+    loads_command_envelope,
+    negotiate_capabilities,
+)
+from .version import PACKAGE_VERSION, PROTOCOL_VERSION
 
 __all__ = [
+    "PACKAGE_VERSION",
+    "PROTOCOL_VERSION",
     "CalibrationParameter",
+    "CalibrationProvenance",
     "CalibrationRecord",
+    "CapabilityError",
+    "CapabilityNegotiationResult",
+    "CapabilityRequirement",
+    "CommandEnvelope",
     "ControlCommand",
     "DeviceCapabilities",
+    "ErrorCode",
     "ExperimentRequest",
     "ExperimentResult",
     "HardwareKind",
+    "ProtocolError",
+    "QFabricError",
     "TelemetrySample",
+    "ValidationError",
+    "command_envelope_from_dict",
+    "command_envelope_to_dict",
+    "dumps_command_envelope",
+    "loads_command_envelope",
+    "negotiate_capabilities",
 ]
 
-__version__ = "0.1.0"
+__version__ = PACKAGE_VERSION
