@@ -1,3 +1,4 @@
+import json
 from datetime import datetime, timezone
 
 import pytest
@@ -107,3 +108,23 @@ def test_capability_negotiation_succeeds_for_supported_contract() -> None:
 def test_command_envelope_requires_timezone_aware_timestamp() -> None:
     with pytest.raises(ValueError, match="timezone-aware"):
         _envelope(sent_at=datetime(2026, 9, 29, 4, 5))
+
+
+def test_decoder_rejects_unknown_command_fields() -> None:
+    payload = json.loads(dumps_command_envelope(_envelope()))
+    payload["request"]["commands"][0]["vendor_magic"] = 1
+
+    with pytest.raises(ProtocolError) as exc_info:
+        loads_command_envelope(json.dumps(payload))
+
+    assert exc_info.value.code is ErrorCode.INVALID_MESSAGE
+
+
+def test_decoder_normalizes_domain_validation_failures() -> None:
+    payload = json.loads(dumps_command_envelope(_envelope()))
+    payload["request"]["commands"][0]["duration_s"] = -1
+
+    with pytest.raises(ProtocolError) as exc_info:
+        loads_command_envelope(json.dumps(payload))
+
+    assert exc_info.value.code is ErrorCode.INVALID_MESSAGE
