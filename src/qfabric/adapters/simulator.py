@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from qfabric.adapters.base import DeviceAdapter
+from qfabric.errors import ErrorCode, ValidationError
 from qfabric.models import (
     CalibrationRecord,
     DeviceCapabilities,
@@ -16,8 +17,8 @@ from qfabric.models import (
 class DeterministicSimulatorAdapter(DeviceAdapter):
     """A deterministic simulator.
 
-    This adapter is intentionally simple. It validates the QFabric contract and
-    provides reproducible behavior for tests; it is not a physics simulator.
+    This adapter validates the QFabric contract and provides reproducible behavior
+    for tests. It is deliberately not a physics simulator.
     """
 
     def __init__(
@@ -48,15 +49,23 @@ class DeterministicSimulatorAdapter(DeviceAdapter):
 
     def apply_calibration(self, calibration: CalibrationRecord) -> None:
         if calibration.device_id != self.device_id:
-            raise ValueError(
-                f"Calibration targets {calibration.device_id!r}, "
-                f"but adapter controls {self.device_id!r}"
+            raise ValidationError(
+                ErrorCode.DEVICE_MISMATCH,
+                "Calibration targets a different device",
+                details={
+                    "target": calibration.device_id,
+                    "adapter_device_id": self.device_id,
+                },
             )
 
         parameter_names = {parameter.name for parameter in calibration.parameters}
         unknown = parameter_names - self.capabilities.calibration_keys
         if unknown:
-            raise ValueError(f"Unsupported calibration parameter(s): {sorted(unknown)!r}")
+            raise ValidationError(
+                ErrorCode.UNKNOWN_CALIBRATION_KEY,
+                "Calibration contains unsupported parameter(s)",
+                details={"unknown": sorted(unknown)},
+            )
 
         self._calibration = calibration
 
