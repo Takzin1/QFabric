@@ -22,7 +22,8 @@ class MethodContract:
     path: str
     class_name: str
     method_name: str
-    parameters: tuple[ParameterContract, ...]
+    required_keywords: frozenset[str]
+    baseline_parameters: tuple[ParameterContract, ...]
 
 
 @dataclass(frozen=True, slots=True)
@@ -40,9 +41,11 @@ class DriftFinding:
     class_name: str
     method_name: str
     compatible: bool
+    drifted: bool
     detail: str
     expected: tuple[ParameterContract, ...] = ()
     observed: tuple[ParameterContract, ...] = ()
+    missing_keywords: frozenset[str] = frozenset()
 
 
 @dataclass(frozen=True, slots=True)
@@ -55,6 +58,10 @@ class DriftReport:
     @property
     def compatible(self) -> bool:
         return all(finding.compatible for finding in self.findings)
+
+    @property
+    def drifted(self) -> bool:
+        return any(finding.drifted for finding in self.findings)
 
 
 def _parse_parameter(raw: Mapping[str, Any]) -> ParameterContract:
@@ -72,7 +79,10 @@ def load_manifest(path: str | Path) -> ApiContractManifest:
             path=str(raw["path"]),
             class_name=str(raw["class_name"]),
             method_name=str(raw["method_name"]),
-            parameters=tuple(_parse_parameter(item) for item in raw["parameters"]),
+            required_keywords=frozenset(str(item) for item in raw["required_keywords"]),
+            baseline_parameters=tuple(
+                _parse_parameter(item) for item in raw["baseline_parameters"]
+            ),
         )
         for raw in payload["contracts"]
     )
@@ -98,7 +108,9 @@ def _default_map(
     }
 
 
-def _extract_parameters(node: ast.FunctionDef | ast.AsyncFunctionDef) -> tuple[ParameterContract, ...]:
+def _extract_parameters(
+    node: ast.FunctionDef | ast.AsyncFunctionDef,
+) -> tuple[ParameterContract, ...]:
     params: list[ParameterContract] = []
     positional = [*node.args.posonlyargs, *node.args.args]
     defaults = _default_map(positional, node.args.defaults)
@@ -158,9 +170,28 @@ def extract_method_parameters(
         if not isinstance(node, ast.ClassDef) or node.name != class_name:
             continue
         for item in node.body:
-            if isinstance(item, (ast.FunctionDef, ast.AsyncFunctionDef)) and item.name == method_name:
+            if (
+                isinstance(item, (ast.FunctionDef, ast.AsyncFunctionDef))
+                and item.name == method_name
+            ):
                 return _extract_parameters(item)
     return None
+
+
+def _missing_required_keywords(
+    observed: tuple[ParameterContract, ...],
+    required_keywords: frozenset[str],
+) -> frozenset[str]:
+    accepts_var_keyword = any(item.kind == "var_keyword" for item in observed)
+    if accepts_var_keyword:
+        return frozenset()
+
+    accepted = {
+        item.name
+        for item in observed
+        if item.kind in {"positional", "keyword_only"}
+    }
+    return frozenset(required_keywords - accepted)
 
 
 def inspect_source_tree(
@@ -179,8 +210,9 @@ def inspect_source_tree(
                     class_name=contract.class_name,
                     method_name=contract.method_name,
                     compatible=False,
+                    drifted=True,
                     detail="source file is missing",
-                    expected=contract.parameters,
+                    expected=contract.baseline_parameters,
                 )
             )
             continue
@@ -199,8 +231,9 @@ def inspect_source_tree(
                     class_name=contract.class_name,
                     method_name=contract.method_name,
                     compatible=False,
+                    drifted=True,
                     detail=f"source could not be inspected: {exc}",
-                    expected=contract.parameters,
+                    expected=contract.baseline_parameters,
                 )
             )
             continue
@@ -212,26 +245,35 @@ def inspect_source_tree(
                     class_name=contract.class_name,
                     method_name=contract.method_name,
                     compatible=False,
+                    drifted=True,
                     detail="class or method is missing",
-                    expected=contract.parameters,
+                    expected=contract.baseline_parameters,
                 )
             )
             continue
 
-        compatible = observed == contract.parameters
+        drifted = observed != contract.baseline_parameters
+        missing = _missing_required_keywords(observed, contract.required_keywords)
+        compatible = not missing
+
+        if not compatible:
+            detail = "required QFabric call keyword(s) are no longer accepted"
+        elif drifted:
+            detail = "API surface drifted but required call shape remains compatible"
+        else:
+            detail = "API surface matches pinned contract"
+
         findings.append(
             DriftFinding(
                 path=contract.path,
                 class_name=contract.class_name,
                 method_name=contract.method_name,
                 compatible=compatible,
-                detail=(
-                    "API surface matches pinned contract"
-                    if compatible
-                    else "API parameter surface drifted"
-                ),
-                expected=contract.parameters,
+                drifted=drifted,
+                detail=detail,
+                expected=contract.baseline_parameters,
                 observed=observed,
+                missing_keywords=missing,
             )
         )
 
@@ -249,14 +291,20 @@ def format_report(report: DriftReport) -> str:
         f"reference_repository={report.reference_repository}",
         f"reference_commit={report.reference_commit}",
         f"compatible={str(report.compatible).lower()}",
+        f"drifted={str(report.drifted).lower()}",
     ]
     for finding in report.findings:
         status = "PASS" if finding.compatible else "FAIL"
+        drift = "DRIFT" if finding.drifted else "STABLE"
         lines.append(
-            f"{status} {finding.path}::{finding.class_name}.{finding.method_name} "
-            f"- {finding.detail}"
+            f"{status}/{drift} {finding.path}::"
+            f"{finding.class_name}.{finding.method_name} - {finding.detail}"
         )
-        if not finding.compatible:
-            lines.append(f"  expected={finding.expected!r}")
+        if finding.missing_keywords:
+            lines.append(
+                f"  missing_keywords={sorted(finding.missing_keywords)!r}"
+            )
+        if finding.drifted:
+            lines.append(f"  baseline={finding.expected!r}")
             lines.append(f"  observed={finding.observed!r}")
     return "\n".join(lines)
