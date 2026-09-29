@@ -5,8 +5,7 @@ from __future__ import annotations
 import json
 from collections.abc import Mapping
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
-from types import MappingProxyType
+from datetime import UTC, datetime
 from typing import Any
 
 from qfabric.errors import ErrorCode, ProtocolError
@@ -21,12 +20,12 @@ def _ensure_aware_timestamp(value: datetime, field_name: str) -> None:
 
 def _format_timestamp(value: datetime) -> str:
     _ensure_aware_timestamp(value, "timestamp")
-    return value.astimezone(timezone.utc).isoformat().replace("+00:00", "Z")
+    return value.astimezone(UTC).isoformat().replace("+00:00", "Z")
 
 
 def _parse_timestamp(value: str, field_name: str) -> datetime:
     try:
-        parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+        parsed = datetime.fromisoformat(value)
     except ValueError as exc:
         raise ProtocolError(
             ErrorCode.INVALID_MESSAGE,
