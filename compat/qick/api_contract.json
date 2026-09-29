@@ -8,39 +8,129 @@
       "path": "qick_lib/qick/qick_asm.py",
       "class_name": "AbsQickProgram",
       "method_name": "declare_gen",
-      "parameters": [
-        {"name": "self", "kind": "positional", "default": null},
-        {"name": "ch", "kind": "positional", "default": null},
-        {"name": "nqz", "kind": "positional", "default": "1"},
-        {"name": "mixer_freq", "kind": "positional", "default": "None"},
-        {"name": "mixer_fullscale", "kind": "positional", "default": "False"},
-        {"name": "mux_freqs", "kind": "positional", "default": "None"},
-        {"name": "mux_gains", "kind": "positional", "default": "None"},
-        {"name": "mux_phases", "kind": "positional", "default": "None"},
-        {"name": "ro_ch", "kind": "positional", "default": "None"}
+      "required_keywords": [
+        "ch",
+        "nqz"
+      ],
+      "baseline_parameters": [
+        {
+          "name": "self",
+          "kind": "positional",
+          "default": null
+        },
+        {
+          "name": "ch",
+          "kind": "positional",
+          "default": null
+        },
+        {
+          "name": "nqz",
+          "kind": "positional",
+          "default": "1"
+        },
+        {
+          "name": "mixer_freq",
+          "kind": "positional",
+          "default": "None"
+        },
+        {
+          "name": "mixer_fullscale",
+          "kind": "positional",
+          "default": "False"
+        },
+        {
+          "name": "mux_freqs",
+          "kind": "positional",
+          "default": "None"
+        },
+        {
+          "name": "mux_gains",
+          "kind": "positional",
+          "default": "None"
+        },
+        {
+          "name": "mux_phases",
+          "kind": "positional",
+          "default": "None"
+        },
+        {
+          "name": "ro_ch",
+          "kind": "positional",
+          "default": "None"
+        }
       ]
     },
     {
       "path": "qick_lib/qick/asm_v2.py",
       "class_name": "QickProgramV2",
       "method_name": "add_pulse",
-      "parameters": [
-        {"name": "self", "kind": "positional", "default": null},
-        {"name": "ch", "kind": "positional", "default": null},
-        {"name": "name", "kind": "positional", "default": null},
-        {"name": "kwargs", "kind": "var_keyword", "default": null}
+      "required_keywords": [
+        "ch",
+        "name",
+        "style",
+        "freq",
+        "phase",
+        "gain",
+        "length"
+      ],
+      "baseline_parameters": [
+        {
+          "name": "self",
+          "kind": "positional",
+          "default": null
+        },
+        {
+          "name": "ch",
+          "kind": "positional",
+          "default": null
+        },
+        {
+          "name": "name",
+          "kind": "positional",
+          "default": null
+        },
+        {
+          "name": "kwargs",
+          "kind": "var_keyword",
+          "default": null
+        }
       ]
     },
     {
       "path": "qick_lib/qick/asm_v2.py",
       "class_name": "AsmV2",
       "method_name": "pulse",
-      "parameters": [
-        {"name": "self", "kind": "positional", "default": null},
-        {"name": "ch", "kind": "positional", "default": null},
-        {"name": "name", "kind": "positional", "default": null},
-        {"name": "t", "kind": "positional", "default": "0"},
-        {"name": "tag", "kind": "positional", "default": "None"}
+      "required_keywords": [
+        "ch",
+        "name",
+        "t"
+      ],
+      "baseline_parameters": [
+        {
+          "name": "self",
+          "kind": "positional",
+          "default": null
+        },
+        {
+          "name": "ch",
+          "kind": "positional",
+          "default": null
+        },
+        {
+          "name": "name",
+          "kind": "positional",
+          "default": null
+        },
+        {
+          "name": "t",
+          "kind": "positional",
+          "default": "0"
+        },
+        {
+          "name": "tag",
+          "kind": "positional",
+          "default": "None"
+        }
       ]
     }
   ]
