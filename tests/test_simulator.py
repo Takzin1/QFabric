@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 import pytest
 
@@ -50,7 +50,7 @@ def test_calibration_is_device_scoped_and_capability_checked() -> None:
         parameters=(
             CalibrationParameter(name="gain", value=0.99, unit="ratio", uncertainty=0.01),
         ),
-        created_at=datetime(2026, 9, 29, 4, 0, tzinfo=timezone.utc),
+        created_at=datetime(2026, 9, 29, 4, 0, tzinfo=UTC),
         provenance=CalibrationProvenance(
             source="qfabric-test",
             method="deterministic-reference",
@@ -68,7 +68,7 @@ def test_rejects_calibration_for_another_device() -> None:
         device_id="other-device",
         version="cal-001",
         parameters=(CalibrationParameter(name="gain", value=1.0, unit="ratio"),),
-        created_at=datetime(2026, 9, 29, 4, 0, tzinfo=timezone.utc),
+        created_at=datetime(2026, 9, 29, 4, 0, tzinfo=UTC),
         provenance=CalibrationProvenance(
             source="qfabric-test",
             method="deterministic-reference",
