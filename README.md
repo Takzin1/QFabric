@@ -2,10 +2,10 @@
 
 **Hardware-agnostic control and calibration fabric for heterogeneous quantum hardware.**
 
-> **Status:** pre-alpha / experimental. QFabric v0.3 defines a vendor-neutral,
-> versioned control protocol and introduces a pinned, plan-only QICK backend profile.
-> It does **not** claim physical-hardware compatibility unless a future executor and
-> hardware-specific integration are explicitly tested.
+> **Status:** pre-alpha / experimental. QFabric v0.4 defines a vendor-neutral,
+> versioned control protocol, a pinned plan-only QICK backend profile, and an
+> upstream API drift harness. It does **not** claim physical-hardware compatibility
+> unless a future executor and hardware-specific integration are explicitly tested.
 
 QFabric explores a thin public control layer between higher-level quantum software
 and heterogeneous hardware backends. The public core makes protocol versions,
@@ -20,13 +20,21 @@ and telemetry formats. QFabric asks:
 > What is the smallest useful protocol that can sit above multiple hardware families
 > without pretending their underlying physics is identical?
 
-v0.3 adds one more question:
+v0.3 added one more question:
 
 > Can that protocol be mapped deterministically onto a real, public quantum-control
 > API without silently importing its runtime or pretending hardware was exercised?
 
 The first answer is the **QICK plan profile**, pinned to upstream commit
 `4da51a5154e448fa3613257a967bfa6a58959a8b`.
+
+v0.4 adds a second:
+
+> Can QFabric detect when an upstream backend API changes in a way that invalidates
+> the pinned mapping?
+
+The QICK drift harness answers this by comparing the latest upstream API surface
+against a machine-readable contract for the methods QFabric actually depends on.
 
 ## Architecture
 
@@ -49,8 +57,9 @@ Applications / orchestration / digital twins
 ~~~
 
 See [docs/architecture.md](docs/architecture.md),
-[docs/protocol.md](docs/protocol.md), and
-[docs/adapters/qick-plan.md](docs/adapters/qick-plan.md).
+[docs/protocol.md](docs/protocol.md),
+[docs/adapters/qick-plan.md](docs/adapters/qick-plan.md), and
+[docs/compatibility/qick-drift.md](docs/compatibility/qick-drift.md).
 
 The language-neutral command schema lives at
 [spec/qfabric-command-envelope.schema.json](spec/qfabric-command-envelope.schema.json).
@@ -124,6 +133,8 @@ QICK program or RFSoC.
 8. Backend profiles pin the upstream source they were verified against.
 9. Plan generation and physical execution remain separate.
 10. Hardware compatibility claims require hardware-specific documentation and tests.
+11. Upstream compatibility is checked by API surface, not by commit SHA alone.
+12. Backend API drift must fail visibly before QFabric silently assumes compatibility.
 
 ## Roadmap
 
@@ -152,8 +163,16 @@ QICK program or RFSoC.
 - [x] Publish explicit compatibility limits
 - [ ] Validate against a controlled QICK software fixture or hardware environment
 
+### v0.4 — Upstream compatibility watch
+- [x] Machine-readable QICK API contract manifest
+- [x] AST-based method signature inspection
+- [x] Regression fixtures for the pinned QICK surface
+- [x] Detect missing methods and changed defaults/parameters
+- [x] Weekly GitHub Actions watch against latest QICK `main`
+- [x] Treat compatible upstream commits as PASS even when the SHA advances
+
 ### Next
-- [ ] Add fixture-based QICK drift detection against a pinned release
+- [ ] Add a controlled QICK runtime fixture without physical execution
 - [ ] Decide whether readout deserves a generic QFabric primitive or stays profile-specific
 - [ ] Add result/telemetry wire envelopes only when a real integration requires them
 - [ ] Evaluate a second backend profile to pressure-test the abstraction

@@ -1,0 +1,137 @@
+{
+  "schema_version": 1,
+  "backend": "qick",
+  "reference_repository": "openquantumhardware/qick",
+  "reference_commit": "4da51a5154e448fa3613257a967bfa6a58959a8b",
+  "contracts": [
+    {
+      "path": "qick_lib/qick/qick_asm.py",
+      "class_name": "AbsQickProgram",
+      "method_name": "declare_gen",
+      "required_keywords": [
+        "ch",
+        "nqz"
+      ],
+      "baseline_parameters": [
+        {
+          "name": "self",
+          "kind": "positional",
+          "default": null
+        },
+        {
+          "name": "ch",
+          "kind": "positional",
+          "default": null
+        },
+        {
+          "name": "nqz",
+          "kind": "positional",
+          "default": "1"
+        },
+        {
+          "name": "mixer_freq",
+          "kind": "positional",
+          "default": "None"
+        },
+        {
+          "name": "mixer_fullscale",
+          "kind": "positional",
+          "default": "False"
+        },
+        {
+          "name": "mux_freqs",
+          "kind": "positional",
+          "default": "None"
+        },
+        {
+          "name": "mux_gains",
+          "kind": "positional",
+          "default": "None"
+        },
+        {
+          "name": "mux_phases",
+          "kind": "positional",
+          "default": "None"
+        },
+        {
+          "name": "ro_ch",
+          "kind": "positional",
+          "default": "None"
+        }
+      ]
+    },
+    {
+      "path": "qick_lib/qick/asm_v2.py",
+      "class_name": "QickProgramV2",
+      "method_name": "add_pulse",
+      "required_keywords": [
+        "ch",
+        "name",
+        "style",
+        "freq",
+        "phase",
+        "gain",
+        "length"
+      ],
+      "baseline_parameters": [
+        {
+          "name": "self",
+          "kind": "positional",
+          "default": null
+        },
+        {
+          "name": "ch",
+          "kind": "positional",
+          "default": null
+        },
+        {
+          "name": "name",
+          "kind": "positional",
+          "default": null
+        },
+        {
+          "name": "kwargs",
+          "kind": "var_keyword",
+          "default": null
+        }
+      ]
+    },
+    {
+      "path": "qick_lib/qick/asm_v2.py",
+      "class_name": "AsmV2",
+      "method_name": "pulse",
+      "required_keywords": [
+        "ch",
+        "name",
+        "t"
+      ],
+      "baseline_parameters": [
+        {
+          "name": "self",
+          "kind": "positional",
+          "default": null
+        },
+        {
+          "name": "ch",
+          "kind": "positional",
+          "default": null
+        },
+        {
+          "name": "name",
+          "kind": "positional",
+          "default": null
+        },
+        {
+          "name": "t",
+          "kind": "positional",
+          "default": "0"
+        },
+        {
+          "name": "tag",
+          "kind": "positional",
+          "default": "None"
+        }
+      ]
+    }
+  ]
+}

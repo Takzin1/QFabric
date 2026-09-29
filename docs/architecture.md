@@ -5,7 +5,7 @@
 QFabric defines a small, vendor-neutral protocol between higher-level quantum
 applications and concrete hardware-control backends.
 
-v0.3 separates six concerns:
+v0.4 separates seven concerns:
 
 1. **Domain model** — commands, calibration records, capabilities, telemetry,
    requests, and results.
@@ -16,6 +16,8 @@ v0.3 separates six concerns:
    execution plans without hardware I/O.
 5. **Calibration boundary** — versioned, device-scoped parameters with timestamped provenance.
 6. **Conformance boundary** — non-invasive inspection of an adapter's declared contract.
+7. **Upstream compatibility boundary** — machine-readable API contracts plus AST-based
+   drift checks for the external control surfaces a profile depends on.
 
 ## Layering
 
@@ -38,6 +40,13 @@ Applications / orchestration / digital twins
                      explicit future executor
                                   |
                          QICK / physical RFSoC
+
+Latest QICK main
+       |
+       v
+ API Drift Harness
+       |
+ PASS / explicit BREAK
 ~~~
 
 The QICK profile is intentionally plan-only. It emits a deterministic representation
@@ -53,6 +62,10 @@ or any vendor transport in the core package.
 - Hardware-specific concepts belong behind an adapter or planning profile.
 - Backend planning profiles MUST pin the upstream implementation or documentation
   reference they were verified against.
+- Upstream compatibility MUST be judged from the API surface QFabric depends on,
+  not merely from whether the upstream commit SHA changed.
+- Drift checks MUST be non-executing: they inspect source/API shape and never dispatch
+  hardware commands.
 - Planning and physical execution MUST remain separate boundaries.
 - Every cross-boundary command MUST be protocol-versioned.
 - Capabilities MUST be explicit and machine-readable.
@@ -71,7 +84,7 @@ adapter interface, planning profiles, and conformance machinery.
 Physics-accurate simulation, proprietary digital-twin models, private datasets,
 and proprietary inference logic are intentionally outside QFabric's public core.
 
-## v0.3 non-goals
+## v0.4 non-goals
 
 - Direct QICK hardware execution.
 - Pulse compilation or optimal-control algorithms beyond explicitly documented
@@ -82,5 +95,6 @@ and proprietary inference logic are intentionally outside QFabric's public core.
 - Claims of compatibility with any commercial or research quantum device.
 - Digital-twin or proprietary inference engines.
 
-See [protocol.md](protocol.md) for normative protocol behavior and
-[adapters/qick-plan.md](adapters/qick-plan.md) for the first pinned backend profile.
+See [protocol.md](protocol.md) for normative protocol behavior,
+[adapters/qick-plan.md](adapters/qick-plan.md) for the first pinned backend profile,
+and [compatibility/qick-drift.md](compatibility/qick-drift.md) for upstream drift semantics.
