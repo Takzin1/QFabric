@@ -36,12 +36,14 @@ from .protocol import (
 from .version import PACKAGE_VERSION, PROTOCOL_VERSION
 
 __all__ = [
-    "CapabilityError",
-    "CapabilityNegotiationResult",
-    "CapabilityRequirement",
+    "PACKAGE_VERSION",
+    "PROTOCOL_VERSION",
     "CalibrationParameter",
     "CalibrationProvenance",
     "CalibrationRecord",
+    "CapabilityError",
+    "CapabilityNegotiationResult",
+    "CapabilityRequirement",
     "CommandEnvelope",
     "ControlCommand",
     "DeviceCapabilities",
@@ -49,8 +51,6 @@ __all__ = [
     "ExperimentRequest",
     "ExperimentResult",
     "HardwareKind",
-    "PACKAGE_VERSION",
-    "PROTOCOL_VERSION",
     "ProtocolError",
     "QFabricError",
     "TelemetrySample",
