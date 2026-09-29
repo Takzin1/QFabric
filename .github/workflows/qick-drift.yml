@@ -1,0 +1,32 @@
+name: QICK Drift Watch
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "23 6 * * 1"
+
+permissions:
+  contents: read
+
+jobs:
+  qick-api-drift:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install QFabric
+        run: python -m pip install -e ".[dev]"
+
+      - name: Fetch latest QICK main
+        run: git clone --depth 1 https://github.com/openquantumhardware/qick.git upstream-qick
+
+      - name: Record observed QICK commit
+        run: echo "Observed QICK HEAD=$(git -C upstream-qick rev-parse HEAD)"
+
+      - name: Check QICK API surface
+        run: python scripts/check_qick_drift.py --root upstream-qick
