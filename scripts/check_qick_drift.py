@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Check a local QICK checkout against QFabric's pinned API contract."""
 
 from __future__ import annotations
