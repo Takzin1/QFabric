@@ -53,7 +53,7 @@ class QickProgramV2:
     ]
 
 
-def test_detects_signature_drift(tmp_path: Path) -> None:
+def test_reports_compatible_signature_drift(tmp_path: Path) -> None:
     manifest = load_manifest(MANIFEST_PATH)
 
     qick_asm = tmp_path / "qick_lib/qick/qick_asm.py"
@@ -71,6 +71,7 @@ class AbsQickProgram:
         mux_gains=None,
         mux_phases=None,
         ro_ch=None,
+        new_optional=None,
     ):
         pass
 """,
@@ -93,11 +94,50 @@ class QickProgramV2:
 
     report = inspect_source_tree(tmp_path, manifest)
 
+    assert report.compatible is True
+    assert report.drifted is True
+    changed = [finding for finding in report.findings if finding.drifted]
+    assert len(changed) == 1
+    assert changed[0].method_name == "declare_gen"
+    assert "remains compatible" in changed[0].detail
+
+
+def test_detects_breaking_required_keyword_drift(tmp_path: Path) -> None:
+    manifest = load_manifest(MANIFEST_PATH)
+
+    qick_asm = tmp_path / "qick_lib/qick/qick_asm.py"
+    qick_asm.parent.mkdir(parents=True)
+    qick_asm.write_text(
+        """
+class AbsQickProgram:
+    def declare_gen(self, channel, nqz=1):
+        pass
+""",
+        encoding="utf-8",
+    )
+
+    asm_v2 = tmp_path / "qick_lib/qick/asm_v2.py"
+    asm_v2.write_text(
+        """
+class AsmV2:
+    def pulse(self, ch, name, t=0, tag=None):
+        pass
+
+class QickProgramV2:
+    def add_pulse(self, ch, name, **kwargs):
+        pass
+""",
+        encoding="utf-8",
+    )
+
+    report = inspect_source_tree(tmp_path, manifest)
+
     assert report.compatible is False
+    assert report.drifted is True
     failing = [finding for finding in report.findings if not finding.compatible]
     assert len(failing) == 1
     assert failing[0].method_name == "declare_gen"
-    assert failing[0].detail == "API parameter surface drifted"
+    assert failing[0].missing_keywords == frozenset({"ch"})
 
 
 def test_detects_missing_method(tmp_path: Path) -> None:
