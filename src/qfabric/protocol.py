@@ -149,6 +149,8 @@ _TOP_LEVEL_KEYS = {
     "sent_at",
     "request",
 }
+_REQUEST_KEYS = {"commands", "metadata"}
+_COMMAND_KEYS = {"channel", "value", "unit", "duration_s", "metadata"}
 
 
 def command_envelope_to_dict(envelope: CommandEnvelope) -> dict[str, Any]:
@@ -233,6 +235,14 @@ def command_envelope_from_dict(payload: Mapping[str, Any]) -> CommandEnvelope:
     ensure_supported_protocol_version(protocol_version)
 
     request_payload = _require_mapping(payload.get("request"), "request")
+    unknown_request_fields = set(request_payload) - _REQUEST_KEYS
+    if unknown_request_fields:
+        raise ProtocolError(
+            ErrorCode.INVALID_MESSAGE,
+            "Unknown request field(s)",
+            details={"unknown_fields": sorted(unknown_request_fields)},
+        )
+
     commands_payload = request_payload.get("commands")
     if not isinstance(commands_payload, list) or not commands_payload:
         raise ProtocolError(
@@ -246,6 +256,17 @@ def command_envelope_from_dict(payload: Mapping[str, Any]) -> CommandEnvelope:
         command_payload = _require_mapping(
             raw_command, f"request.commands[{index}]"
         )
+        unknown_command_fields = set(command_payload) - _COMMAND_KEYS
+        if unknown_command_fields:
+            raise ProtocolError(
+                ErrorCode.INVALID_MESSAGE,
+                "Unknown command field(s)",
+                details={
+                    "index": index,
+                    "unknown_fields": sorted(unknown_command_fields),
+                },
+            )
+
         value = command_payload.get("value")
         if isinstance(value, bool) or not isinstance(value, (int, float)):
             raise ProtocolError(
@@ -266,8 +287,8 @@ def command_envelope_from_dict(payload: Mapping[str, Any]) -> CommandEnvelope:
             command_payload.get("metadata", {}),
             f"request.commands[{index}].metadata",
         )
-        commands.append(
-            ControlCommand(
+        try:
+            command = ControlCommand(
                 channel=_require_string(
                     command_payload.get("channel"),
                     f"request.commands[{index}].channel",
@@ -280,26 +301,39 @@ def command_envelope_from_dict(payload: Mapping[str, Any]) -> CommandEnvelope:
                 duration_s=float(duration) if duration is not None else None,
                 metadata=dict(metadata),
             )
-        )
+        except ValueError as exc:
+            raise ProtocolError(
+                ErrorCode.INVALID_MESSAGE,
+                f"Invalid command at index {index}: {exc}",
+                details={"index": index},
+            ) from exc
+        commands.append(command)
 
     request_metadata = _require_mapping(
         request_payload.get("metadata", {}),
         "request.metadata",
     )
 
-    return CommandEnvelope(
-        message_id=_require_string(payload.get("message_id"), "message_id"),
-        device_id=_require_string(payload.get("device_id"), "device_id"),
-        sent_at=_parse_timestamp(
-            _require_string(payload.get("sent_at"), "sent_at"),
-            "sent_at",
-        ),
-        request=ExperimentRequest(
+    try:
+        request = ExperimentRequest(
             commands=tuple(commands),
             metadata=dict(request_metadata),
-        ),
-        protocol_version=protocol_version,
-    )
+        )
+        return CommandEnvelope(
+            message_id=_require_string(payload.get("message_id"), "message_id"),
+            device_id=_require_string(payload.get("device_id"), "device_id"),
+            sent_at=_parse_timestamp(
+                _require_string(payload.get("sent_at"), "sent_at"),
+                "sent_at",
+            ),
+            request=request,
+            protocol_version=protocol_version,
+        )
+    except ValueError as exc:
+        raise ProtocolError(
+            ErrorCode.INVALID_MESSAGE,
+            f"Invalid command envelope: {exc}",
+        ) from exc
 
 
 def loads_command_envelope(payload: str) -> CommandEnvelope:
