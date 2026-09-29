@@ -1,0 +1,47 @@
+name: QICK Runtime Fixture
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "src/qfabric/profiles/qick.py"
+      - "src/qfabric/runtime_compat.py"
+      - "scripts/check_qick_runtime.py"
+      - "compat/qick/**"
+      - ".github/workflows/qick-runtime.yml"
+      - "tests/test_runtime_compat.py"
+  push:
+    branches: ["main"]
+    paths:
+      - "src/qfabric/profiles/qick.py"
+      - "src/qfabric/runtime_compat.py"
+      - "scripts/check_qick_runtime.py"
+      - "compat/qick/**"
+      - ".github/workflows/qick-runtime.yml"
+      - "tests/test_runtime_compat.py"
+
+permissions:
+  contents: read
+
+jobs:
+  pinned-qick-runtime:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install QFabric
+        run: python -m pip install -e ".[dev]"
+
+      - name: Install pinned QICK runtime
+        run: python -m pip install "git+https://github.com/openquantumhardware/qick.git@4da51a5154e448fa3613257a967bfa6a58959a8b"
+
+      - name: Confirm QICK package version
+        run: python -c "import qick; print('QICK version=', qick.__version__)"
+
+      - name: Bind QFabric plan to QICK runtime signatures
+        run: python scripts/check_qick_runtime.py
