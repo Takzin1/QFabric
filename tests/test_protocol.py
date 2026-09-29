@@ -1,5 +1,5 @@
 import json
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 import pytest
 
@@ -34,7 +34,7 @@ def _envelope(**overrides: object) -> CommandEnvelope:
     values = {
         "message_id": "msg-001",
         "device_id": "sim-001",
-        "sent_at": datetime(2026, 9, 29, 4, 5, tzinfo=timezone.utc),
+        "sent_at": datetime(2026, 9, 29, 4, 5, tzinfo=UTC),
         "request": _request(),
         "protocol_version": PROTOCOL_VERSION,
     }
@@ -107,7 +107,7 @@ def test_capability_negotiation_succeeds_for_supported_contract() -> None:
 
 def test_command_envelope_requires_timezone_aware_timestamp() -> None:
     with pytest.raises(ValueError, match="timezone-aware"):
-        _envelope(sent_at=datetime(2026, 9, 29, 4, 5))
+        _envelope(sent_at=datetime(2026, 9, 29, 4, 5, tzinfo=UTC).replace(tzinfo=None))
 
 
 def test_decoder_rejects_unknown_command_fields() -> None:
