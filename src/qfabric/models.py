@@ -4,9 +4,12 @@ from __future__ import annotations
 
 from collections.abc import Mapping
 from dataclasses import dataclass, field
+from datetime import datetime
 from enum import Enum
 from types import MappingProxyType
 from typing import Any
+
+from qfabric.version import SUPPORTED_PROTOCOL_VERSIONS
 
 
 class HardwareKind(str, Enum):
@@ -23,12 +26,28 @@ def _freeze_mapping(value: Mapping[str, Any] | None) -> Mapping[str, Any]:
     return MappingProxyType(dict(value or {}))
 
 
+def _ensure_aware_datetime(value: datetime, field_name: str) -> None:
+    if value.tzinfo is None or value.utcoffset() is None:
+        raise ValueError(f"{field_name} must be timezone-aware")
+
+
 @dataclass(frozen=True, slots=True)
 class DeviceCapabilities:
     hardware_kind: HardwareKind
     supported_channels: frozenset[str]
     calibration_keys: frozenset[str] = field(default_factory=frozenset)
+    protocol_versions: frozenset[str] = field(
+        default_factory=lambda: SUPPORTED_PROTOCOL_VERSIONS
+    )
     supports_feedback: bool = False
+
+    def __post_init__(self) -> None:
+        if not self.protocol_versions:
+            raise ValueError("protocol_versions must not be empty")
+        if any(not channel.strip() for channel in self.supported_channels):
+            raise ValueError("supported channel names must be non-empty")
+        if any(not key.strip() for key in self.calibration_keys):
+            raise ValueError("calibration key names must be non-empty")
 
 
 @dataclass(frozen=True, slots=True)
@@ -67,8 +86,27 @@ class CalibrationParameter:
     def __post_init__(self) -> None:
         if not self.name.strip():
             raise ValueError("name must be non-empty")
+        if not self.unit.strip():
+            raise ValueError("unit must be non-empty")
         if self.uncertainty is not None and self.uncertainty < 0:
             raise ValueError("uncertainty must be >= 0")
+
+
+@dataclass(frozen=True, slots=True)
+class CalibrationProvenance:
+    """Traceability metadata describing how a calibration was produced."""
+
+    source: str
+    method: str
+    actor: str | None = None
+    evidence_uri: str | None = None
+    parent_version: str | None = None
+
+    def __post_init__(self) -> None:
+        if not self.source.strip():
+            raise ValueError("provenance.source must be non-empty")
+        if not self.method.strip():
+            raise ValueError("provenance.method must be non-empty")
 
 
 @dataclass(frozen=True, slots=True)
@@ -76,6 +114,8 @@ class CalibrationRecord:
     device_id: str
     version: str
     parameters: tuple[CalibrationParameter, ...]
+    created_at: datetime
+    provenance: CalibrationProvenance
     metadata: Mapping[str, Any] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
@@ -83,6 +123,9 @@ class CalibrationRecord:
             raise ValueError("device_id must be non-empty")
         if not self.version.strip():
             raise ValueError("version must be non-empty")
+        if not self.parameters:
+            raise ValueError("parameters must contain at least one calibration parameter")
+        _ensure_aware_datetime(self.created_at, "created_at")
         names = [parameter.name for parameter in self.parameters]
         if len(names) != len(set(names)):
             raise ValueError("calibration parameter names must be unique")
