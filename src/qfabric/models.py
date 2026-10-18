@@ -6,6 +6,7 @@ from collections.abc import Mapping
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
+from math import isfinite
 from types import MappingProxyType
 from typing import Any
 
@@ -24,6 +25,19 @@ class HardwareKind(str, Enum):
 
 def _freeze_mapping(value: Mapping[str, Any] | None) -> Mapping[str, Any]:
     return MappingProxyType(dict(value or {}))
+
+
+def _require_finite_number(value: Any, field_name: str) -> float:
+    """Reject non-finite or non-numeric domain values even without JSON parsing."""
+    if isinstance(value, bool) or not isinstance(value, (int, float)):
+        raise TypeError(f"{field_name} must be numeric (not bool)")
+    try:
+        number = float(value)
+    except (OverflowError, ValueError) as exc:
+        raise ValueError(f"{field_name} must be a finite number") from exc
+    if not isfinite(number):
+        raise ValueError(f"{field_name} must be a finite number")
+    return number
 
 
 def _ensure_aware_datetime(value: datetime, field_name: str) -> None:
@@ -63,8 +77,11 @@ class ControlCommand:
             raise ValueError("channel must be non-empty")
         if not self.unit.strip():
             raise ValueError("unit must be non-empty")
-        if self.duration_s is not None and self.duration_s < 0:
-            raise ValueError("duration_s must be >= 0")
+        _require_finite_number(self.value, "value")
+        if self.duration_s is not None:
+            duration = _require_finite_number(self.duration_s, "duration_s")
+            if duration < 0:
+                raise ValueError("duration_s must be >= 0")
         object.__setattr__(self, "metadata", _freeze_mapping(self.metadata))
 
 
@@ -74,6 +91,12 @@ class TelemetrySample:
     value: float
     unit: str
     timestamp_s: float
+
+    def __post_init__(self) -> None:
+        if not self.signal.strip() or not self.unit.strip():
+            raise ValueError("telemetry signal and unit must be non-empty")
+        _require_finite_number(self.value, "telemetry.value")
+        _require_finite_number(self.timestamp_s, "telemetry.timestamp_s")
 
 
 @dataclass(frozen=True, slots=True)
@@ -88,8 +111,11 @@ class CalibrationParameter:
             raise ValueError("name must be non-empty")
         if not self.unit.strip():
             raise ValueError("unit must be non-empty")
-        if self.uncertainty is not None and self.uncertainty < 0:
-            raise ValueError("uncertainty must be >= 0")
+        _require_finite_number(self.value, "calibration.value")
+        if self.uncertainty is not None:
+            uncertainty = _require_finite_number(self.uncertainty, "uncertainty")
+            if uncertainty < 0:
+                raise ValueError("uncertainty must be >= 0")
 
 
 @dataclass(frozen=True, slots=True)
