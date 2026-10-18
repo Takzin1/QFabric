@@ -85,8 +85,10 @@ def test_cli_regular_files_still_validate() -> None:
         ),
         (
             compute_synthetic_count_baseline,
-            b'{"schemaVersion":"qfabric-synthetic-counts/1","kind":"synthetic_fixture",'
-            b'"groups":[{"name":"g","shots":1e309,"errors":0}]}',
+            (
+                b'{"schemaVersion":"qfabric-synthetic-counts/1","kind":"synthetic_fixture",'
+                b'"groups":[{"name":"g","shots":1e309,"errors":0}]}'
+            ),
         ),
     ],
 )
