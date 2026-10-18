@@ -327,6 +327,27 @@ The offline validation refuses record duplicates, false provenance/rights
 claims, malformed file names and mixed simulation/tool measurement labels.
 It is run in CI on Python 3.11/3.12.
 
+### Spreadsheet registry snapshot — nine Excel tabs synchronized as CSV
+
+The 2026-10-19 QFabric research Excel workbook was exported as
+[nine GitHub CSV sheets](data/spreadsheets/qfabric_registry_2026-10-19/)
+with a [SHA-256 source-workbook manifest](data/spreadsheets/qfabric_registry_2026-10-19/export_manifest.json)
+and [cross-source validation](scripts/verify_registry_csv_snapshot.py).
+Its 15 pinned candidates, 7 source leads, 12 nested artifacts and
+NVIDIA QCalEval candidate remain source-aligned.
+
+**Snapshot only:** the original binary workbook is **not** in this repo.
+CSV snapshots omit Excel formulas, charts, styles and data validation. They
+contain no newly downloaded or scientifically verified physical measurements.
+The human evidence queue is not allowed to override primary-source JSON.
+
+~~~bash
+python scripts/verify_registry_csv_snapshot.py
+~~~
+
+See the [spreadsheet synchronization and integrity guide](docs/datasets/spreadsheet-registry-sync.md)
+before editing any research verification status.
+
 ## Open-core boundary
 
 QFabric publishes the reusable protocol, SDK boundary, schemas, planning profiles,

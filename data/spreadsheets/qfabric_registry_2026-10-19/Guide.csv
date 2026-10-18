@@ -1,0 +1,25 @@
+USAGE / DATA DICTIONARY / PROVENANCE,Unnamed: 1,Unnamed: 2,Unnamed: 3
+"QFabric research evidence workbook — snapshot of source metadata, not a hardware result",,,
+,,,
+Area,Meaning and safe workflow,Canonical reference,Scientific caveat
+Pinned_Candidates,15 source-confirmed candidate manifest rows; preserving original fields and unverified statuses.,https://github.com/Takzin1/QFabric/blob/main/data/quantum_dataset_candidates.json,Source metadata is not measured data.
+New_Source_Leads,"7 pinned literature/source records, including one software-only record.",https://github.com/Takzin1/QFabric/blob/main/data/quantum_source_intake.json,No file-level rights or original numeric values were checked here.
+Artifact_Leads,12 file/asset leads belonging to seven new sources. Null filename means not established.,https://github.com/Takzin1/QFabric/blob/main/docs/datasets/source-intake-structure.md,"Do not make up filenames, units or checksums."
+AI_Benchmark,"NVIDIA QCalEval plot-reading tasks Q1–Q6, not QPU measurement fidelity.",https://github.com/Takzin1/QFabric/blob/main/data/quantum_ai_eval_candidates.json,Upstream code license and dataset license are not interchangeable.
+Verification_Queue,"Editable task statuses. Gate formula needs 7 documents plus evidence URL, hash and reviewer.",https://github.com/Takzin1/QFabric/blob/main/src/qfabric/dataset_baseline.py,READY FOR HUMAN SIGN-OFF is NOT validated/reproduced.
+Normalization_Map,Each physical/simulation lead needs per-source column mapping before numeric analysis.,https://github.com/Takzin1/QFabric/blob/main/docs/datasets/source-intake-structure.md,"Do not equate T1, errors per shot, errors per round and timing."
+Action_Plan,"Prioritized implementation work packages, with separately assignable owner and status.",https://github.com/Takzin1/QFabric,P0/P1 planning order is not a scientific evidence grade.
+Provenance: measured_claim,Claimed by source as experimental or measured; QFabric has not independently inspected values.,,Measured_claim is not verified measurement.
+Provenance: mixed_claim,"Source likely mixes observed figures, computed analysis or simulated values.",,Must split at column/file level after download.
+Provenance: simulation_claim,"Simulation/decoder benchmark data, not physical experimental data.",,"Keep random seed, version, decoder method and units."
+Provenance: tool_only,Software generation or benchmarking artifact.,,Never execute downloaded code in data-intake step.
+Source status: unverified,Rights/units unverified by independent review; remain unverified in source manifests.,,Spreadsheet editing cannot approve external data.
+Published MD5 claim,"Checksum from Zenodo listing if present, recorded but not independently matched.",,Local SHA256 must be computed from actual acquired bytes.
+Local SHA256,Cryptographic fingerprint generated *after* approved retrieval of a bounded source file.,,File identity alone does not prove authenticity or science.
+Normalization example: T1,"Proposed observable = relaxation time, canonical SI seconds; source unit unknown.",,Only convert when actual source unit and method are known.
+Normalization example: T2,"Proposed observable = decoherence time, canonical SI seconds; source unit unknown.",,"Device, pulse sequence and acquisition context must remain."
+Normalization example: readout error,Proposed observable can be dimensionless probability if source defines it.,,"Assignment accuracy, discrimination error and fidelity differ."
+Normalization example: decoder latency,Proposed metric can use seconds if timing basis is documented.,,FPGA processing cycles and wall-clock timestamps are different.
+Normalization example: logical QEC error,Define trial/round/shot and confidence method from original data.,,Synthetic Wilson tests cannot prove correlated QEC error rates.
+Source snapshot,"Record source version, file SHA256, retrieval date, license, paper reference.",,No direct data acquisition is claimed in this workbook.
+Latest GitHub reference,QFabric source-intake change merged via PR #17.,https://github.com/Takzin1/QFabric/pull/17,Metadata snapshot reviewed on 2026-10-19.

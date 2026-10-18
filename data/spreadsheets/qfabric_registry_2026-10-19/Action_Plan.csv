@@ -1,0 +1,11 @@
+Task ID,Priority,Workstream,Recommended action,Evidence-based acceptance gate,Work status,Responsible,Source URL
+T-01,P0,Source verification,Check exact Zenodo version and licence for QRD-001 / QRD-017,"Document pinned URL, selected original file and redistribution rights",Not started,,https://zenodo.org/records/15364358
+T-02,P0,Measured numerical baseline,Acquire 1 small CSV lawfully in non-repo folder; compute SHA256,Hash evidence and full source metadata; original bytes unchanged,Blocked,,https://zenodo.org/records/11621878
+T-03,P0,Cross-hardware calibration,Inspect cross-platform IBM/IQM/IonQ filenames and units,Source column dictionary; device/epoch/basis preserved per vendor,Not started,,https://zenodo.org/records/21775462
+T-04,P0,Reproducibility,Recompute original CSV values against the same paper figure,"Explicit measurement definition, tolerances and numeric deviations",Blocked,,https://zenodo.org/records/17518472
+T-05,P0,Simulation control,Preserve MaxSAT and Parallel Window under simulation-only status,"No measured claims; random seeds, versions and metrics documented",Not started,,https://zenodo.org/records/11045522
+T-06,P1,Data parser QA,Bounded CSV/XLSX/HDF5 parsing and column/units validation,"No code execution, ZIP bombs, pickle or unbounded memory intake",Not started,,https://github.com/Takzin1/QFabric
+T-07,P1,Evidence normalization,Design cross-vendor observation schemas without conflating units,Document canonical observable+unit conversions with evidence URLs,Not started,,https://github.com/Takzin1/QFabric/blob/main/docs/datasets/source-intake-structure.md
+T-08,P1,QCalEval AI-only baseline,Pin NVIDIA dataset revision and per-asset rights,Evaluation records and scores explicitly separated from QPU measurements,Not started,,https://huggingface.co/datasets/nvidia/QCalEval
+T-09,P1,CI export and parity,Compare workbook row IDs with live GitHub JSON contracts,No deleted/misaligned IDs; provenance and statuses remain unchanged,Not started,,https://github.com/Takzin1/QFabric
+T-10,P2,Tool sandbox,Review IcePack dependency/license and synthetic generation,Software generator stays isolated from physical measured evidence,Not started,,https://zenodo.org/records/19446086
