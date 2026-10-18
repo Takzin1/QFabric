@@ -73,7 +73,7 @@ class QickGeneratorBinding:
         if isinstance(self.gen_ch, bool) or not isinstance(self.gen_ch, int):
             raise TypeError("gen_ch must be an integer")
         if isinstance(self.nqz, bool) or not isinstance(self.nqz, int):
-            raise ValueError("nqz must be an integer")
+            raise TypeError("nqz must be an integer")
         if self.gen_ch < 0:
             raise ValueError("gen_ch must be >= 0")
         if self.nqz <= 0:
