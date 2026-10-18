@@ -48,6 +48,26 @@ Pulse names are generated deterministically as `qf_0000`, `qf_0001`, and so on.
 
 Generator declarations are emitted once per bound QICK generator channel.
 
+## Software-only preflight checks
+
+Before returning a plan, the QICK profile rejects:
+
+- non-finite numeric pulse values (NaN and positive/negative infinity), including
+  gain, duration, frequency, phase, and scheduled time;
+- duration values that overflow when converted from seconds to microseconds;
+- schedules whose computed end time is not finite or distinguishable from the start;
+- overlapping half-open pulse intervals `[start_us, start_us + length_us)` on the
+  **same physical generator channel**.
+
+Adjacent intervals are accepted. Concurrent intervals on **different** generator
+channels are accepted. These rules are deterministic static checks against the
+explicitly supplied plan metadata, not a QICK scheduling simulator.
+
+**Crucial limitation:** these checks cannot validate a board's clock granularity,
+pulse resource constraints, channel mixer, frequency limits, waveform memory,
+trigger latency, or calibration validity. They do not guarantee that a valid plan
+can run on a specific board. No vendor object is instantiated or invoked.
+
 ## Example
 
 ~~~python
