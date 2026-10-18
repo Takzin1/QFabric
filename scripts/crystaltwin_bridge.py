@@ -311,10 +311,20 @@ def verify_report(raw_snapshot: bytes, raw_report: bytes) -> dict[str, bool]:
     ):
         raise ValueError("inconsistent QICK profile reference/device")
     calls = plan.get("calls")
-    if not isinstance(calls, list) or [x.get("method") for x in calls if isinstance(x, dict)] != [
-        "declare_gen", "add_pulse", "pulse"
-    ]:
-        raise ValueError("unknown QICK method, plan shape or implied acquisition")
+    if (
+        not isinstance(calls, list)
+        or len(calls) != 3
+        or not all(isinstance(call, dict) for call in calls)
+        or [call.get("method") for call in calls]
+        != ["declare_gen", "add_pulse", "pulse"]
+        or calls[0].get("kwargs") != {"ch": 0, "nqz": 1}
+        or calls[1].get("kwargs") != {
+            "ch": 0, "name": "qf_0000", "style": "const",
+            "freq": 100.0, "phase": 0.0, "gain": 0.25, "length": 1.0,
+        }
+        or calls[2].get("kwargs") != {"ch": 0, "name": "qf_0000", "t": 0.0}
+    ):
+        raise ValueError("unknown or altered QICK demo plan shape")
     analytics = _mapping(report.get("analytics"), "analytics")
     if (
         analytics.get("signalType") != "synthetic_iq"
