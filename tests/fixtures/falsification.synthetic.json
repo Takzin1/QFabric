@@ -1,0 +1,81 @@
+{
+  "schemaVersion": "qfabric-falsification-synthetic/1",
+  "kind": "synthetic_fixture",
+  "profiles": [
+    {
+      "id": "FAL-001",
+      "sourceBaselineId": "ALT-001",
+      "metric": "binary_outcome_probability",
+      "claim": "Synthetic illustration: alternative circuit construction reduces event probability by >4 percentage points",
+      "direction": "lower_is_better",
+      "minimumImprovement": 0.04,
+      "sensitivityThresholds": [
+        0,
+        0.06
+      ],
+      "confidenceLevel": 0.95,
+      "minimumShotsPerArm": 100,
+      "samplingAssumption": "independent_bernoulli",
+      "control": {
+        "shots": 2000,
+        "events": 300
+      },
+      "candidate": {
+        "shots": 2000,
+        "events": 100
+      },
+      "analysisPlan": "pre_declared_single_primary_threshold",
+      "noiseModel": "synthetic_independent_only"
+    },
+    {
+      "id": "FAL-002",
+      "sourceBaselineId": "ALT-002",
+      "metric": "binary_outcome_probability",
+      "claim": "Synthetic negative control: candidate does NOT achieve a minimum 4pp improvement",
+      "direction": "lower_is_better",
+      "minimumImprovement": 0.04,
+      "sensitivityThresholds": [
+        0,
+        0.02
+      ],
+      "confidenceLevel": 0.95,
+      "minimumShotsPerArm": 100,
+      "samplingAssumption": "independent_bernoulli",
+      "control": {
+        "shots": 2000,
+        "events": 100
+      },
+      "candidate": {
+        "shots": 2000,
+        "events": 300
+      },
+      "analysisPlan": "pre_declared_single_primary_threshold",
+      "noiseModel": "synthetic_independent_only"
+    },
+    {
+      "id": "FAL-003",
+      "sourceBaselineId": "ALT-004",
+      "metric": "binary_outcome_probability",
+      "claim": "Synthetic underpowered illustration: improvement is not established for NV-style context",
+      "direction": "lower_is_better",
+      "minimumImprovement": 0.02,
+      "sensitivityThresholds": [
+        0,
+        0.04
+      ],
+      "confidenceLevel": 0.95,
+      "minimumShotsPerArm": 100,
+      "samplingAssumption": "independent_bernoulli",
+      "control": {
+        "shots": 1000,
+        "events": 100
+      },
+      "candidate": {
+        "shots": 1000,
+        "events": 95
+      },
+      "analysisPlan": "pre_declared_single_primary_threshold",
+      "noiseModel": "synthetic_independent_only"
+    }
+  ]
+}
