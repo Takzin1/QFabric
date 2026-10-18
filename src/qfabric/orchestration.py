@@ -75,7 +75,7 @@ def _decode(raw: bytes, *, limit: int, label: str) -> dict[str, Any]:
             object_pairs_hook=_unique_pairs,
             parse_constant=_invalid_constant,
         )
-    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+    except (UnicodeDecodeError, json.JSONDecodeError, RecursionError) as exc:
         raise ValueError(f"{label} must be UTF-8 JSON") from exc
     return _object(doc, label)
 
