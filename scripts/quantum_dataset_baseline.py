@@ -12,8 +12,6 @@ import stat
 import sys
 from pathlib import Path
 
-from qfabric.source_intake import summarize_source_intake
-
 from qfabric.dataset_baseline import (
     MAX_CATALOG_BYTES,
     MAX_COUNTS_BYTES,
@@ -22,6 +20,7 @@ from qfabric.dataset_baseline import (
     validate_ai_eval_catalog,
     validate_catalog,
 )
+from qfabric.source_intake import summarize_source_intake
 
 
 def _read(path: Path, limit: int) -> bytes:
