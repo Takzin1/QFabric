@@ -30,3 +30,8 @@ jobs:
         run: |
           python scripts/crystaltwin_bridge.py tests/fixtures/crystaltwin_snapshot.synthetic.json "$RUNNER_TEMP/qfabric-bridge-report.json" --backend cpu --shots 256
           python scripts/crystaltwin_bridge.py tests/fixtures/crystaltwin_snapshot.synthetic.json "$RUNNER_TEMP/qfabric-bridge-report.json" --verify
+      - name: Research proposal orchestration smoke (offline)
+        run: |
+          python scripts/research_agent_gate.py prepare tests/fixtures/crystaltwin_snapshot.synthetic.json "$RUNNER_TEMP/agent-proposal.json" --parameter coolingRate --value 0.25
+          python scripts/research_agent_gate.py assess tests/fixtures/crystaltwin_snapshot.synthetic.json "$RUNNER_TEMP/agent-proposal.json" "$RUNNER_TEMP/agent-assessment.json"
+          python scripts/research_agent_gate.py review tests/fixtures/crystaltwin_snapshot.synthetic.json "$RUNNER_TEMP/agent-proposal.json" "$RUNNER_TEMP/agent-assessment.json" "$RUNNER_TEMP/agent-review.json" --reviewer-label "CI-synthetic-test" --decision approve --attest-educational-only
