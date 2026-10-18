@@ -1,7 +1,8 @@
 # Contributing to QFabric
 
 QFabric is currently pre-alpha. Contributions should preserve a narrow,
-hardware-agnostic core.
+hardware-agnostic core. For coding agents, see [AGENTS.md](AGENTS.md), which
+adapts Ponytail-style minimal changes without dropping QFabric safety checks.
 
 ## Ground rules
 
