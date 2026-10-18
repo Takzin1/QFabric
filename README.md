@@ -2,7 +2,7 @@
 
 **Hardware-agnostic control and calibration fabric for heterogeneous quantum hardware.**
 
-> **Status:** pre-alpha / experimental. QFabric v0.6 defines a vendor-neutral,
+> **Status:** pre-alpha / experimental. QFabric v0.7 defines a vendor-neutral,
 > versioned control protocol, a pinned plan-only QICK backend profile, an upstream
 > API drift harness, and a controlled QICK runtime-binding fixture. It does **not**
 > claim physical-hardware compatibility unless a future executor and hardware-specific
@@ -236,6 +236,23 @@ python scripts/crystaltwin_bridge.py snapshot.json report.json --verify
 
 `--verify` validates consistency against the supplied exact input bytes, not
 cryptographic authorship, measured data or GPU use.
+
+### v0.7 — Experiment Orchestration Layer (offline)
+
+**Implemented:** model-neutral, untrusted research-proposal schema, hash-bound
+CrystalTwinAI input, strict educational parameter guards, rejection reasons
+and a self-attested human-review boundary. **Not implemented:** Nebius/NVIDIA
+model inference, automated physical control or authenticated approvals.
+
+~~~bash
+python scripts/research_agent_gate.py prepare tests/fixtures/crystaltwin_snapshot.synthetic.json proposal.json --parameter coolingRate --value 0.25
+python scripts/research_agent_gate.py assess tests/fixtures/crystaltwin_snapshot.synthetic.json proposal.json assessment.json
+python scripts/research_agent_gate.py review tests/fixtures/crystaltwin_snapshot.synthetic.json proposal.json assessment.json review.json --reviewer-label demo-human --decision approve --attest-educational-only
+~~~
+
+The prepare command generates an explicitly **synthetic fixture**; it does not
+pretend to contact Nemotron. See the
+[Experiment Orchestration specification](docs/integrations/experiment-orchestration.md).
 
 ## Open-core boundary
 
