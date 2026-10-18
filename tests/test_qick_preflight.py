@@ -116,5 +116,5 @@ def test_allows_overlapping_pulses_on_distinct_generators() -> None:
     [(True, 1), (0, False), (0.5, 1), (0, 1.5)],
 )
 def test_binding_rejects_noninteger_channels(gen_ch, nqz) -> None:
-    with pytest.raises(ValueError, match="integer"):
+    with pytest.raises(TypeError, match="integer"):
         QickGeneratorBinding(logical_channel="drive", gen_ch=gen_ch, nqz=nqz)
