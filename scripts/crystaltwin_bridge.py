@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Offline CrystalTwinAI <-> QFabric research bridge.
 
 This demonstration NEVER accesses quantum hardware, industrial equipment, or the
@@ -42,13 +41,13 @@ SERIES_KEYS = frozenset({
 
 def _mapping(value: Any, field: str) -> dict[str, Any]:
     if not isinstance(value, dict):
-        raise ValueError(f"{field} must be a JSON object")
+        raise TypeError(f"{field} must be a JSON object")
     return value
 
 
 def _finite(value: Any, field: str) -> float:
     if isinstance(value, bool) or not isinstance(value, (int, float)):
-        raise ValueError(f"{field} must be numeric")
+        raise TypeError(f"{field} must be numeric")
     try:
         numeric = float(value)
     except (OverflowError, ValueError) as exc:
@@ -96,6 +95,8 @@ def validate_snapshot(data: Any) -> dict[str, Any]:
             if key != "step":
                 _finite(value, f"trajectory[{index}].{key}")
         previous_step = step
+    if not float(control["timeSteps"]).is_integer():
+        raise ValueError("timeSteps must be an integer")
     if len(trajectory) != int(control["timeSteps"]):
         raise ValueError("trajectory length does not match timeSteps")
     return doc
@@ -259,7 +260,7 @@ def main(argv: list[str] | None = None) -> int:
             json.dumps(report, indent=2, ensure_ascii=False, allow_nan=False) + "\n",
             encoding="utf-8",
         )
-    except (OSError, ValueError, RuntimeError) as exc:
+    except (OSError, ValueError, TypeError, RuntimeError) as exc:
         print(f"Bridge failed: {exc}", file=sys.stderr)
         return 1
     print(f"Report: {args.output} | compute backend: {report['analytics']['backend']}")
