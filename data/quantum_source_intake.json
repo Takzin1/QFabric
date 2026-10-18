@@ -1,0 +1,254 @@
+{
+  "schemaVersion": "qfabric-quantum-source-intake/1",
+  "reviewedOn": "2026-10-19",
+  "sources": [
+    {
+      "sourceId": "QRI-001",
+      "title": "Cross-platform certification of the qubit space",
+      "recordUrl": "https://zenodo.org/records/21775462",
+      "recordId": "21775462",
+      "paperUrl": "https://doi.org/10.1038/s41598-025-27248-7",
+      "track": "cross_vendor_calibration",
+      "originClaim": "mixed_claim",
+      "hardwareFamilies": [
+        "superconducting",
+        "trapped_ion",
+        "unknown"
+      ],
+      "licenseStatus": "unverified",
+      "licenseIdentifier": null,
+      "reviewStatus": "source_lead_only",
+      "artifacts": [
+        {
+          "label": "IBM Nairobi calibration CSV (listed ~2.2 KB)",
+          "filename": null,
+          "format": "csv",
+          "role": "calibration_snapshot",
+          "dataOrigin": "measured_claim",
+          "units": null,
+          "rawSha256": null,
+          "downloadStatus": "not_downloaded"
+        },
+        {
+          "label": "IonQ device characteristics (listed ~5.1 KB)",
+          "filename": null,
+          "format": "json",
+          "role": "calibration_snapshot",
+          "dataOrigin": "unknown",
+          "units": null,
+          "rawSha256": null,
+          "downloadStatus": "not_downloaded"
+        },
+        {
+          "label": "IBM Brisbane calibration CSV (listed ~35.4 KB)",
+          "filename": null,
+          "format": "csv",
+          "role": "calibration_snapshot",
+          "dataOrigin": "measured_claim",
+          "units": null,
+          "rawSha256": null,
+          "downloadStatus": "not_downloaded"
+        }
+      ],
+      "note": "IBM/IQM/IonQ cross-vendor research. Exact filenames, time references, schema, units and rights are not verified; record version must not be mixed with another."
+    },
+    {
+      "sourceId": "QRI-002",
+      "title": "Multi-Qubit Stabilizer Readout on a Dual-Species Rydberg Array",
+      "recordUrl": "https://zenodo.org/records/20128631",
+      "recordId": "20128631",
+      "paperUrl": "https://arxiv.org/abs/2605.10924",
+      "track": "processed_experimental_figures",
+      "originClaim": "measured_claim",
+      "hardwareFamilies": [
+        "neutral_atom"
+      ],
+      "licenseStatus": "unverified",
+      "licenseIdentifier": null,
+      "reviewStatus": "source_lead_only",
+      "artifacts": [
+        {
+          "label": "Figure 3c processed figure spreadsheet (~3.0 KB)",
+          "filename": "Fig3c.xlsx",
+          "format": "xlsx",
+          "role": "processed_figure",
+          "dataOrigin": "measured_claim",
+          "units": null,
+          "rawSha256": null,
+          "downloadStatus": "not_downloaded"
+        },
+        {
+          "label": "Figure 4 processed figure spreadsheet (~4.1 KB)",
+          "filename": "Fig4.xlsx",
+          "format": "xlsx",
+          "role": "processed_figure",
+          "dataOrigin": "mixed_claim",
+          "units": null,
+          "rawSha256": null,
+          "downloadStatus": "not_downloaded"
+        }
+      ],
+      "note": "Na/Cs Rydberg array. Figure data is processed, not automatically raw shot-level measurement. Full raw data may require author request."
+    },
+    {
+      "sourceId": "QRI-003",
+      "title": "Quasiparticle dynamics in a superconducting qubit",
+      "recordUrl": "https://zenodo.org/records/11548753",
+      "recordId": "11548753",
+      "paperUrl": null,
+      "track": "noise_time_series",
+      "originClaim": "measured_claim",
+      "hardwareFamilies": [
+        "superconducting"
+      ],
+      "licenseStatus": "unverified",
+      "licenseIdentifier": null,
+      "reviewStatus": "source_lead_only",
+      "artifacts": [
+        {
+          "label": "Figure 3 HDF5 data (~9.4 MB)",
+          "filename": "Figure3_data.h5",
+          "format": "hdf5",
+          "role": "processed_figure",
+          "dataOrigin": "measured_claim",
+          "units": null,
+          "rawSha256": null,
+          "downloadStatus": "not_downloaded"
+        }
+      ],
+      "note": "HDF5 figure-level data; hierarchical paths, axes, units and raw-versus-derived columns are unknown. Do not execute companion notebooks."
+    },
+    {
+      "sourceId": "QRI-004",
+      "title": "Decoding quantum color codes with MaxSAT",
+      "recordUrl": "https://zenodo.org/records/11045522",
+      "recordId": "11045522",
+      "paperUrl": "https://doi.org/10.22331/q-2024-10-23-1506",
+      "track": "decoder_simulation",
+      "originClaim": "simulation_claim",
+      "hardwareFamilies": [
+        "simulation_only"
+      ],
+      "licenseStatus": "unverified",
+      "licenseIdentifier": null,
+      "reviewStatus": "source_lead_only",
+      "artifacts": [
+        {
+          "label": "Pseudo-threshold plot source (~237.6 KB)",
+          "filename": "pseudothreshold_plot.csv",
+          "format": "csv",
+          "role": "simulation_output",
+          "dataOrigin": "simulation_claim",
+          "units": null,
+          "rawSha256": null,
+          "downloadStatus": "not_downloaded"
+        },
+        {
+          "label": "Convergence rate text (~19.1 KB)",
+          "filename": "convergence_rate.txt",
+          "format": "txt",
+          "role": "simulation_output",
+          "dataOrigin": "simulation_claim",
+          "units": null,
+          "rawSha256": null,
+          "downloadStatus": "not_downloaded"
+        }
+      ],
+      "note": "Simulated decoder benchmark, not measurements from a physical QPU. Compatible method/seed and tolerance must be defined before reproduction."
+    },
+    {
+      "sourceId": "QRI-005",
+      "title": "Parallel Window Decoding",
+      "recordUrl": "https://zenodo.org/records/8419215",
+      "recordId": "8419215",
+      "paperUrl": null,
+      "track": "decoder_simulation",
+      "originClaim": "simulation_claim",
+      "hardwareFamilies": [
+        "simulation_only"
+      ],
+      "licenseStatus": "unverified",
+      "licenseIdentifier": null,
+      "reviewStatus": "source_lead_only",
+      "artifacts": [
+        {
+          "label": "Parallel Window paper data archive (~340.7 KB)",
+          "filename": "PW_paper_data.zip",
+          "format": "zip",
+          "role": "simulation_output",
+          "dataOrigin": "simulation_claim",
+          "units": null,
+          "rawSha256": null,
+          "downloadStatus": "not_downloaded"
+        }
+      ],
+      "note": "Simulation-oriented decoder performance. Archive internal names, setup, code versions, randomness and output units must be audited."
+    },
+    {
+      "sourceId": "QRI-006",
+      "title": "Single-Qubit Quantum Advantage",
+      "recordUrl": "https://zenodo.org/records/21896087",
+      "recordId": "21896087",
+      "paperUrl": null,
+      "track": "mixed_research_data",
+      "originClaim": "mixed_claim",
+      "hardwareFamilies": [
+        "unknown"
+      ],
+      "licenseStatus": "unverified",
+      "licenseIdentifier": null,
+      "reviewStatus": "source_lead_only",
+      "artifacts": [
+        {
+          "label": "Experiment code bundle (~22.8 MB), basename unverified",
+          "filename": null,
+          "format": "zip",
+          "role": "analysis_code",
+          "dataOrigin": "unknown",
+          "units": null,
+          "rawSha256": null,
+          "downloadStatus": "not_downloaded"
+        },
+        {
+          "label": "Simulation code bundle (~30.9 KB), basename unverified",
+          "filename": null,
+          "format": "zip",
+          "role": "analysis_code",
+          "dataOrigin": "simulation_claim",
+          "units": null,
+          "rawSha256": null,
+          "downloadStatus": "not_downloaded"
+        }
+      ],
+      "note": "This discovery record describes experiment and simulation *code* archives; presence of raw measured numeric data is not established."
+    },
+    {
+      "sourceId": "QRI-007",
+      "title": "IcePack quantum-error syndrome compression artifact",
+      "recordUrl": "https://zenodo.org/records/19446086",
+      "recordId": "19446086",
+      "paperUrl": null,
+      "track": "software_generator",
+      "originClaim": "tool_only",
+      "hardwareFamilies": [
+        "simulation_only"
+      ],
+      "licenseStatus": "unverified",
+      "licenseIdentifier": null,
+      "reviewStatus": "source_lead_only",
+      "artifacts": [
+        {
+          "label": "Stim-oriented software artifact (~16.7 KB)",
+          "filename": "icepack-artifact.zip",
+          "format": "zip",
+          "role": "software_artifact",
+          "dataOrigin": "tool_only",
+          "units": null,
+          "rawSha256": null,
+          "downloadStatus": "not_downloaded"
+        }
+      ],
+      "note": "Software artifact / simulation generator, not a raw quantum measurement dataset. Never execute downloaded code automatically."
+    }
+  ]
+}

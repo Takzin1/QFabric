@@ -20,6 +20,7 @@ from qfabric.dataset_baseline import (
     validate_ai_eval_catalog,
     validate_catalog,
 )
+from qfabric.source_intake import summarize_source_intake
 
 
 def _read(path: Path, limit: int) -> bytes:
@@ -65,6 +66,11 @@ def main(argv: list[str] | None = None) -> int:
     modes = parser.add_subparsers(dest="mode", required=True)
     inspect = modes.add_parser("validate-catalog", help="Validate metadata-only candidates")
     inspect.add_argument("catalog", type=Path)
+    intake = modes.add_parser(
+        "validate-intake", help="Validate structured, unverified research source leads"
+    )
+    intake.add_argument("intake", type=Path)
+    intake.add_argument("--catalog", type=Path, required=True)
     ai = modes.add_parser("validate-ai-catalog", help="Validate distinct QCalEval candidates")
     ai.add_argument("catalog", type=Path)
     audit = modes.add_parser("audit-local-file", help="Hash local file (no parsing or approval)")
@@ -86,6 +92,12 @@ def main(argv: list[str] | None = None) -> int:
                 "validatedMeasurements": 0,
                 "status": "metadata-only; all raw files unverified",
             }, indent=2))
+        elif args.mode == "validate-intake":
+            report = summarize_source_intake(
+                _read(args.intake, MAX_CATALOG_BYTES),
+                pinned_catalog_raw=_read(args.catalog, MAX_CATALOG_BYTES),
+            )
+            print(json.dumps(report, indent=2, allow_nan=False))
         elif args.mode == "validate-ai-catalog":
             doc = validate_ai_eval_catalog(_read(args.catalog, MAX_CATALOG_BYTES))
             print(json.dumps({

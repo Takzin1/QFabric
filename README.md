@@ -306,6 +306,27 @@ python scripts/quantum_dataset_baseline.py validate-ai-catalog data/quantum_ai_e
 python scripts/quantum_dataset_baseline.py audit-local-file data/quantum_dataset_candidates.json QRD-017 /path/to/fpga_memory_data.csv
 ~~~
 
+### Quantum source intake — structured unverified research leads
+
+The [source-intake manifest](data/quantum_source_intake.json) structures
+**six newly identified research leads plus one software artifact** into 12
+file/asset leads across calibration, processed experimental figures,
+simulations and software-only tracks. [Details and proposed unit mapping](docs/datasets/source-intake-structure.md).
+
+Unknown exact filenames remain `null`; observed units, raw SHA-256 hashes,
+licenses and download statuses are explicitly **unverified**. This registry
+does not merge those leads into the 15 existing pinned-file candidates or
+claim downloaded/reproduced physical measurements.
+
+~~~bash
+python scripts/quantum_dataset_baseline.py validate-intake \
+  data/quantum_source_intake.json --catalog data/quantum_dataset_candidates.json
+~~~
+
+The offline validation refuses record duplicates, false provenance/rights
+claims, malformed file names and mixed simulation/tool measurement labels.
+It is run in CI on Python 3.11/3.12.
+
 ## Open-core boundary
 
 QFabric publishes the reusable protocol, SDK boundary, schemas, planning profiles,
