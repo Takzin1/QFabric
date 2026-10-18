@@ -20,6 +20,10 @@ from qfabric.dataset_baseline import (
     validate_ai_eval_catalog,
     validate_catalog,
 )
+from qfabric.falsification import (
+    evaluate_synthetic_falsification,
+    validate_baseline_sources,
+)
 from qfabric.source_intake import summarize_source_intake
 
 
@@ -78,6 +82,17 @@ def main(argv: list[str] | None = None) -> int:
     audit.add_argument("dataset_id")
     audit.add_argument("file", type=Path)
     audit.add_argument("--output", type=Path)
+    alt = modes.add_parser(
+        "validate-alternative-sources", help="Review separate independent baseline source leads"
+    )
+    alt.add_argument("sources", type=Path)
+    check = modes.add_parser(
+        "synthetic-falsification",
+        help="Compare synthetic independent binomial arms against predeclared claims",
+    )
+    check.add_argument("fixture", type=Path)
+    check.add_argument("--sources", type=Path, required=True)
+    check.add_argument("--output", type=Path)
     baseline = modes.add_parser("synthetic-baseline", help="Compute synthetic error rates and CI")
     baseline.add_argument("counts", type=Path)
     baseline.add_argument("--output", type=Path)
@@ -98,6 +113,25 @@ def main(argv: list[str] | None = None) -> int:
                 pinned_catalog_raw=_read(args.catalog, MAX_CATALOG_BYTES),
             )
             print(json.dumps(report, indent=2, allow_nan=False))
+        elif args.mode == "validate-alternative-sources":
+            doc = validate_baseline_sources(_read(args.sources, MAX_CATALOG_BYTES))
+            print(json.dumps({
+                "schemaVersion": doc["schemaVersion"],
+                "sourceLeads": len(doc["sources"]),
+                "filesDownloaded": 0,
+                "independentlyReproduced": 0,
+                "hardwareExecuted": False,
+            }, indent=2))
+        elif args.mode == "synthetic-falsification":
+            result = json.dumps(evaluate_synthetic_falsification(
+                _read(args.fixture, MAX_COUNTS_BYTES),
+                sources_raw=_read(args.sources, MAX_CATALOG_BYTES),
+            ), indent=2, allow_nan=False) + "\n"
+            if args.output:
+                _write_new_report(args.output, result, args.fixture, args.sources)
+                print(f"Wrote synthetic falsification report: {args.output}")
+            else:
+                print(result, end="")
         elif args.mode == "validate-ai-catalog":
             doc = validate_ai_eval_catalog(_read(args.catalog, MAX_CATALOG_BYTES))
             print(json.dumps({
