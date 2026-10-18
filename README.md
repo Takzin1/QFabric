@@ -148,6 +148,8 @@ QICK program or RFSoC.
 12. Backend API drift must fail visibly before QFabric silently assumes compatibility.
 13. Source-shape compatibility and imported-runtime compatibility are separate checks.
 14. Runtime compatibility checks MUST bind calls without constructing hardware objects.
+15. Plan compilation rejects non-finite pulse parameters, conversion overflow, and
+    overlapping pulses on a shared QICK generator before exposing the plan.
 
 ## Roadmap
 
