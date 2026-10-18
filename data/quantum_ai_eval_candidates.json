@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "qfabric-quantum-ai-evaluation-candidates/1",
+  "reviewedOn": "2026-10-19",
+  "datasets": [
+    {
+      "candidateId": "QAE-001",
+      "title": "NVIDIA QCalEval — calibration-plot vision-language benchmark",
+      "datasetUrl": "https://huggingface.co/datasets/nvidia/QCalEval",
+      "evaluationCodeUrl": "https://github.com/NVIDIA/QCalEval",
+      "paperUrl": "https://research.nvidia.com/publication/2026-04_qcaleval-benchmarking-vision-language-models-quantum-calibration-plot",
+      "tasks": [
+        "Q1",
+        "Q2",
+        "Q3",
+        "Q4",
+        "Q5",
+        "Q6"
+      ],
+      "dataProvenance": "mixed_claim",
+      "datasetLicenseClaim": "CC-BY-4.0",
+      "codeLicenseClaim": "Apache-2.0",
+      "licenseClaimSource": "https://github.com/NVIDIA/QCalEval/blob/main/README.md",
+      "datasetRevision": null,
+      "sourceFileSha256": null,
+      "downloadStatus": "not_downloaded",
+      "modelEvaluated": false,
+      "benchmarkScore": null,
+      "note": "The upstream GitHub README independently confirms Q1..Q6 tasks and distinct code/data license claims; dataset revision, raw image provenance and individual item rights have not been independently audited. Never merge with measured-count baseline."
+    }
+  ]
+}
