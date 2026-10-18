@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "qfabric-synthetic-counts/1",
+  "kind": "synthetic_fixture",
+  "groups": [
+    {
+      "name": "synthetic-reference-low-error",
+      "shots": 100,
+      "errors": 5
+    },
+    {
+      "name": "synthetic-reference-high-error",
+      "shots": 200,
+      "errors": 30
+    }
+  ]
+}
