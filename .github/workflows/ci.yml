@@ -26,3 +26,7 @@ jobs:
         run: ruff check .
       - name: Test
         run: pytest
+      - name: Offline CrystalTwinAI bridge smoke
+        run: |
+          python scripts/crystaltwin_bridge.py tests/fixtures/crystaltwin_snapshot.synthetic.json "$RUNNER_TEMP/qfabric-bridge-report.json" --backend cpu --shots 256
+          python scripts/crystaltwin_bridge.py tests/fixtures/crystaltwin_snapshot.synthetic.json "$RUNNER_TEMP/qfabric-bridge-report.json" --verify

@@ -71,17 +71,17 @@ Power is 1 by construction. No connection is assumed between this toy IQ series
 and the simulated crystallization process. GPU acceleration must be supported
 by timing evidence on actual NVIDIA hardware; this repository does not claim it.
 
-## v0.6 readout decision: PROFILE-SPECIFIC FIRST
+## v0.6 QICK readout decision: PROFILE-SPECIFIC FIRST (implemented as intent-only)
 
 QICK readout should initially live in a **separate QICK-specific profile**,
 not in the generic QFabric ControlCommand domain API:
 
-1. Define `QickReadoutIntent` containing target device, ADC/readout channels,
+1. **Implemented:** Define `QickReadoutIntent` containing target device, ADC/readout channels,
    readout generator binding, frequency, capture length, trigger offset,
    number of repetitions/shots, units, and provenance.
-2. Validate every numeric value and device/channel binding, with bounded
+2. **Implemented:** Validate every numeric value and device/channel binding, with bounded
    resource requests. Include compatibility with a pinned upstream source.
-3. In a separately testable, plan-only profile, map intent to
+3. **Not implemented:** In a separately testable, plan-only profile, map intent to
    `declare_readout`, `trigger`, acquisition intent *only after* their
    source signatures and semantics are verified against pinned QICK.
 4. Add synthetic fixture tests, source-shape drift tests and imported-runtime
@@ -91,8 +91,22 @@ not in the generic QFabric ControlCommand domain API:
    with explicit units, time origin, calibration, uncertainty,
    measured/simulated provenance and hardware trace identifiers.
 
-**Current v1 does not compile any QICK readout operation.** It exposes
+**Current v0.6 still does not compile any QICK readout operation.** It exposes
 `qfabric.readoutStatus="intent_only"` to prevent fake acquisitions.
+
+## v0.6 bridge verification
+
+QFabric's CLI supports `--verify` to cross-check a report against the exact
+source snapshot bytes. It rejects a different SHA-256, altered input/summary,
+unexpected QICK demo calls, non-synthetic analytics, misleading hardware/readout
+flags, mismatched shots and incorrect readout proposal fields. The synthetic
+snapshot used by CrystalTwinAI's browser example is mirrored at
+`tests/fixtures/crystaltwin_snapshot.synthetic.json` to run the offline
+generation/verification smoke test on both Python CI versions.
+
+This check is **not a digital signature**, remote attestation, real-measurement
+validation or GPU verification. The readout intent remains non-executing.
+See [readout intent spec](../adapters/qick-readout-intent.md).
 
 ## Safety / reproducibility
 
@@ -124,7 +138,7 @@ not in the generic QFabric ControlCommand domain API:
 - P0: Cross-repo snapshot/report contract + CPU CI + browser import (v1).
 - P1: NVIDIA CUDA run evidence (device ID, elapsed times, environment) and
   repeatable benchmark with warm-up and multiple trials; no speedup claim yet.
-- P2: QICK-specific readout API signature audit, fixtures and plan-only compiler.
+- P2: QICK-specific readout API signature audit, fixtures and plan-only compiler (intent-only preflight is implemented in v0.6).
 - P3: Optional actual experimental instrumentation interface, separate
   provenance schema and scientific comparability validation.
 - P4: Hosted deployment, if contest rules require one, with security review.
