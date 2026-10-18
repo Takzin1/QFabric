@@ -254,6 +254,19 @@ The prepare command generates an explicitly **synthetic fixture**; it does not
 pretend to contact Nemotron. See the
 [Experiment Orchestration specification](docs/integrations/experiment-orchestration.md).
 
+## Quantum research datasets — source catalog (documentation)
+
+The [quantum research dataset catalog](docs/datasets/quantum-research-dataset-catalog.md)
+lists four paper-linked sources for future QFabric evidence ingestion: measured
+superconducting-qubit/QEC datasets and a separately labelled **simulation-only**
+benchmark. Each entry includes primary paper/data URLs, priority, expected file
+formats, estimated size, NotebookLM/Gemini Notebook extraction instructions,
+license/units verification status, and safe ingestion gates.
+
+**Documentation only:** no third-party raw dataset has been downloaded,
+rehosted, validated or used to demonstrate real quantum hardware compatibility.
+Notebook-derived summaries are not a replacement for original data files.
+
 ## Open-core boundary
 
 QFabric publishes the reusable protocol, SDK boundary, schemas, planning profiles,
