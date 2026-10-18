@@ -19,6 +19,7 @@ from typing import Any
 
 from qfabric.models import ControlCommand, ExperimentRequest
 from qfabric.profiles.qick import QickGeneratorBinding, QickPlanAdapter
+from qfabric.profiles.qick_readout import QickReadoutIntent, QickReadoutPlanner
 from qfabric.protocol import CommandEnvelope
 
 SNAPSHOT_VERSION = "crystaltwin-qfabric-snapshot/1"
@@ -203,6 +204,22 @@ def make_report(raw_snapshot: bytes, *, backend: str = "cpu", shots: int = 4096)
             )),
         )
     )
+    # Readout remains *intent only*; this never compiles acquisition calls.
+    readout = QickReadoutPlanner(
+        device_id=adapter.device_id,
+        generator_channels=(0,),
+        adc_channels=(0,),
+    ).plan(
+        QickReadoutIntent(
+            device_id=adapter.device_id,
+            readout_gen_ch=0,
+            adc_channels=(0,),
+            frequency_mhz=100.0,
+            capture_length_us=1.0,
+            trigger_offset_us=0.0,
+            shots=shots,
+        )
+    )
     result = {
         "schemaVersion": REPORT_VERSION,
         "kind": "qfabric_research_bridge_report",
@@ -223,11 +240,7 @@ def make_report(raw_snapshot: bytes, *, backend: str = "cpu", shots: int = 4096)
             "mode": "plan_only",
             "hardwareExecuted": False,
             "readoutStatus": "intent_only",
-            "readoutIntent": {
-                "kind": "qick_readout_proposal",
-                "shots": shots,
-                "note": "No declare_readout / trigger / acquire calls are compiled or executed",
-            },
+            "readoutIntent": readout.to_dict(),
             "qickReferenceCommit": plan.qick_reference_commit,
             "plan": plan.to_dict(),
         },
@@ -241,16 +254,105 @@ def make_report(raw_snapshot: bytes, *, backend: str = "cpu", shots: int = 4096)
     return result
 
 
+
+def verify_report(raw_snapshot: bytes, raw_report: bytes) -> dict[str, bool]:
+    """Check exact snapshot-byte linkage and fail-closed report semantics.
+
+    This is *not* a signature, source authentication or physical validation.
+    """
+    if len(raw_snapshot) > MAX_INPUT_BYTES or len(raw_report) > MAX_INPUT_BYTES:
+        raise ValueError("snapshot/report exceeds 512 KiB")
+    try:
+        snapshot = validate_snapshot(json.loads(raw_snapshot))
+        report = _mapping(json.loads(raw_report), "report")
+    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise ValueError("snapshot and report must be UTF-8 JSON") from exc
+
+    if report.get("schemaVersion") != REPORT_VERSION or (
+        report.get("kind") != "qfabric_research_bridge_report"
+    ):
+        raise ValueError("unsupported QFabric report schema or kind")
+    source = _mapping(report.get("source"), "source")
+    if (
+        source.get("repository") != "Takzin1/crystaltwinai"
+        or source.get("provenance") != "synthetic"
+        or source.get("mode") != "educational_simulation"
+        or source.get("sha256") != hashlib.sha256(raw_snapshot).hexdigest()
+    ):
+        raise ValueError("report source provenance or snapshot SHA-256 does not match")
+    reported_snapshot = _mapping(report.get("snapshot"), "snapshot")
+    if reported_snapshot != {
+        "input": snapshot["input"],
+        "summary": snapshot["summary"],
+        "rowCount": len(snapshot["trajectory"]),
+    }:
+        raise ValueError("report summary/inputs do not match source snapshot")
+    qfabric = _mapping(report.get("qfabric"), "qfabric")
+    if (
+        qfabric.get("repository") != "Takzin1/QFabric"
+        or qfabric.get("mode") != "plan_only"
+        or qfabric.get("hardwareExecuted") is not False
+        or qfabric.get("readoutStatus") != "intent_only"
+    ):
+        raise ValueError("report falsely asserts quantum hardware or acquisition")
+    readout = _mapping(qfabric.get("readoutIntent"), "readoutIntent")
+    if (
+        readout.get("kind") != "qick_readout_proposal"
+        or readout.get("status") != "intent_only"
+        or readout.get("provenance") != "synthetic_intent"
+        or readout.get("hardwareExecuted") is not False
+    ):
+        raise ValueError("invalid or missing readout-intent-only claims")
+    plan = _mapping(qfabric.get("plan"), "plan")
+    if (
+        qfabric.get("qickReferenceCommit") != plan.get("qick_reference_commit")
+        or qfabric.get("qickReferenceCommit") != readout.get("qick_reference_commit")
+        or plan.get("device_id") != readout.get("device_id")
+    ):
+        raise ValueError("inconsistent QICK profile reference/device")
+    calls = plan.get("calls")
+    if not isinstance(calls, list) or [x.get("method") for x in calls if isinstance(x, dict)] != [
+        "declare_gen", "add_pulse", "pulse"
+    ]:
+        raise ValueError("unknown QICK method, plan shape or implied acquisition")
+    analytics = _mapping(report.get("analytics"), "analytics")
+    if (
+        analytics.get("signalType") != "synthetic_iq"
+        or analytics.get("algorithm") != "analytic_unit_circle_v1"
+        or analytics.get("physicalMeasurement") is not False
+        or analytics.get("backend") not in ("cpu", "nvidia_cuda")
+    ):
+        raise ValueError("analytics must be labelled synthetic with actual backend")
+    shots = readout.get("shots")
+    if isinstance(shots, bool) or not isinstance(shots, int) or not 1 <= shots <= MAX_SHOTS:
+        raise ValueError("readout shots outside bounds")
+    if analytics.get("shots") != shots or isinstance(analytics.get("shots"), bool):
+        raise ValueError("analytics shots do not match readout intent")
+    for key in ("meanI", "meanQ", "meanPower", "elapsedMs"):
+        _finite(analytics.get(key), f"analytics.{key}")
+    if analytics["meanPower"] < 0 or analytics["elapsedMs"] < 0:
+        raise ValueError("negative power or duration in analytics")
+    return {"snapshot_digest_match": True, "semantic_invariants_pass": True}
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("snapshot", type=Path, help="Exported CrystalTwinAI snapshot JSON")
     parser.add_argument("output", type=Path, help="Resulting QFabric bridge report JSON")
     parser.add_argument("--backend", choices=("cpu", "cuda", "auto"), default="cpu")
     parser.add_argument("--shots", type=int, default=4096)
+    parser.add_argument(
+        "--verify", action="store_true",
+        help="Verify existing report against exact snapshot bytes; no new report is generated",
+    )
     args = parser.parse_args(argv)
     try:
         if args.snapshot.stat().st_size > MAX_INPUT_BYTES:
             raise ValueError("snapshot exceeds 512 KiB")
+        if args.verify:
+            evidence = verify_report(args.snapshot.read_bytes(), args.output.read_bytes())
+            print(f"Verified report: {args.output} | checks: {evidence}")
+            return 0
         report = make_report(
             args.snapshot.read_bytes(),
             backend=args.backend,
