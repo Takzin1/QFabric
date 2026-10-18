@@ -71,7 +71,7 @@ class QickGeneratorBinding:
         if not self.logical_channel.strip():
             raise ValueError("logical_channel must be non-empty")
         if isinstance(self.gen_ch, bool) or not isinstance(self.gen_ch, int):
-            raise ValueError("gen_ch must be an integer")
+            raise TypeError("gen_ch must be an integer")
         if isinstance(self.nqz, bool) or not isinstance(self.nqz, int):
             raise ValueError("nqz must be an integer")
         if self.gen_ch < 0:
