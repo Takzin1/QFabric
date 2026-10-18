@@ -1,0 +1,88 @@
+{
+  "schemaVersion": "qfabric-spreadsheet-registry-export/1",
+  "workbookName": "QFabric_Quantum_Research_Evidence_Registry_2026-10-19.xlsx",
+  "sourceWorkbookSha256": "624c993cf69127793459f6d030a94077d6b2f8567510f4d2936e2c59023933f7",
+  "sourceWorkbookSizeBytes": 42441,
+  "createdFrom": "provided Excel workbook; source cell values only",
+  "exportedOn": "2026-10-19",
+  "provenance": "spreadsheet snapshot; upstream quantum research data not downloaded",
+  "xlsxBinaryCommitted": false,
+  "formulasPreserved": false,
+  "stylesPreserved": false,
+  "datasetLicensesVerified": 0,
+  "measurementsValidated": 0,
+  "sheets": [
+    {
+      "name": "Dashboard",
+      "path": "data/spreadsheets/qfabric_registry_2026-10-19/Dashboard.csv",
+      "rows": 31,
+      "columns": 7,
+      "originalSheetRows": 31,
+      "headerOrigin": "Excel row 1"
+    },
+    {
+      "name": "Pinned_Candidates",
+      "path": "data/spreadsheets/qfabric_registry_2026-10-19/Pinned_Candidates.csv",
+      "rows": 16,
+      "columns": 19,
+      "originalSheetRows": 19,
+      "headerOrigin": "Excel row 4"
+    },
+    {
+      "name": "New_Source_Leads",
+      "path": "data/spreadsheets/qfabric_registry_2026-10-19/New_Source_Leads.csv",
+      "rows": 8,
+      "columns": 14,
+      "originalSheetRows": 11,
+      "headerOrigin": "Excel row 4"
+    },
+    {
+      "name": "Artifact_Leads",
+      "path": "data/spreadsheets/qfabric_registry_2026-10-19/Artifact_Leads.csv",
+      "rows": 13,
+      "columns": 14,
+      "originalSheetRows": 16,
+      "headerOrigin": "Excel row 4"
+    },
+    {
+      "name": "AI_Benchmark",
+      "path": "data/spreadsheets/qfabric_registry_2026-10-19/AI_Benchmark.csv",
+      "rows": 2,
+      "columns": 16,
+      "originalSheetRows": 5,
+      "headerOrigin": "Excel row 4"
+    },
+    {
+      "name": "Verification_Queue",
+      "path": "data/spreadsheets/qfabric_registry_2026-10-19/Verification_Queue.csv",
+      "rows": 29,
+      "columns": 22,
+      "originalSheetRows": 32,
+      "headerOrigin": "Excel row 4"
+    },
+    {
+      "name": "Normalization_Map",
+      "path": "data/spreadsheets/qfabric_registry_2026-10-19/Normalization_Map.csv",
+      "rows": 28,
+      "columns": 18,
+      "originalSheetRows": 31,
+      "headerOrigin": "Excel row 4"
+    },
+    {
+      "name": "Action_Plan",
+      "path": "data/spreadsheets/qfabric_registry_2026-10-19/Action_Plan.csv",
+      "rows": 11,
+      "columns": 8,
+      "originalSheetRows": 14,
+      "headerOrigin": "Excel row 4"
+    },
+    {
+      "name": "Guide",
+      "path": "data/spreadsheets/qfabric_registry_2026-10-19/Guide.csv",
+      "rows": 25,
+      "columns": 4,
+      "originalSheetRows": 25,
+      "headerOrigin": "Excel row 1"
+    }
+  ]
+}

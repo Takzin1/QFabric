@@ -1,0 +1,31 @@
+QFABRIC / QUANTUM EVIDENCE CONTROL CENTER,Unnamed: 1,Unnamed: 2,Unnamed: 3,Unnamed: 4,Unnamed: 5,Unnamed: 6
+"GitHub registry snapshot • 2026-10-19 • Metadata-only • Physical datasets, simulations and AI evaluation kept separate",,,,,,
+,,,,,,
+CATALOG & COVERAGE,,,,,SOURCE PROVENANCE DISTRIBUTION (CLAIMS ONLY),
+Pinned candidate datasets,15.0,,,,Source-labeled origin,Sources
+New source leads,7.0,,,,measured_claim,11
+Nested artifact leads,12.0,,,,mixed_claim,8
+Separate AI benchmark,1.0,,,,simulation_claim,2
+Research source records total,23.0,,,,tool_only,1
+Verification queue items,28.0,,,,,
+Original files downloaded,0.0,,,,These labels are upstream/source claims; they do not establish physical measurement validity.,
+Scientific results reproduced,0.0,,,,,
+QPU hardware executions,0.0,,,,,
+,,,,,SOURCE WORKSTREAMS (NEW LEADS),
+VERIFICATION COVERAGE,,,,,Workstream,Records
+Pinned provider MD5 claims,12.0,,,,cross_vendor_calibration,1
+New artifacts with basenames,7.0,,,,processed_experimental_figures,1
+Verified license approvals,0.0,,,,noise_time_series,1
+Units mapped (documented),0.0,,,,decoder_simulation,2
+Evidence sets ready for sign-off,0.0,,,,mixed_research_data,1
+AI model evaluation runs,0.0,,,,software_generator,1
+,,,,,,
+,,,,,,
+EVIDENCE SAFETY PRINCIPLES  /  Read before updating,,,,,,
+"01  The XLSX contains research *metadata*, not ingested third-party experimental numerical measurements.",,,,,,
+02  Pinned_Candidates and New_Source_Leads are snapshots of GitHub source catalogs; keep them source-aligned.,,,,,,
+03  Verification_Queue is a human workflow aid only; status completion never independently proves scientific validity.,,,,,,
+"04  Local SHA256 requires independently downloaded original bytes. Zenodo-listed MD5 is a provider claim, not a local check.",,,,,,
+"05  Do not combine physical measured values, processed-figure values, synthetic simulations, software generators, and AI plot scores.",,,,,,
+"06  Normalization_Map remains empty until actual columns, physical units, uncertainties, time bases and calibration are inspected.",,,,,,
+"07  Re-check file-level license, record version and paper DOI before redistribution or benchmarking.",,,,,,

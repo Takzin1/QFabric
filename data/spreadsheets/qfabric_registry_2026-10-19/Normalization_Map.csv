@@ -1,0 +1,28 @@
+Mapping ID,Evidence ID,Evidence lane,Origin (claim),Source file,Source table / group,Source column (as published),Target observable,Original unit,Canonical unit,Exact conversion formula,Device / qubit identifier,Measurement timestamp,Measurement trial basis,Uncertainty method,Map status,Evidence link,Interpretation notes
+MAP-001,QRD-001,Physical-data candidate,measured_claim,fig4b_decoding_response_time.csv,,,,,,,,,,,Unmapped,,No numeric source columns inspected. Do not assume hardware-family unit equivalence.
+MAP-002,QRD-005,Physical-data candidate,measured_claim,fig2b_active_reset.xlsx,,,,,,,,,,,Unmapped,,No numeric source columns inspected. Do not assume hardware-family unit equivalence.
+MAP-003,QRD-006,Physical-data candidate,measured_claim,modelling_non_markovian_noise_in_driven_superconducting_qubits_experiment_results.csv,,,,,,,,,,,Unmapped,,No numeric source columns inspected. Do not assume hardware-family unit equivalence.
+MAP-004,QRD-007,Physical-data candidate,measured_claim,pm_umbrella_prepcert_counts_all.zip,,,,,,,,,,,Unmapped,,No numeric source columns inspected. Do not assume hardware-family unit equivalence.
+MAP-005,QRD-008,Physical-data candidate,mixed_claim,QEC data.zip,,,,,,,,,,,Unmapped,,No numeric source columns inspected. Do not assume hardware-family unit equivalence.
+MAP-006,QRD-009,Physical-data candidate,mixed_claim,Dataset_TuanbleCoupler_aSWAP.zip,,,,,,,,,,,Unmapped,,No numeric source columns inspected. Do not assume hardware-family unit equivalence.
+MAP-007,QRD-010,Physical-data candidate,mixed_claim,data.tar.gz,,,,,,,,,,,Unmapped,,No numeric source columns inspected. Do not assume hardware-family unit equivalence.
+MAP-008,QRD-011,Physical-data candidate,mixed_claim,data.zip,,,,,,,,,,,Unmapped,,No numeric source columns inspected. Do not assume hardware-family unit equivalence.
+MAP-009,QRD-012,Physical-data candidate,measured_claim,google_qec3v5_experiment_data.zip,,,,,,,,,,,Unmapped,,No numeric source columns inspected. Do not assume hardware-family unit equivalence.
+MAP-010,QRD-013,Physical-data candidate,measured_claim,readout_clouds.zip,,,,,,,,,,,Unmapped,,No numeric source columns inspected. Do not assume hardware-family unit equivalence.
+MAP-011,QRD-014,Physical-data candidate,measured_claim,ibm_fez.tar.gz,,,,,,,,,,,Unmapped,,No numeric source columns inspected. Do not assume hardware-family unit equivalence.
+MAP-012,QRD-015,Physical-data candidate,mixed_claim,data_for_demonstrating_quantum_error_mitigation_on_logical_qubits.zip,,,,,,,,,,,Unmapped,,No numeric source columns inspected. Do not assume hardware-family unit equivalence.
+MAP-013,QRD-016,Physical-data candidate,measured_claim,Zenodo.zip,,,,,,,,,,,Unmapped,,No numeric source columns inspected. Do not assume hardware-family unit equivalence.
+MAP-014,QRD-017,Physical-data candidate,mixed_claim,fpga_memory_data.csv,,,,,,,,,,,Unmapped,,No numeric source columns inspected. Do not assume hardware-family unit equivalence.
+MAP-015,QRD-018,Physical-data candidate,measured_claim,ExtData_Fig4.csv,,,,,,,,,,,Unmapped,,No numeric source columns inspected. Do not assume hardware-family unit equivalence.
+MAP-016,QRI-001-A01,Source lead artifact,measured_claim,,,,,,,,,,,,Unmapped,,No numeric source columns inspected. Do not assume hardware-family unit equivalence.
+MAP-017,QRI-001-A02,Source lead artifact,unknown,,,,,,,,,,,,Unmapped,,No numeric source columns inspected. Do not assume hardware-family unit equivalence.
+MAP-018,QRI-001-A03,Source lead artifact,measured_claim,,,,,,,,,,,,Unmapped,,No numeric source columns inspected. Do not assume hardware-family unit equivalence.
+MAP-019,QRI-002-A01,Source lead artifact,measured_claim,Fig3c.xlsx,,,,,,,,,,,Unmapped,,No numeric source columns inspected. Do not assume hardware-family unit equivalence.
+MAP-020,QRI-002-A02,Source lead artifact,mixed_claim,Fig4.xlsx,,,,,,,,,,,Unmapped,,No numeric source columns inspected. Do not assume hardware-family unit equivalence.
+MAP-021,QRI-003-A01,Source lead artifact,measured_claim,Figure3_data.h5,,,,,,,,,,,Unmapped,,No numeric source columns inspected. Do not assume hardware-family unit equivalence.
+MAP-022,QRI-004-A01,Simulation data,simulation_claim,pseudothreshold_plot.csv,,,,,,,,,,,Unmapped,,No numeric source columns inspected. Do not assume hardware-family unit equivalence.
+MAP-023,QRI-004-A02,Simulation data,simulation_claim,convergence_rate.txt,,,,,,,,,,,Unmapped,,No numeric source columns inspected. Do not assume hardware-family unit equivalence.
+MAP-024,QRI-005-A01,Simulation data,simulation_claim,PW_paper_data.zip,,,,,,,,,,,Unmapped,,No numeric source columns inspected. Do not assume hardware-family unit equivalence.
+MAP-025,QRI-006-A01,Software artifact,unknown,,,,,,,,,,,,Unmapped,,No numeric source columns inspected. Do not assume hardware-family unit equivalence.
+MAP-026,QRI-006-A02,Software artifact,simulation_claim,,,,,,,,,,,,Unmapped,,No numeric source columns inspected. Do not assume hardware-family unit equivalence.
+MAP-027,QRI-007-A01,Software artifact,tool_only,icepack-artifact.zip,,,,,,,,,,,Unmapped,,No numeric source columns inspected. Do not assume hardware-family unit equivalence.
