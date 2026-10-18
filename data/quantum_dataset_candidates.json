@@ -286,25 +286,6 @@
       "ingestStatus": "not_downloaded",
       "rawSha256": null,
       "note": "Public v2 record selected in preference to restricted earlier record. ~772 bytes reported; exact article linkage and recorded numerical units require inspection; no earlier record data silently substituted."
-    },
-    {
-      "datasetId": "QRD-019",
-      "priority": "P1",
-      "title": "Zhang et al.: robust superconducting gate and tunable-pulse calibration",
-      "paperUrl": "https://zenodo.org/records/17541057",
-      "paperDoi": null,
-      "recordUrl": "https://zenodo.org/records/17541057",
-      "datasetDoi": "10.5281/zenodo.17541057",
-      "filename": "Zenodo.zip",
-      "format": "zip",
-      "publishedMd5": null,
-      "provenance": "mixed_claim",
-      "licenseStatus": "unverified",
-      "licenseIdentifier": null,
-      "unitStatus": "unverified",
-      "ingestStatus": "not_downloaded",
-      "rawSha256": null,
-      "note": "Previous investigation reports ~40.4 MB ZIP and separate CC-BY-4.0 data / MIT code licensing; archive name and per-file rights not verified. Exceeds 32 MiB local audit limit; manual scoped inspection required."
     }
   ]
 }
