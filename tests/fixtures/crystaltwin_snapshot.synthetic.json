@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "crystaltwin-qfabric-snapshot/1",
+  "kind": "educational_snapshot",
+  "source": {
+    "repository": "Takzin1/crystaltwinai",
+    "provenance": "synthetic",
+    "mode": "educational_simulation"
+  },
+  "input": {
+    "temperature": 65,
+    "concentration": 0.4,
+    "stirringSpeed": 300,
+    "coolingRate": 0.5,
+    "impurityLevel": 0.4,
+    "timeSteps": 2
+  },
+  "summary": {
+    "avgGrowthRate": 2,
+    "stabilityScore": 78,
+    "qualityScore": 80,
+    "finalYield": 4,
+    "maxSupersaturation": 1.12,
+    "nucleationEvents": 0
+  },
+  "trajectory": [
+    {
+      "step": 1,
+      "temperature": 64.5,
+      "concentration": 0.4,
+      "growthRate": 1.5,
+      "crystalYield": 1.5
+    },
+    {
+      "step": 2,
+      "temperature": 64,
+      "concentration": 0.39,
+      "growthRate": 2.5,
+      "crystalYield": 4
+    }
+  ]
+}
