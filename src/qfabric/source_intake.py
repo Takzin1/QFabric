@@ -145,7 +145,7 @@ def validate_source_intake(
         _text(entry["title"], "source title", 250)
         url = entry["recordUrl"]
         if not isinstance(url, str):
-            raise ValueError("recordUrl must be a pinned Zenodo HTTPS record")
+            raise TypeError("recordUrl must be a pinned Zenodo HTTPS record")
         match = _RECORD.fullmatch(url)
         if match is None or entry["recordId"] != match.group(1):
             raise ValueError("pinned Zenodo record and recordId must match exactly")
