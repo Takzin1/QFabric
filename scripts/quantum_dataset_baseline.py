@@ -29,6 +29,16 @@ def _read(path: Path, limit: int) -> bytes:
     return raw
 
 
+def _write_new_report(output: Path, result: str, *source_paths: Path) -> None:
+    """Do not truncate source data, input catalogs, or earlier audit evidence."""
+    target = output.resolve(strict=False)
+    if any(target == source.resolve(strict=False) for source in source_paths):
+        raise ValueError("output path would overwrite an input file")
+    # Exclusive create also refuses pre-existing files and symlink destinations.
+    with output.open("x", encoding="utf-8") as handle:
+        handle.write(result)
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     modes = parser.add_subparsers(dest="mode", required=True)
@@ -68,7 +78,7 @@ def main(argv: list[str] | None = None) -> int:
                 _read(args.catalog, MAX_CATALOG_BYTES), args.dataset_id, args.file
             ), indent=2, allow_nan=False) + "\n"
             if args.output:
-                args.output.write_text(result, encoding="utf-8")
+                _write_new_report(args.output, result, args.catalog, args.file)
                 print(f"Wrote unapproved local-byte audit: {args.output}")
             else:
                 print(result, end="")
@@ -76,7 +86,7 @@ def main(argv: list[str] | None = None) -> int:
             doc = compute_synthetic_count_baseline(_read(args.counts, MAX_COUNTS_BYTES))
             result = json.dumps(doc, indent=2, allow_nan=False) + "\n"
             if args.output:
-                args.output.write_text(result, encoding="utf-8")
+                _write_new_report(args.output, result, args.counts)
                 print(f"Wrote synthetic-only baseline: {args.output}")
             else:
                 print(result, end="")

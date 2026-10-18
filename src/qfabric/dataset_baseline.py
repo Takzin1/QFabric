@@ -142,7 +142,7 @@ def validate_catalog(raw: bytes) -> dict[str, Any]:
             raise ValueError("Zenodo record URL and version-specific DOI do not match")
         filename = _text(item["filename"], "filename", 255)
         if filename in {".", ".."} or filename.startswith(".") or (
-            "/" in filename or "\\" in filename or "\x00" in filename
+            "/" in filename or "\\" in filename or any(ord(c) < 32 or ord(c) == 127 for c in filename)
         ):
             raise ValueError("filename must be a safe basename")
         if item["format"] not in {"csv", "txt", "xlsx", "hdf5", "zip", "tar.gz", "npz"}:
@@ -247,7 +247,7 @@ def audit_local_candidate_file(
         raise ValueError("dataset ID is not in the pinned candidate catalog")
     if not isinstance(path, Path) or path.name != item["filename"] or path.is_symlink():
         raise ValueError("local file must be an ordinary file with the catalog filename")
-    flags = os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0)
+    flags = os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0) | getattr(os, "O_NONBLOCK", 0)
     fd = os.open(path, flags)
     with os.fdopen(fd, "rb") as stream:
         before = os.fstat(stream.fileno())

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import math
 from collections.abc import Mapping
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
@@ -273,6 +274,18 @@ def command_envelope_from_dict(payload: Mapping[str, Any]) -> CommandEnvelope:
                 "command.value must be numeric",
                 details={"index": index},
             )
+        try:
+            number = float(value)
+        except (ValueError, OverflowError) as exc:
+            raise ProtocolError(
+                ErrorCode.INVALID_MESSAGE, "command.value is not representable",
+                details={"index": index},
+            ) from exc
+        if not math.isfinite(number):
+            raise ProtocolError(
+                ErrorCode.INVALID_MESSAGE, "command.value must be finite",
+                details={"index": index},
+            )
         duration = command_payload.get("duration_s")
         if duration is not None and (
             isinstance(duration, bool) or not isinstance(duration, (int, float))
@@ -282,6 +295,20 @@ def command_envelope_from_dict(payload: Mapping[str, Any]) -> CommandEnvelope:
                 "command.duration_s must be numeric or null",
                 details={"index": index},
             )
+        duration_number = None
+        if duration is not None:
+            try:
+                duration_number = float(duration)
+            except (ValueError, OverflowError) as exc:
+                raise ProtocolError(
+                    ErrorCode.INVALID_MESSAGE, "command.duration_s is not representable",
+                    details={"index": index},
+                ) from exc
+            if not math.isfinite(duration_number):
+                raise ProtocolError(
+                    ErrorCode.INVALID_MESSAGE, "command.duration_s must be finite",
+                    details={"index": index},
+                )
         metadata = _require_mapping(
             command_payload.get("metadata", {}),
             f"request.commands[{index}].metadata",
@@ -292,12 +319,12 @@ def command_envelope_from_dict(payload: Mapping[str, Any]) -> CommandEnvelope:
                     command_payload.get("channel"),
                     f"request.commands[{index}].channel",
                 ),
-                value=float(value),
+                value=number,
                 unit=_require_string(
                     command_payload.get("unit"),
                     f"request.commands[{index}].unit",
                 ),
-                duration_s=float(duration) if duration is not None else None,
+                duration_s=duration_number,
                 metadata=dict(metadata),
             )
         except ValueError as exc:
@@ -335,12 +362,44 @@ def command_envelope_from_dict(payload: Mapping[str, Any]) -> CommandEnvelope:
         ) from exc
 
 
+MAX_ENVELOPE_JSON_BYTES = 1024 * 1024
+
+
+def _unique_json_pairs(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
+    result: dict[str, Any] = {}
+    for key, value in pairs:
+        if key in result:
+            raise ValueError(f"duplicate JSON field: {key}")
+        result[key] = value
+    return result
+
+
+def _reject_json_constant(value: str) -> None:
+    raise ValueError(f"non-finite JSON constant: {value}")
+
+
+def _finite_json_float(value: str) -> float:
+    number = float(value)
+    if not math.isfinite(number):
+        raise ValueError("JSON floating-point number is not finite")
+    return number
+
+
 def loads_command_envelope(payload: str) -> CommandEnvelope:
+    """Read untrusted JSON with bounded size, unique keys and finite decimals."""
+    if not isinstance(payload, str):
+        raise ProtocolError(ErrorCode.INVALID_MESSAGE, "Payload must be JSON text")
     try:
-        parsed = json.loads(payload)
-    except json.JSONDecodeError as exc:
+        if len(payload.encode("utf-8")) > MAX_ENVELOPE_JSON_BYTES:
+            raise ValueError("Payload exceeds one MiB")
+        parsed = json.loads(
+            payload,
+            object_pairs_hook=_unique_json_pairs,
+            parse_constant=_reject_json_constant,
+            parse_float=_finite_json_float,
+        )
+    except (UnicodeEncodeError, ValueError, RecursionError) as exc:
         raise ProtocolError(
-            ErrorCode.INVALID_MESSAGE,
-            "Payload is not valid JSON",
+            ErrorCode.INVALID_MESSAGE, f"Payload is not valid bounded JSON: {exc}"
         ) from exc
     return command_envelope_from_dict(_require_mapping(parsed, "payload"))

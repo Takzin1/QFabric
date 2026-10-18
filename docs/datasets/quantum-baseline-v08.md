@@ -125,3 +125,25 @@ The local-file audit:
 ### Gate for a future real-data baseline
 
 An experimental result must first have a pinned paper and record version, documented file license, independently checked raw-file bytes and hash, actual field names/units, measurement-vs-simulation categorization, original publication method, and a justified numerical comparison/tolerance. A separately versioned verified-evidence contract is required before advancing beyond candidate status. QCalEval model inference and NotebookLM analysis are also **not executed** by this change.
+
+## 8. Pre-ingestion security and CI audit hardening (2026-10-19)
+
+The QFabric v0.8 manifest and physical/AI evaluation split remain unchanged. This
+maintenance pass fixed actual code-boundary risks beyond the historic, already-fixed
+CI failures:
+
+- Dataset candidate filenames cannot contain terminal control characters.
+- Local integrity audits open candidate files nonblocking, then require a
+  regular file via `fstat`; FIFOs/special files cannot stall a job indefinitely
+  at `open` on Linux.
+- Both `synthetic-baseline --output` and `audit-local-file --output`
+  **refuse to overwrite** source fixtures, candidate manifest, or an existing
+  report. Reports are created exclusively; choose a new filename for each run.
+- Protocol JSON now refuses duplicate fields (including nested duplicate
+  metadata), NaN/Infinity tokens, float overflow, oversized (>1 MiB) messages,
+  and numeric overflow that formerly raised an unhandled `OverflowError`.
+  Valid command-envelope JSON roundtrips remain supported.
+
+These are *software safety guards* only; they do not establish QPU hardware
+compatibility, authenticity of Zenodo-listed hashes, or scientific replication.
+Tests explicitly cover refusal cases on both Python 3.11 and 3.12.
