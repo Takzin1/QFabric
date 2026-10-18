@@ -2,7 +2,7 @@
 
 **Hardware-agnostic control and calibration fabric for heterogeneous quantum hardware.**
 
-> **Status:** pre-alpha / experimental. QFabric v0.7 defines a vendor-neutral,
+> **Status:** pre-alpha / experimental. QFabric v0.8 defines a vendor-neutral,
 > versioned control protocol, a pinned plan-only QICK backend profile, an upstream
 > API drift harness, and a controlled QICK runtime-binding fixture. It does **not**
 > claim physical-hardware compatibility unless a future executor and hardware-specific
@@ -266,6 +266,24 @@ license/units verification status, and safe ingestion gates.
 **Documentation only:** no third-party raw dataset has been downloaded,
 rehosted, validated or used to demonstrate real quantum hardware compatibility.
 Notebook-derived summaries are not a replacement for original data files.
+
+### v0.8 — Quantum research dataset baseline (source-only + synthetic)
+
+QFabric now includes a [machine-readable, pinned candidate dataset catalog](data/quantum_dataset_candidates.json)
+and [strict ingestion gates and reference-baseline design](docs/datasets/quantum-baseline-v08.md).
+A standalone Python CLI checks all candidate metadata, rejects unsupported
+verification claims, and computes Wilson score 95% confidence intervals for
+an explicitly **synthetic** count fixture (no hardware or dataset download).
+
+~~~bash
+python scripts/quantum_dataset_baseline.py validate-catalog data/quantum_dataset_candidates.json
+python scripts/quantum_dataset_baseline.py synthetic-baseline tests/fixtures/quantum_counts.synthetic.json
+~~~
+
+**No actual quantum measurement dataset has been fetched, validated, or
+scientifically reproduced.** Real measurement baselines require licensing,
+raw-file SHA-256, schema/unit audit and paper-specific statistics. These
+requirements are documented, not claimed complete.
 
 ## Open-core boundary
 
