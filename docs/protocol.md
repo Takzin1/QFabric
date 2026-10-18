@@ -52,6 +52,9 @@ Example:
 
 The canonical JSON encoder sorts keys, rejects NaN/Infinity, and emits UTC timestamps.
 The decoder rejects unknown top-level envelope fields to prevent silent protocol drift.
+For Python callers bypassing the JSON decoder, domain constructors reject non-finite,
+non-numeric and boolean control/calibration/telemetry values; direct mappings
+must have string keys at each message-object boundary.
 
 See `spec/qfabric-command-envelope.schema.json` for the language-neutral schema.
 
@@ -65,8 +68,10 @@ Clients declare minimum requirements through `CapabilityRequirement`:
 - whether closed-loop feedback is required
 
 An adapter returns `CapabilityNegotiationResult` rather than silently degrading a
-request. A result is compatible only when a protocol version overlaps and all required
-capabilities are present.
+request. A result is compatible only when an explicitly **core-supported**
+protocol version overlaps with both sides and all required capabilities are present.
+A version advertised by both a caller and an adapter but unsupported by QFabric
+itself is **not** a valid negotiated version.
 
 ## Calibration provenance
 

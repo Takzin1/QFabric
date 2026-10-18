@@ -116,8 +116,11 @@ def negotiate_capabilities(
     capabilities: DeviceCapabilities,
     requirement: CapabilityRequirement,
 ) -> CapabilityNegotiationResult:
+    # A vendor/consumer agreement is not enough: the core must understand the version.
     common_versions = (
-        capabilities.protocol_versions & requirement.accepted_protocol_versions
+        capabilities.protocol_versions
+        & requirement.accepted_protocol_versions
+        & SUPPORTED_PROTOCOL_VERSIONS
     )
     selected = max(common_versions, key=_version_key) if common_versions else None
     missing_channels = requirement.required_channels - capabilities.supported_channels
@@ -199,6 +202,12 @@ def _require_mapping(value: Any, field_name: str) -> Mapping[str, Any]:
             f"{field_name} must be an object",
             details={"field": field_name},
         )
+    if any(not isinstance(key, str) for key in value):
+        raise ProtocolError(
+            ErrorCode.INVALID_MESSAGE,
+            f"{field_name} keys must be strings",
+            details={"field": field_name},
+        )
     return value
 
 
@@ -213,6 +222,7 @@ def _require_string(value: Any, field_name: str) -> str:
 
 
 def command_envelope_from_dict(payload: Mapping[str, Any]) -> CommandEnvelope:
+    payload = _require_mapping(payload, "payload")
     unknown = set(payload) - _TOP_LEVEL_KEYS
     if unknown:
         raise ProtocolError(
