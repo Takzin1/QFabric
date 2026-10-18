@@ -173,6 +173,8 @@ def analyze_iq(shots: int, backend: str) -> dict[str, Any]:
 
 
 def make_report(raw_snapshot: bytes, *, backend: str = "cpu", shots: int = 4096) -> dict[str, Any]:
+    if isinstance(shots, bool) or not isinstance(shots, int) or not 1 <= shots <= MAX_SHOTS:
+        raise ValueError("shots must be an integer in 1..2000000")
     if len(raw_snapshot) > MAX_INPUT_BYTES:
         raise ValueError("snapshot exceeds 512 KiB")
     try:
