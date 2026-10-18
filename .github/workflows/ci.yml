@@ -35,3 +35,7 @@ jobs:
           python scripts/research_agent_gate.py prepare tests/fixtures/crystaltwin_snapshot.synthetic.json "$RUNNER_TEMP/agent-proposal.json" --parameter coolingRate --value 0.25
           python scripts/research_agent_gate.py assess tests/fixtures/crystaltwin_snapshot.synthetic.json "$RUNNER_TEMP/agent-proposal.json" "$RUNNER_TEMP/agent-assessment.json"
           python scripts/research_agent_gate.py review tests/fixtures/crystaltwin_snapshot.synthetic.json "$RUNNER_TEMP/agent-proposal.json" "$RUNNER_TEMP/agent-assessment.json" "$RUNNER_TEMP/agent-review.json" --reviewer-label "CI-synthetic-test" --decision approve --attest-educational-only
+      - name: Quantum dataset candidates and synthetic count baseline (offline)
+        run: |
+          python scripts/quantum_dataset_baseline.py validate-catalog data/quantum_dataset_candidates.json
+          python scripts/quantum_dataset_baseline.py synthetic-baseline tests/fixtures/quantum_counts.synthetic.json --output "$RUNNER_TEMP/quantum-synthetic-baseline.json"
