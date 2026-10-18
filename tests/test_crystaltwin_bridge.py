@@ -104,3 +104,71 @@ def test_snapshot_source_hash_is_sha256_of_exact_input_bytes() -> None:
     import hashlib
 
     assert report["source"]["sha256"] == hashlib.sha256(raw).hexdigest()
+
+
+def test_mirrored_crystaltwin_fixture_works_without_api_or_gpu() -> None:
+    raw = (
+        Path(__file__).resolve().parent / "fixtures" / "crystaltwin_snapshot.synthetic.json"
+    ).read_bytes()
+    report = bridge.make_report(raw, backend="cpu", shots=256)
+    assert report["qfabric"]["readoutIntent"]["status"] == "intent_only"
+    assert report["qfabric"]["readoutIntent"]["adc_channels"] == [0]
+    assert report["qfabric"]["readoutIntent"]["hardwareExecuted"] is False
+    encoded = json.dumps(report, allow_nan=False).encode()
+    assert bridge.verify_report(raw, encoded) == {
+        "snapshot_digest_match": True,
+        "semantic_invariants_pass": True,
+    }
+
+
+@pytest.mark.parametrize(
+    ("section", "key", "value"),
+    [
+        ("source", "sha256", "0" * 64),
+        ("source", "provenance", "measured"),
+        ("snapshot", "rowCount", 999),
+        ("qfabric", "readoutStatus", "acquired"),
+        ("qfabric", "hardwareExecuted", True),
+        ("analytics", "backend", "unknown"),
+        ("analytics", "physicalMeasurement", True),
+        ("analytics", "shots", 9),
+        ("analytics", "meanI", "NaN"),
+        ("analytics", "elapsedMs", -1),
+    ],
+)
+def test_verifier_rejects_misleading_or_tampered_report_fields(
+    section, key, value
+) -> None:
+    raw = _encoded(_snapshot())
+    report = bridge.make_report(raw, shots=128)
+    report[section][key] = value
+    with pytest.raises((ValueError, TypeError)):
+        bridge.verify_report(raw, json.dumps(report).encode())
+
+
+def test_verifier_rejects_unreviewed_hardware_calls_and_altered_pulse() -> None:
+    raw = _encoded(_snapshot())
+    report = bridge.make_report(raw, shots=128)
+    report["qfabric"]["plan"]["calls"].append({"method": "acquire", "kwargs": {}})
+    with pytest.raises(ValueError, match="altered QICK"):
+        bridge.verify_report(raw, json.dumps(report).encode())
+    report = bridge.make_report(raw, shots=128)
+    report["qfabric"]["plan"]["calls"][1]["kwargs"]["gain"] = 999
+    with pytest.raises(ValueError, match="altered QICK"):
+        bridge.verify_report(raw, json.dumps(report).encode())
+
+
+def test_verifier_rejects_other_snapshot_even_when_semantics_match() -> None:
+    raw = _encoded(_snapshot())
+    report = bridge.make_report(raw, shots=32)
+    changed = raw + b" "
+    with pytest.raises(ValueError, match="SHA-256"):
+        bridge.verify_report(changed, json.dumps(report).encode())
+
+
+def test_cli_generate_and_verify_cycle(tmp_path) -> None:
+    source = tmp_path / "snapshot.json"
+    target = tmp_path / "report.json"
+    source.write_bytes(_encoded(_snapshot()))
+    assert bridge.main([str(source), str(target), "--shots", "32"]) == 0
+    assert bridge.main([str(source), str(target), "--verify"]) == 0
