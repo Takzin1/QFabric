@@ -13,8 +13,13 @@ from statistics import NormalDist
 from typing import Any
 
 from qfabric.dataset_baseline import (
-    MAX_CATALOG_BYTES, MAX_COUNTS_BYTES, MAX_SHOTS,
-    _exact_fields, _integer, _read_json, _text,
+    MAX_CATALOG_BYTES,
+    MAX_COUNTS_BYTES,
+    MAX_SHOTS,
+    _exact_fields,
+    _integer,
+    _read_json,
+    _text,
 )
 
 SOURCES_SCHEMA = "qfabric-independent-baseline-sources/1"
@@ -46,8 +51,8 @@ _RECORDS = {
         "GST_valid_data_mixed.pcl", "4b2a8bec69e7fc5477eae760a1b3e943",
     ),
     "ALT-004": (
-        "https://darus.uni-stuttgart.de/dataset.xhtml?persistentId="
-        "doi%3A10.18419%2FDARUS-5322",
+        ("https://darus.uni-stuttgart.de/dataset.xhtml?persistentId="
+         "doi%3A10.18419%2FDARUS-5322"),
         "quantum_volume_external_validity",
         "data_fig_3acarbon1_carbon2.csv", "983a5ff5607dc31d6fa6e6d0aeacbde0",
     ),
@@ -113,7 +118,7 @@ def validate_baseline_sources(raw: bytes) -> dict[str, Any]:
 
 def _number(value: Any, name: str, lower: float, upper: float, *, strict: bool = False) -> float:
     if isinstance(value, bool) or not isinstance(value, (float, int)):
-        raise ValueError(f"{name} must be a finite number")
+        raise TypeError(f"{name} must be a finite number")
     try:
         result = float(value)
     except (ValueError, OverflowError) as exc:
