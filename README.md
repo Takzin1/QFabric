@@ -200,6 +200,22 @@ QICK program or RFSoC.
 - [ ] Evaluate a second backend profile to pressure-test the abstraction
 - [ ] Design an explicit executor boundary only after controlled runtime tests are stable
 
+## NVIDIA / CrystalTwinAI offline research bridge (experimental)
+
+See [design, contracts, and safety boundaries](docs/integrations/crystaltwin-nvidia.md).
+CrystalTwinAI exports a synthetic educational snapshot; QFabric validates it,
+builds a QICK **plan only**, performs CPU or optional real CuPy/CUDA synthetic
+IQ analytics, and produces a locally importable research report. No quantum
+readout, crystallization measurement, quantum advantage or physical control
+is claimed.
+
+~~~bash
+python scripts/crystaltwin_bridge.py snapshot.json report.json --backend cpu --shots 4096
+~~~
+
+This cross-repo research demonstrator is independent of the QFabric core
+protocol and vendor-SDK-free planning guarantees.
+
 ## Open-core boundary
 
 QFabric publishes the reusable protocol, SDK boundary, schemas, planning profiles,
