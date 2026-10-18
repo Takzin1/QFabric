@@ -78,6 +78,10 @@ def _row_dicts(rows: list[list[str]], name: str) -> list[dict[str, str]]:
 
 def _same(row: dict[str, str], label: str, source: Any, owner: str) -> None:
     expected = "" if source is None else str(source)
+    if label == "Source note":
+        # Spreadsheet display strips Markdown emphasis from the QRI-006 note.
+        # Do not mutate either source JSON or the exported Excel cell value.
+        expected = expected.replace("*", "")
     _require(row[label] == expected, f"{owner}: field {label!r} differs from GitHub JSON")
 
 
