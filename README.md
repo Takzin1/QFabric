@@ -348,6 +348,28 @@ python scripts/verify_registry_csv_snapshot.py
 See the [spreadsheet synchronization and integrity guide](docs/datasets/spreadsheet-registry-sync.md)
 before editing any research verification status.
 
+### Alternative research baselines and falsification checks (synthetic-only)
+
+Separate [paper-linked reference leads](data/independent_baseline_sources.json)
+now cover mirror randomized benchmarking, mid-circuit spectator errors, *simulated*
+DRB/GST validation and NV-center quantum-volume figure data. No third-party
+experimental files were downloaded, opened, executed or scientifically reproduced.
+
+The [falsification engine](src/qfabric/falsification.py) uses configurable
+pre-declared absolute improvement, confidence level, minimum trial counts and
+exploratory sensitivity thresholds. Its only executable mode is an explicitly
+[synthetic fixture](tests/fixtures/falsification.synthetic.json): it produces
+counterexample/consistent/inconclusive classifications under **independent**
+Bernoulli assumptions, not actual QEC or quantum benchmarking results.
+
+~~~bash
+python scripts/quantum_dataset_baseline.py validate-alternative-sources data/independent_baseline_sources.json
+python scripts/quantum_dataset_baseline.py synthetic-falsification tests/fixtures/falsification.synthetic.json --sources data/independent_baseline_sources.json
+~~~
+
+[Methodology, original papers, falsification rules, unsafe pickle warning and
+limits](docs/datasets/independent-falsifiability-baselines.md).
+
 ## Open-core boundary
 
 QFabric publishes the reusable protocol, SDK boundary, schemas, planning profiles,
