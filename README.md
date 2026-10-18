@@ -285,6 +285,27 @@ scientifically reproduced.** Real measurement baselines require licensing,
 raw-file SHA-256, schema/unit audit and paper-specific statistics. These
 requirements are documented, not claimed complete.
 
+### v0.8 dataset evidence follow-up — Riverlane/Diraq and QCalEval
+
+The [pinned Zenodo candidate manifest](data/quantum_dataset_candidates.json) now
+includes 15 candidates, including Riverlane FPGA decoder and Diraq public-v2
+spin-qubit figure sources. **None is a locally verified measurement.**
+
+[NVIDIA QCalEval](data/quantum_ai_eval_candidates.json) is registered as a
+**separate AI calibration-plot benchmark**, not as quantum count observations.
+Its evaluation code claims Apache-2.0 while its dataset claims CC-BY-4.0
+according to the official NVIDIA README; individual files remain unaudited.
+
+A bounded offline local-byte audit computes SHA-256 and optionally compares
+a provider-listed MD5. This never interprets files, certifies scientific
+reproduction, or approves redistribution. See
+[verification scope and commands](docs/datasets/quantum-baseline-v08.md).
+
+~~~bash
+python scripts/quantum_dataset_baseline.py validate-ai-catalog data/quantum_ai_eval_candidates.json
+python scripts/quantum_dataset_baseline.py audit-local-file data/quantum_dataset_candidates.json QRD-017 /path/to/fpga_memory_data.csv
+~~~
+
 ## Open-core boundary
 
 QFabric publishes the reusable protocol, SDK boundary, schemas, planning profiles,
