@@ -45,6 +45,13 @@ def _no_constant(value: str) -> None:
     raise ValueError(f"invalid JSON numeric constant: {value}")
 
 
+def _finite_json_float(value: str) -> float:
+    number = float(value)
+    if not math.isfinite(number):
+        raise ValueError("JSON number exceeds finite floating-point range")
+    return number
+
+
 def _unique_object(items: list[tuple[str, Any]]) -> dict[str, Any]:
     result: dict[str, Any] = {}
     for key, value in items:
@@ -63,6 +70,7 @@ def _read_json(raw: bytes, *, limit: int) -> dict[str, Any]:
         parsed = json.loads(
             raw.decode("utf-8"), object_pairs_hook=_unique_object,
             parse_constant=_no_constant,
+            parse_float=_finite_json_float,
         )
     except (UnicodeDecodeError, json.JSONDecodeError, RecursionError) as exc:
         raise ValueError("invalid UTF-8 JSON") from exc

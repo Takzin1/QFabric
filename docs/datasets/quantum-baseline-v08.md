@@ -147,3 +147,22 @@ CI failures:
 These are *software safety guards* only; they do not establish QPU hardware
 compatibility, authenticity of Zenodo-listed hashes, or scientific replication.
 Tests explicitly cover refusal cases on both Python 3.11 and 3.12.
+
+
+## 9. Dataset CLI input hardening — regression round 2
+
+After the preceding dataset-local audit refused special files, another input
+path still used an unguarded `Path.read_bytes()`: catalog, AI catalog and
+synthetic baseline *CLI inputs*. That route could block when supplied a FIFO
+or read content that changed after an initial `stat` check.
+
+The CLI now opens files in nonblocking mode (where supported), refuses
+symlinks/non-regular inputs, reads at most the mode's byte limit plus one,
+and checks stable file identity, length and modification time before use.
+It preserves the original no-overwrite output behavior.
+
+The metadata/synthetic JSON parser also rejects exponentially formatted
+finite-looking literals that decode to IEEE-754 infinity (e.g. `1e309`)
+before they can reach the schema validators. Regression tests exercise
+FIFO, symlink, oversized, valid and nonfinite cases. This still does **not**
+ingest or scientifically validate external quantum experiment files.

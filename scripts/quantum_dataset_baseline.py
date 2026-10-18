@@ -7,6 +7,8 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
+import stat
 import sys
 from pathlib import Path
 
@@ -21,12 +23,31 @@ from qfabric.dataset_baseline import (
 
 
 def _read(path: Path, limit: int) -> bytes:
-    if path.stat().st_size > limit:
-        raise ValueError(f"{path.name}: file exceeds size limit")
-    raw = path.read_bytes()
-    if len(raw) > limit:
-        raise ValueError(f"{path.name}: file exceeds size limit")
-    return raw
+    """Read a bounded regular input file, never blocking on a FIFO/device node."""
+    if path.is_symlink():
+        raise ValueError("input must not be a symbolic link")
+    flags = os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0) | getattr(os, "O_NONBLOCK", 0)
+    fd = os.open(path, flags)
+    with os.fdopen(fd, "rb") as stream:
+        before = os.fstat(stream.fileno())
+        if not stat.S_ISREG(before.st_mode):
+            raise ValueError("input must be a regular file")
+        if before.st_size > limit:
+            raise ValueError(f"{path.name}: file exceeds size limit")
+        raw = stream.read(limit + 1)
+        after = os.fstat(stream.fileno())
+        if len(raw) > limit:
+            raise ValueError(f"{path.name}: file exceeds size limit")
+        if (
+            len(raw) != before.st_size
+            or (
+                before.st_size, before.st_mtime_ns, before.st_ino, before.st_dev
+            ) != (
+                after.st_size, after.st_mtime_ns, after.st_ino, after.st_dev
+            )
+        ):
+            raise ValueError("input changed while reading")
+        return raw
 
 
 def _write_new_report(output: Path, result: str, *source_paths: Path) -> None:
