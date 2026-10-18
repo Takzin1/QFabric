@@ -161,3 +161,32 @@ def test_cli_catalog_and_synthetic_baseline(tmp_path) -> None:
     assert report["dataProvenance"] == "synthetic_fixture"
     assert report["measurementVerified"] is False
     assert len(report["results"]) == 2
+
+
+def test_cli_ai_catalog_and_byte_audit(tmp_path) -> None:
+    import hashlib
+
+    ai = ROOT / "data/quantum_ai_eval_candidates.json"
+    assert cli.main(["validate-ai-catalog", str(ai)]) == 0
+
+    file = tmp_path / "synthetic_source.csv"
+    raw = b"test-only,not-a-quantum-measurement\\n"
+    file.write_bytes(raw)
+    candidate = json.loads(CATALOG)
+    candidate["datasets"] = [candidate["datasets"][0]]
+    candidate["datasets"][0]["filename"] = file.name
+    candidate["datasets"][0]["publishedMd5"] = hashlib.md5(
+        raw, usedforsecurity=False
+    ).hexdigest()
+    catalog_path = tmp_path / "metadata-only-catalog.json"
+    catalog_path.write_text(json.dumps(candidate))
+    output = tmp_path / "audit.json"
+    assert cli.main([
+        "audit-local-file", str(catalog_path), candidate["datasets"][0]["datasetId"],
+        str(file), "--output", str(output)
+    ]) == 0
+    report = json.loads(output.read_text())
+    assert report["computedSha256"] == hashlib.sha256(raw).hexdigest()
+    assert report["publishedMd5Matched"] is True
+    assert report["datasetAccepted"] is False
+    assert report["measurementVerified"] is False
