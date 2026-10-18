@@ -2,7 +2,7 @@
 
 **Hardware-agnostic control and calibration fabric for heterogeneous quantum hardware.**
 
-> **Status:** pre-alpha / experimental. QFabric v0.5 defines a vendor-neutral,
+> **Status:** pre-alpha / experimental. QFabric v0.6 defines a vendor-neutral,
 > versioned control protocol, a pinned plan-only QICK backend profile, an upstream
 > API drift harness, and a controlled QICK runtime-binding fixture. It does **not**
 > claim physical-hardware compatibility unless a future executor and hardware-specific
@@ -176,7 +176,7 @@ QICK program or RFSoC.
 - [x] Keep plan generation independent of the QICK runtime
 - [x] Add deterministic profile tests
 - [x] Publish explicit compatibility limits
-- [ ] Validate against a controlled QICK software fixture or hardware environment
+- [x] Validate against a controlled QICK software runtime signature fixture (not hardware)
 
 ### v0.4 — Upstream compatibility watch
 - [x] Machine-readable QICK API contract manifest
@@ -215,6 +215,27 @@ python scripts/crystaltwin_bridge.py snapshot.json report.json --backend cpu --s
 
 This cross-repo research demonstrator is independent of the QFabric core
 protocol and vendor-SDK-free planning guarantees.
+
+### v0.6 — QICK readout intent and evidence verification
+
+- [x] QICK-specific `QickReadoutIntent` with finite numeric bounds and explicit ADC/generator allowlists
+- [x] Keep readout non-executing; return serializable intent, never acquisition methods
+- [x] Include readout intent in offline CrystalTwinAI report without breaking v1 import
+- [x] Verify exact source snapshot SHA-256, demo plan, synthetic labels and result invariants
+- [x] Mirror a bounded CrystalTwinAI synthetic fixture and exercise CLI generate/verify in CI
+- [ ] Map pinned QICK readout API methods only after upstream source/runtime semantic audit
+- [ ] Benchmark optional NVIDIA CUDA path on verified GPU hardware
+
+Read [QICK readout design and safety limits](docs/adapters/qick-readout-intent.md).
+After exporting a CrystalTwinAI snapshot:
+
+~~~bash
+python scripts/crystaltwin_bridge.py snapshot.json report.json --backend cpu --shots 256
+python scripts/crystaltwin_bridge.py snapshot.json report.json --verify
+~~~
+
+`--verify` validates consistency against the supplied exact input bytes, not
+cryptographic authorship, measured data or GPU use.
 
 ## Open-core boundary
 
