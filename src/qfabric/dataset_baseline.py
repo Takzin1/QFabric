@@ -24,7 +24,7 @@ MAX_GROUPS = 100
 MAX_SHOTS = 1_000_000_000
 Z_95 = 1.959963984540054
 _DATASET_ID = re.compile(r"QRD-[0-9]{3}$")
-_DOI = re.compile(r"10\\.[0-9]{4,9}/[^\\s]+$", re.IGNORECASE)
+_DOI = re.compile(r"10\.[0-9]{4,9}/[^\s]+$", re.IGNORECASE)
 _MD5 = re.compile(r"[0-9a-f]{32}$")
 _EXPECTED_DATASET_FIELDS = frozenset({
     "datasetId", "priority", "title", "paperUrl", "paperDoi",
