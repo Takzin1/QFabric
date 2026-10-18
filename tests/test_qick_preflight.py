@@ -61,6 +61,12 @@ def _compile(*commands: ControlCommand):
     ],
 )
 def test_rejects_nonfinite_command_values(field: str, number: float) -> None:
+    # Core command numbers are now rejected before QICK compilation. Vendor
+    # metadata remains subject to QICK's own stricter preflight.
+    if field in {"value", "duration_s"}:
+        with pytest.raises(ValueError, match="finite number"):
+            _pulse(**{field: number})
+        return
     with pytest.raises(ValidationError) as exc_info:
         _compile(_pulse(**{field: number}))
     assert exc_info.value.code is ErrorCode.INVALID_MESSAGE
