@@ -7,16 +7,23 @@ ingestion occurs. Zenodo metadata alone is never validation of raw measurements.
 from __future__ import annotations
 
 import hashlib
+import hmac
 import json
 import math
+import os
 import re
+import stat
 from datetime import date
+from pathlib import Path
 from typing import Any
 from urllib.parse import urlsplit
 
 CATALOG_VERSION = "qfabric-quantum-dataset-candidates/1"
 COUNTS_VERSION = "qfabric-synthetic-counts/1"
 BASELINE_VERSION = "qfabric-count-baseline/1"
+AI_EVAL_CATALOG_VERSION = "qfabric-quantum-ai-evaluation-candidates/1"
+LOCAL_AUDIT_VERSION = "qfabric-local-file-integrity/1"
+MAX_LOCAL_FILE_BYTES = 32 * 1024 * 1024
 MAX_CATALOG_BYTES = 128 * 1024
 MAX_COUNTS_BYTES = 64 * 1024
 MAX_DATASETS = 100
@@ -159,6 +166,135 @@ def validate_catalog(raw: bytes) -> dict[str, Any]:
             raise ValueError("metadata-only catalog cannot claim file verification")
         _text(item["note"], "note", 500)
     return catalog
+
+
+
+def validate_ai_eval_catalog(raw: bytes) -> dict[str, Any]:
+    """Keep calibration-image AI scoring separate from quantum measurements."""
+    catalog = _read_json(raw, limit=MAX_CATALOG_BYTES)
+    _exact_fields(
+        catalog, frozenset({"schemaVersion", "reviewedOn", "datasets"}), "AI catalog"
+    )
+    if catalog["schemaVersion"] != AI_EVAL_CATALOG_VERSION:
+        raise ValueError("unsupported AI evaluation catalog schema")
+    reviewed = _text(catalog["reviewedOn"], "reviewedOn", 10)
+    try:
+        if date.fromisoformat(reviewed).isoformat() != reviewed:
+            raise ValueError("invalid reviewedOn date")
+    except ValueError as exc:
+        raise ValueError("invalid reviewedOn date") from exc
+    datasets = catalog["datasets"]
+    if not isinstance(datasets, list) or not 1 <= len(datasets) <= 20:
+        raise ValueError("AI catalog must contain 1..20 entries")
+    ids: set[str] = set()
+    fields = frozenset({
+        "candidateId", "title", "datasetUrl", "evaluationCodeUrl", "paperUrl",
+        "tasks", "dataProvenance", "datasetLicenseClaim", "codeLicenseClaim",
+        "licenseClaimSource", "datasetRevision", "sourceFileSha256",
+        "downloadStatus", "modelEvaluated", "benchmarkScore", "note",
+    })
+    for item in datasets:
+        _exact_fields(item, fields, "AI dataset entry")
+        key = _text(item["candidateId"], "candidateId", 20)
+        if not re.fullmatch(r"QAE-[0-9]{3}", key) or key in ids:
+            raise ValueError("AI candidate IDs must be distinct QAE-### values")
+        ids.add(key)
+        _text(item["title"], "title", 250)
+        # Candidate catalog permits only these known upstream references.
+        if item["datasetUrl"] != "https://huggingface.co/datasets/nvidia/QCalEval":
+            raise ValueError("unsupported AI benchmark dataset URL")
+        if item["evaluationCodeUrl"] != "https://github.com/NVIDIA/QCalEval":
+            raise ValueError("unsupported AI benchmark code URL")
+        if item["paperUrl"] != (
+            "https://research.nvidia.com/publication/2026-04_qcaleval-benchmarking-"
+            "vision-language-models-quantum-calibration-plot"
+        ):
+            raise ValueError("unsupported AI benchmark paper URL")
+        if item["tasks"] != ["Q1", "Q2", "Q3", "Q4", "Q5", "Q6"]:
+            raise ValueError("AI benchmark task list must be Q1..Q6")
+        if item["dataProvenance"] != "mixed_claim":
+            raise ValueError("cannot describe QCalEval as physical measurements")
+        if (
+            item["datasetLicenseClaim"] != "CC-BY-4.0"
+            or item["codeLicenseClaim"] != "Apache-2.0"
+            or item["licenseClaimSource"]
+            != "https://github.com/NVIDIA/QCalEval/blob/main/README.md"
+        ):
+            raise ValueError("dataset/code licenses must retain distinct cited claims")
+        if (
+            item["datasetRevision"] is not None
+            or item["sourceFileSha256"] is not None
+            or item["downloadStatus"] != "not_downloaded"
+            or item["modelEvaluated"] is not False
+            or item["benchmarkScore"] is not None
+        ):
+            raise ValueError("unrun AI candidate cannot claim downloaded data or scores")
+        _text(item["note"], "note", 500)
+    return catalog
+
+
+def audit_local_candidate_file(
+    catalog_raw: bytes, dataset_id: str, path: Path
+) -> dict[str, Any]:
+    """Hash supplied local bytes; NEVER parse, approve or download their contents.
+
+    MD5 is compared only for byte-integrity against a provider-published value;
+    it does not establish authenticity. No automatic dataset promotion occurs.
+    """
+    catalog = validate_catalog(catalog_raw)
+    item = next((d for d in catalog["datasets"] if d["datasetId"] == dataset_id), None)
+    if item is None:
+        raise ValueError("dataset ID is not in the pinned candidate catalog")
+    if not isinstance(path, Path) or path.name != item["filename"] or path.is_symlink():
+        raise ValueError("local file must be an ordinary file with the catalog filename")
+    flags = os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0)
+    fd = os.open(path, flags)
+    with os.fdopen(fd, "rb") as stream:
+        before = os.fstat(stream.fileno())
+        if not stat.S_ISREG(before.st_mode) or not 0 < before.st_size <= MAX_LOCAL_FILE_BYTES:
+            raise ValueError("local file must be a bounded regular file")
+        digest256 = hashlib.sha256()
+        digest_md5 = hashlib.md5(usedforsecurity=False)
+        size = 0
+        while chunk := stream.read(min(1024 * 1024, MAX_LOCAL_FILE_BYTES + 1 - size)):
+            size += len(chunk)
+            if size > MAX_LOCAL_FILE_BYTES:
+                raise ValueError("local file exceeds 32 MiB")
+            digest256.update(chunk)
+            digest_md5.update(chunk)
+        after = os.fstat(stream.fileno())
+        if (size != before.st_size or (
+            before.st_size, before.st_mtime_ns, before.st_ino, before.st_dev
+        ) != (
+            after.st_size, after.st_mtime_ns, after.st_ino, after.st_dev
+        )):
+            raise ValueError("local file changed during audit")
+    published = item["publishedMd5"]
+    actual_md5 = digest_md5.hexdigest()
+    if published is not None and not hmac.compare_digest(actual_md5, published):
+        raise ValueError("local bytes do not match published MD5 metadata")
+    return {
+        "schemaVersion": LOCAL_AUDIT_VERSION,
+        "datasetId": dataset_id,
+        "recordUrl": item["recordUrl"],
+        "filename": item["filename"],
+        "byteLength": size,
+        "computedSha256": digest256.hexdigest(),
+        "publishedMd5": published,
+        "computedMd5": actual_md5,
+        "publishedMd5Matched": published is not None,
+        "byteIntegrityStatus": (
+            "matches_provider_md5_claim" if published is not None
+            else "no_provider_checksum_available"
+        ),
+        "dataParsed": False,
+        "licenseVerified": False,
+        "unitsVerified": False,
+        "measurementVerified": False,
+        "scientificallyReproduced": False,
+        "datasetAccepted": False,
+        "hardwareExecuted": False,
+    }
 
 
 def _integer(value: Any, field: str, minimum: int, maximum: int) -> int:
