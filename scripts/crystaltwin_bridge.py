@@ -336,12 +336,37 @@ def verify_report(raw_snapshot: bytes, raw_report: bytes) -> dict[str, bool]:
     shots = readout.get("shots")
     if isinstance(shots, bool) or not isinstance(shots, int) or not 1 <= shots <= MAX_SHOTS:
         raise ValueError("readout shots outside bounds")
+    expected_readout = QickReadoutPlanner(
+        device_id="qick-demo-no-hardware",
+        generator_channels=(0,),
+        adc_channels=(0,),
+    ).plan(
+        QickReadoutIntent(
+            device_id="qick-demo-no-hardware",
+            readout_gen_ch=0,
+            adc_channels=(0,),
+            frequency_mhz=100.0,
+            capture_length_us=1.0,
+            trigger_offset_us=0.0,
+            shots=shots,
+        )
+    ).to_dict()
+    if readout != expected_readout:
+        raise ValueError("readout proposal has altered or unexpected fields")
+    if (
+        plan.get("message_id") != "qfabric-crystaltwin-demo"
+        or plan.get("profile_version") != "0.1.0"
+        or plan.get("qick_reference_repository") != "openquantumhardware/qick"
+    ):
+        raise ValueError("unexpected QICK demo control plan metadata")
     if analytics.get("shots") != shots or isinstance(analytics.get("shots"), bool):
         raise ValueError("analytics shots do not match readout intent")
     for key in ("meanI", "meanQ", "meanPower", "elapsedMs"):
         _finite(analytics.get(key), f"analytics.{key}")
     if analytics["meanPower"] < 0 or analytics["elapsedMs"] < 0:
         raise ValueError("negative power or duration in analytics")
+    if not math.isclose(analytics["meanPower"], 1.0, rel_tol=1e-9, abs_tol=1e-9):
+        raise ValueError("synthetic IQ unit-circle power invariant failed")
     return {"snapshot_digest_match": True, "semantic_invariants_pass": True}
 
 
