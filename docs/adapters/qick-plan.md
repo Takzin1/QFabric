@@ -136,7 +136,8 @@ The v0.1 QICK profile does **not** currently support:
 - QICK sweeps or loops
 - generator capability discovery from a live `soccfg`
 - validation against a physical board's firmware configuration
-- pulse-overlap or timing-resource analysis
+- board-accurate pulse timing or shared-resource conflict analysis (the profile only
+  performs software interval-overlap checks on the same generator)
 - waveform-memory limits
 - transport, board connection, or RFSoC execution
 - claims of compatibility with any specific QICK hardware deployment
