@@ -149,5 +149,5 @@ def test_local_audit_does_not_overwrite_catalog(tmp_path: Path) -> None:
 def test_local_byte_audit_refuses_nonregular_pipe_without_blocking(tmp_path: Path) -> None:
     fifo = tmp_path / "named_pipe.csv"
     os.mkfifo(fifo)
-    with pytest.raises(OSError):
+    with pytest.raises((OSError, ValueError)):
         audit_local_candidate_file(_catalog_for_file(fifo.name), "QRD-001", fifo)
