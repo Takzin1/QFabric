@@ -64,7 +64,7 @@ def parse_author_si1000_csv(raw: bytes, *, enforce_upstream_blob: bool = True) -
             raise ValueError("invalid runtime")
         label = row["decoder"].strip()
         strong_id = row["strong_id"].strip()
-        if not re.fullmatch(r"[A-Za-z0-9_-]{1,120}", label):
+        if not re.fullmatch(r"[A-Za-z0-9_.-]{1,120}", label):
             raise ValueError("malformed decoder label")
         if not re.fullmatch(r"[a-f0-9]{64}", strong_id):
             raise ValueError("malformed Sinter strong_id")
