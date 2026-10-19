@@ -370,6 +370,24 @@ python scripts/quantum_dataset_baseline.py synthetic-falsification tests/fixture
 [Methodology, original papers, falsification rules, unsafe pickle warning and
 limits](docs/datasets/independent-falsifiability-baselines.md).
 
+### GARI-NMS paper-methods audit (peer-reviewed 2026)
+
+Maan et al., [Nature Communications 17:3965 (2026)](https://doi.org/10.1038/s41467-026-70556-3):
+a separate [methodological review](docs/datasets/gari-nms-methodological-review.md)
+now documents claims, baseline fairness, limitations of the authors' FPGA estimates,
+and independent falsification proposals.
+
+Our [bounded GF(2) reference](src/qfabric/gari_reference.py) independently
+checks the paper's GARI transformation on small synthetic matrices. We also
+include a [pinned author-supplied SI1000 simulation CSV](data/reference/gari_nms_si1000_upstream.csv)
+and an [auditor](src/qfabric/gari_evidence.py) which verifies exact Git-blob
+provenance and recalculates the published rate conversion. **No GARI decoder,
+new quantum simulation or FPGA hardware is executed by this module.**
+
+~~~bash
+python scripts/gari_reference_check.py
+~~~
+
 ## Open-core boundary
 
 QFabric publishes the reusable protocol, SDK boundary, schemas, planning profiles,
