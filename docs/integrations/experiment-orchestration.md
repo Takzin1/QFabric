@@ -12,10 +12,13 @@ to the **exact bytes** of a previously validated synthetic CrystalTwinAI
 snapshot, and checks whether the requested educational parameter change is
 in range. An assessed suggestion is NOT authorized.
 
-The first milestone does not connect to Nebius Token Factory or NVIDIA
-Nemotron. Those require actual credentials, verified endpoint contracts,
-service terms, and a separate integration test. Provider/model names inside
-proposals are unverified **labels**, not proof of where inference ran.
+The original offline gate does not connect to Nebius or NVIDIA. An **optional,
+separate, opt-in client** now prepares live HTTP requests for Nebius Token
+Factory/NVIDIA Nemotron and emits a bounded proposal plus a local hash receipt.
+This client has offline mock contract tests; a credentialed live inference run
+and GPU execution are **not verified** here. See
+[Nebius Token Factory adapter](nebius-token-factory.md).
+Provider/model names remain unverified **labels**, not attestation.
 
 ## Non-executing architecture
 
@@ -123,9 +126,9 @@ multi-user approval workflow. Rejected reviews release no input.
 
 ## Next practical steps
 
-1. Add a *separate* provider client with a **verified** Nebius/NVIDIA
-   supported model, authentication via environment variables, explicit
-   timeouts, limited requests and **structured response parsing only**.
+1. **Implemented as opt-in/mocked:** a separate Nebius/Nemotron HTTP client
+   with key from environment, bounded response parser and fixed official URL.
+   **Still required:** a credentialed live request and recorded outcome.
 2. Connect approved educational `simulationInput` to a controlled
    CrystalTwinAI UI *preview* (never hardware) and compute a before/after
    educational simulation comparison.
@@ -134,5 +137,6 @@ multi-user approval workflow. Rejected reviews release no input.
 4. Demonstrate a rejected prompt-injection / out-of-range proposal and a
    successful review as distinct paths for hackathon judges.
 
-**Not yet implemented:** model inference, a production operator identity
-system, actual NVIDIA GPU validation or physical quantum readout.
+**Not yet independently verified:** a successful live Nebius inference call,
+a production operator identity system, actual NVIDIA GPU validation or
+physical quantum readout. The optional network client is not invoked by CI.
