@@ -35,6 +35,9 @@ make obscure one-liners just to reduce line count.
 - Preserve `qfabric-crystaltwin-report/1`,
   `crystaltwin-qfabric-snapshot/1` and `qfabric-research-proposal/1`
   contracts unless a versioned migration and tests are part of the task.
+  After changing `qfabric.orchestration`, regenerate
+  `tests/fixtures/research_gate_golden.json` (scripts/export_gate_golden.py)
+  and copy it to CrystalTwinAI's TypeScript port tests.
 - Do not download, commit or redistribute third-party datasets without
   verifying license, provenance, file integrity and appropriate retention.
 

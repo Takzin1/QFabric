@@ -35,6 +35,11 @@ jobs:
           python scripts/research_agent_gate.py prepare tests/fixtures/crystaltwin_snapshot.synthetic.json "$RUNNER_TEMP/agent-proposal.json" --parameter coolingRate --value 0.25
           python scripts/research_agent_gate.py assess tests/fixtures/crystaltwin_snapshot.synthetic.json "$RUNNER_TEMP/agent-proposal.json" "$RUNNER_TEMP/agent-assessment.json"
           python scripts/research_agent_gate.py review tests/fixtures/crystaltwin_snapshot.synthetic.json "$RUNNER_TEMP/agent-proposal.json" "$RUNNER_TEMP/agent-assessment.json" "$RUNNER_TEMP/agent-review.json" --reviewer-label "CI-synthetic-test" --decision approve --attest-educational-only
+      - name: CrystalPilot evidence verification (offline, cross-language)
+        run: |
+          python scripts/export_gate_golden.py "$RUNNER_TEMP/gate-golden.json"
+          python -c "import json,sys; a=json.load(open(sys.argv[1])); b=json.load(open('tests/fixtures/research_gate_golden.json')); sys.exit(a!=b)" "$RUNNER_TEMP/gate-golden.json"
+          python scripts/crystalpilot_verify.py tests/fixtures/crystalpilot_evidence.verified.offline.json
       - name: Quantum dataset candidates and synthetic count baseline (offline)
         run: |
           python scripts/quantum_dataset_baseline.py validate-catalog data/quantum_dataset_candidates.json

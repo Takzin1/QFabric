@@ -46,6 +46,16 @@ The controlled runtime fixture installs QICK at the pinned reference commit, imp
 the real QICK classes, and binds each generated plan call with `inspect.signature`.
 It never instantiates a QICK program, connects to an RFSoC, or executes a pulse.
 
+## CrystalPilot (Nebius × NVIDIA hackathon integration)
+
+QFabric's research gate is the deterministic validator behind
+[CrystalPilot](https://github.com/Takzin1/crystaltwinai) — an NVIDIA Nemotron
+(Nebius Token Factory) experiment agent for the educational CrystalTwinAI
+simulator. QFabric supplies the gate's reference implementation and golden
+cases, and independently verifies exported evidence with
+`scripts/crystalpilot_verify.py`. QFabric itself makes no model calls and no
+hardware calls. See [docs/integrations/crystalpilot.md](docs/integrations/crystalpilot.md).
+
 ## Architecture
 
 ~~~text

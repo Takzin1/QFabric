@@ -1,0 +1,279 @@
+{
+  "schemaVersion": "crystalpilot-evidence/1",
+  "kind": "crystalpilot_experiment_evidence",
+  "body": {
+    "app": {
+      "name": "CrystalPilot",
+      "version": "0.1.0",
+      "engineFingerprint": "9d75aa47a764f13ffbd86097db9dee1b5f6ff94697e547e72f181fb2ca9f16f1"
+    },
+    "exportedAt": "2026-10-25T00:00:00.000Z",
+    "run": {
+      "runId": "run-20261025111557-e19309ed",
+      "parentRunId": null,
+      "iteration": 1,
+      "scenarioId": "unstable",
+      "scenarioName": "Unstable run (failure case)",
+      "objective": "Improve the quality score without causing high risk.",
+      "probe": false,
+      "snapshotText": "{\n  \"schemaVersion\": \"crystaltwin-qfabric-snapshot/1\",\n  \"kind\": \"educational_snapshot\",\n  \"source\": {\n    \"repository\": \"Takzin1/crystaltwinai\",\n    \"provenance\": \"synthetic\",\n    \"mode\": \"educational_simulation\"\n  },\n  \"input\": {\n    \"temperature\": 80,\n    \"concentration\": 0.55,\n    \"stirringSpeed\": 900,\n    \"coolingRate\": 1.8,\n    \"impurityLevel\": 3.5,\n    \"timeSteps\": 80\n  },\n  \"summary\": {\n    \"avgGrowthRate\": 1.9539351143870234,\n    \"stabilityScore\": 23.056915673502434,\n    \"qualityScore\": 38.14203318946359,\n    \"finalYield\": 8.59731450330291,\n    \"maxSupersaturation\": 1.3466955798521156,\n    \"nucleationEvents\": 6\n  },\n  \"trajectory\": [\n    {\n      \"step\": 1,\n      \"temperature\": 78.2,\n      \"concentration\": 0.5494034132831934,\n      \"growthRate\": 1.3257482595703811,\n      \"crystalYield\": 0.07291615427637096\n    },\n    {\n      \"step\": 2,\n      \"temperature\": 76.4,\n      \"concentration\": 0.5487392644640021,\n      \"growthRate\": 1.4758862648696298,\n      \"crystalYield\": 0.1540898988442006\n    },\n    {\n      \"step\": 3,\n      \"temperature\": 74.60000000000001,\n      \"concentration\": 0.5480038404395008,\n      \"growthRate\": 1.6342756100030156,\n      \"crystalYield\": 0.24397505739436648\n    },\n    {\n      \"step\": 4,\n      \"temperature\": 72.80000000000001,\n      \"concentration\": 0.5471933558617355,\n      \"growthRate\": 1.8010768394784575,\n      \"crystalYield\": 0.34303428356568166\n    },\n    {\n      \"step\": 5,\n      \"temperature\": 71.00000000000001,\n      \"concentration\": 0.5463039485575616,\n      \"growthRate\": 1.9764606759418557,\n      \"crystalYield\": 0.45173962074248375\n    },\n    {\n      \"step\": 6,\n      \"temperature\": 69.20000000000002,\n      \"concentration\": 0.545331675226657,\n      \"growthRate\": 2.1606074020101773,\n      \"crystalYield\": 0.5705730278530435\n    },\n    {\n      \"step\": 7,\n      \"temperature\": 67.40000000000002,\n      \"concentration\": 0.5442725073625913,\n      \"growthRate\": 2.3537063645906104,\n      \"crystalYield\": 0.7000268779055271\n    },\n    {\n      \"step\": 8,\n      \"temperature\": 65.60000000000002,\n      \"concentration\": 0.5431223273543584,\n      \"growthRate\": 2.5559555738508517,\n      \"crystalYield\": 0.8406044344673239\n    },\n    {\n      \"step\": 9,\n      \"temperature\": 63.800000000000026,\n      \"concentration\": 0.5418769247352663,\n      \"growthRate\": 2.7675613757603643,\n      \"crystalYield\": 0.992820310134144\n    },\n    {\n      \"step\": 10,\n      \"temperature\": 62.00000000000003,\n      \"concentration\": 0.49764559533045805,\n      \"growthRate\": 1.7508992656492262,\n      \"crystalYield\": 1.0891197697448514\n    },\n    {\n      \"step\": 11,\n      \"temperature\": 60.20000000000003,\n      \"concentration\": 0.4967718868434155,\n      \"growthRate\": 1.9415744156501433,\n      \"crystalYield\": 1.1959063626056092\n    },\n    {\n      \"step\": 12,\n      \"temperature\": 58.400000000000034,\n      \"concentration\": 0.49580761661346817,\n      \"growthRate\": 2.142822733216246,\n      \"crystalYield\": 1.3137616129325027\n    },\n    {\n      \"step\": 13,\n      \"temperature\": 56.60000000000004,\n      \"concentration\": 0.49474791364558096,\n      \"growthRate\": 2.354895484193838,\n      \"crystalYield\": 1.4432808645631638\n    },\n    {\n      \"step\": 14,\n      \"temperature\": 54.80000000000004,\n      \"concentration\": 0.4935877881141904,\n      \"growthRate\": 2.5780567364234,\n      \"crystalYield\": 1.5850739850664508\n    },\n    {\n      \"step\": 15,\n      \"temperature\": 53.00000000000004,\n      \"concentration\": 0.4580973453304581,\n      \"growthRate\": 1.7508992656492262,\n      \"crystalYield\": 1.6813734446771582\n    },\n    {\n      \"step\": 16,\n      \"temperature\": 51.200000000000045,\n      \"concentration\": 0.45721597226014316,\n      \"growthRate\": 1.958606822922046,\n      \"crystalYield\": 1.7890968199378707\n    },\n    {\n      \"step\": 17,\n      \"temperature\": 49.40000000000005,\n      \"concentration\": 0.45623549834198296,\n      \"growthRate\": 2.178830929244878,\n      \"crystalYield\": 1.908932521046339\n    },\n    {\n      \"step\": 18,\n      \"temperature\": 47.60000000000005,\n      \"concentration\": 0.4551501446882911,\n      \"growthRate\": 2.411897008204128,\n      \"crystalYield\": 2.041586856497566\n    },\n    {\n      \"step\": 19,\n      \"temperature\": 45.800000000000054,\n      \"concentration\": 0.453953977971683,\n      \"growthRate\": 2.658148259129116,\n      \"crystalYield\": 2.1877850107496672\n    },\n    {\n      \"step\": 20,\n      \"temperature\": 44.00000000000006,\n      \"concentration\": 0.4185490953304581,\n      \"growthRate\": 1.7508992656492262,\n      \"crystalYield\": 2.2840844703603747\n    },\n    {\n      \"step\": 21,\n      \"temperature\": 42.20000000000006,\n      \"concentration\": 0.4176585550540539,\n      \"growthRate\": 1.9789783920092376,\n      \"crystalYield\": 2.3929282819208826\n    },\n    {\n      \"step\": 22,\n      \"temperature\": 40.40000000000006,\n      \"concentration\": 0.41665860682349776,\n      \"growthRate\": 2.222107179013711,\n      \"crystalYield\": 2.5151441767666367\n    },\n    {\n      \"step\": 23,\n      \"temperature\": 38.600000000000065,\n      \"concentration\": 0.4155422839724857,\n      \"growthRate\": 2.4807174466934,\n      \"crystalYield\": 2.651583636334774\n    },\n    {\n      \"step\": 24,\n      \"temperature\": 36.80000000000007,\n      \"concentration\": 0.4143024140722934,\n      \"growthRate\": 2.7552664448717628,\n      \"crystalYield\": 2.803123290802721\n    },\n    {\n      \"step\": 25,\n      \"temperature\": 35.00000000000007,\n      \"concentration\": 0.37900084533045814,\n      \"growthRate\": 1.7508992656492262,\n      \"crystalYield\": 2.8994227504134282\n    },\n    {\n      \"step\": 26,\n      \"temperature\": 33.200000000000074,\n      \"concentration\": 0.37809914569878583,\n      \"growthRate\": 2.0037769592717365,\n      \"crystalYield\": 3.009630483173374\n    },\n    {\n      \"step\": 27,\n      \"temperature\": 31.400000000000073,\n      \"concentration\": 0.3770753540975865,\n      \"growthRate\": 2.275092447109589,\n      \"crystalYield\": 3.1347605677644013\n    },\n    {\n      \"step\": 28,\n      \"temperature\": 29.600000000000072,\n      \"concentration\": 0.3759209080096993,\n      \"growthRate\": 2.5654357508604857,\n      \"crystalYield\": 3.275859534061728\n    },\n    {\n      \"step\": 29,\n      \"temperature\": 27.80000000000007,\n      \"concentration\": 0.3473622453304581,\n      \"growthRate\": 1.7508992656492262,\n      \"crystalYield\": 3.372158993672435\n    },\n    {\n      \"step\": 30,\n      \"temperature\": 26.00000000000007,\n      \"concentration\": 0.34644970636909195,\n      \"growthRate\": 2.027864358591482,\n      \"crystalYield\": 3.4836915333949667\n    },\n    {\n      \"step\": 31,\n      \"temperature\": 24.20000000000007,\n      \"concentration\": 0.3454026122803747,\n      \"growthRate\": 2.3268757527049706,\n      \"crystalYield\": 3.6116696997937403\n    },\n    {\n      \"step\": 32,\n      \"temperature\": 22.40000000000007,\n      \"concentration\": 0.3442106925946966,\n      \"growthRate\": 2.648710412618054,\n      \"crystalYield\": 3.7573487724877332\n    },\n    {\n      \"step\": 33,\n      \"temperature\": 20.60000000000007,\n      \"concentration\": 0.31572364533045816,\n      \"growthRate\": 1.7508992656492262,\n      \"crystalYield\": 3.8536482320984407\n    },\n    {\n      \"step\": 34,\n      \"temperature\": 18.800000000000068,\n      \"concentration\": 0.31479798726036784,\n      \"growthRate\": 2.057017933534066,\n      \"crystalYield\": 3.966784218442814\n    },\n    {\n      \"step\": 35,\n      \"temperature\": 17.000000000000068,\n      \"concentration\": 0.3137225029172943,\n      \"growthRate\": 2.389965206830055,\n      \"crystalYield\": 4.098232304818467\n    },\n    {\n      \"step\": 36,\n      \"temperature\": 15.200000000000067,\n      \"concentration\": 0.3124846461444838,\n      \"growthRate\": 2.7507928284678758,\n      \"crystalYield\": 4.2495259103842\n    },\n    {\n      \"step\": 37,\n      \"temperature\": 15,\n      \"concentration\": 0.31125363262227634,\n      \"growthRate\": 2.7355856049053986,\n      \"crystalYield\": 4.3999831186539975\n    },\n    {\n      \"step\": 38,\n      \"temperature\": 15,\n      \"concentration\": 0.31005092856830574,\n      \"growthRate\": 2.672675675490217,\n      \"crystalYield\": 4.546980280805959\n    },\n    {\n      \"step\": 39,\n      \"temperature\": 15,\n      \"concentration\": 0.3088756701107158,\n      \"growthRate\": 2.61168546131098,\n      \"crystalYield\": 4.6906229811780635\n    },\n    {\n      \"step\": 40,\n      \"temperature\": 15,\n      \"concentration\": 0.3077270261530126,\n      \"growthRate\": 2.5525421282293674,\n      \"crystalYield\": 4.831012798230679\n    },\n    {\n      \"step\": 41,\n      \"temperature\": 15,\n      \"concentration\": 0.3066041968903698,\n      \"growthRate\": 2.4951761392063654,\n      \"crystalYield\": 4.968247485887029\n    },\n    {\n      \"step\": 42,\n      \"temperature\": 15,\n      \"concentration\": 0.30550641240382753,\n      \"growthRate\": 2.439521081205005,\n      \"crystalYield\": 5.102421145353304\n    },\n    {\n      \"step\": 43,\n      \"temperature\": 15,\n      \"concentration\": 0.3044329313277405,\n      \"growthRate\": 2.3855135024155296,\n      \"crystalYield\": 5.233624387986159\n    },\n    {\n      \"step\": 44,\n      \"temperature\": 15,\n      \"concentration\": 0.3033830395861388,\n      \"growthRate\": 2.333092759114841,\n      \"crystalYield\": 5.361944489737475\n    },\n    {\n      \"step\": 45,\n      \"temperature\": 15,\n      \"concentration\": 0.30235604919395365,\n      \"growthRate\": 2.2822008715225888,\n      \"crystalYield\": 5.487465537671217\n    },\n    {\n      \"step\": 46,\n      \"temperature\": 15,\n      \"concentration\": 0.3013512971193253,\n      \"growthRate\": 2.2327823880630286,\n      \"crystalYield\": 5.610268569014684\n    },\n    {\n      \"step\": 47,\n      \"temperature\": 15,\n      \"concentration\": 0.30036814420345725,\n      \"growthRate\": 2.1847842574844862,\n      \"crystalYield\": 5.730431703176331\n    },\n    {\n      \"step\": 48,\n      \"temperature\": 15,\n      \"concentration\": 0.2994059741347097,\n      \"growthRate\": 2.1381557083278317,\n      \"crystalYield\": 5.848030267134361\n    },\n    {\n      \"step\": 49,\n      \"temperature\": 15,\n      \"concentration\": 0.29846419247383743,\n      \"growthRate\": 2.0928481352716815,\n      \"crystalYield\": 5.963136914574304\n    },\n    {\n      \"step\": 50,\n      \"temperature\": 15,\n      \"concentration\": 0.2975422257274754,\n      \"growthRate\": 2.0488149919155743,\n      \"crystalYield\": 6.07582173912966\n    },\n    {\n      \"step\": 51,\n      \"temperature\": 15,\n      \"concentration\": 0.29663952046715847,\n      \"growthRate\": 2.006011689593251,\n      \"crystalYield\": 6.186152382057289\n    },\n    {\n      \"step\": 52,\n      \"temperature\": 15,\n      \"concentration\": 0.2957555424913319,\n      \"growthRate\": 1.9643955018367887,\n      \"crystalYield\": 6.294194134658312\n    },\n    {\n      \"step\": 53,\n      \"temperature\": 15,\n      \"concentration\": 0.2948897760279695,\n      \"growthRate\": 1.923925474138592,\n      \"crystalYield\": 6.400010035735935\n    },\n    {\n      \"step\": 54,\n      \"temperature\": 15,\n      \"concentration\": 0.2940417229755623,\n      \"growthRate\": 1.884562338682657,\n      \"crystalYield\": 6.5036609643634815\n    },\n    {\n      \"step\": 55,\n      \"temperature\": 15,\n      \"concentration\": 0.29321090218037976,\n      \"growthRate\": 1.8462684337390147,\n      \"crystalYield\": 6.605205728219127\n    },\n    {\n      \"step\": 56,\n      \"temperature\": 15,\n      \"concentration\": 0.2923968487480335,\n      \"growthRate\": 1.8090076274361033,\n      \"crystalYield\": 6.704701147728113\n    },\n    {\n      \"step\": 57,\n      \"temperature\": 15,\n      \"concentration\": 0.2915991133874932,\n      \"growthRate\": 1.7727452456450512,\n      \"crystalYield\": 6.802202136238591\n    },\n    {\n      \"step\": 58,\n      \"temperature\": 15,\n      \"concentration\": 0.29081726178581574,\n      \"growthRate\": 1.7374480037277988,\n      \"crystalYield\": 6.8977617764436205\n    },\n    {\n      \"step\": 59,\n      \"temperature\": 15,\n      \"concentration\": 0.2900508740119529,\n      \"growthRate\": 1.7030839419174053,\n      \"crystalYield\": 6.991431393249078\n    },\n    {\n      \"step\": 60,\n      \"temperature\": 15,\n      \"concentration\": 0.2892995439481015,\n      \"growthRate\": 1.6696223641143118,\n      \"crystalYield\": 7.083260623275366\n    },\n    {\n      \"step\": 61,\n      \"temperature\": 15,\n      \"concentration\": 0.28856287874714803,\n      \"growthRate\": 1.6370337798965804,\n      \"crystalYield\": 7.173297481169677\n    },\n    {\n      \"step\": 62,\n      \"temperature\": 15,\n      \"concentration\": 0.2878404983148482,\n      \"growthRate\": 1.6052898495551646,\n      \"crystalYield\": 7.261588422895211\n    },\n    {\n      \"step\": 63,\n      \"temperature\": 15,\n      \"concentration\": 0.2871320348154582,\n      \"growthRate\": 1.5743633319777806,\n      \"crystalYield\": 7.3481784061539885\n    },\n    {\n      \"step\": 64,\n      \"temperature\": 15,\n      \"concentration\": 0.2864371321996109,\n      \"growthRate\": 1.5442280352161004,\n      \"crystalYield\": 7.433110948090874\n    },\n    {\n      \"step\": 65,\n      \"temperature\": 15,\n      \"concentration\": 0.28575544575329914,\n      \"growthRate\": 1.5148587695817175,\n      \"crystalYield\": 7.5164281804178685\n    },\n    {\n      \"step\": 66,\n      \"temperature\": 15,\n      \"concentration\": 0.2850866416668924,\n      \"growthRate\": 1.4862313031261054,\n      \"crystalYield\": 7.598170902089804\n    },\n    {\n      \"step\": 67,\n      \"temperature\": 15,\n      \"concentration\": 0.2844303966231764,\n      \"growthRate\": 1.4583223193689892,\n      \"crystalYield\": 7.678378629655099\n    },\n    {\n      \"step\": 68,\n      \"temperature\": 15,\n      \"concentration\": 0.28378639740345973,\n      \"growthRate\": 1.431109377148067,\n      \"crystalYield\": 7.757089645398243\n    },\n    {\n      \"step\": 69,\n      \"temperature\": 15,\n      \"concentration\": 0.2831543405108478,\n      \"growthRate\": 1.404570872470915,\n      \"crystalYield\": 7.834341043384144\n    },\n    {\n      \"step\": 70,\n      \"temperature\": 15,\n      \"concentration\": 0.282533931809832,\n      \"growthRate\": 1.3786860022573444,\n      \"crystalYield\": 7.910168773508298\n    },\n    {\n      \"step\": 71,\n      \"temperature\": 15,\n      \"concentration\": 0.28192488618139167,\n      \"growthRate\": 1.3534347298673917,\n      \"crystalYield\": 7.984607683651005\n    },\n    {\n      \"step\": 72,\n      \"temperature\": 15,\n      \"concentration\": 0.28132692719284924,\n      \"growthRate\": 1.328797752316473,\n      \"crystalYield\": 8.057691560028411\n    },\n    {\n      \"step\": 73,\n      \"temperature\": 15,\n      \"concentration\": 0.28073978678176087,\n      \"growthRate\": 1.3047564690853104,\n      \"crystalYield\": 8.129453165828103\n    },\n    {\n      \"step\": 74,\n      \"temperature\": 15,\n      \"concentration\": 0.2801632049531639,\n      \"growthRate\": 1.2812929524377894,\n      \"crystalYield\": 8.199924278212182\n    },\n    {\n      \"step\": 75,\n      \"temperature\": 15,\n      \"concentration\": 0.27959692948953957,\n      \"growthRate\": 1.2583899191651486,\n      \"crystalYield\": 8.269135723766265\n    },\n    {\n      \"step\": 76,\n      \"temperature\": 15,\n      \"concentration\": 0.2790407156728837,\n      \"growthRate\": 1.2360307036797782,\n      \"crystalYield\": 8.337117412468652\n    },\n    {\n      \"step\": 77,\n      \"temperature\": 15,\n      \"concentration\": 0.27849432601830976,\n      \"growthRate\": 1.2141992323864736,\n      \"crystalYield\": 8.403898370249909\n    },\n    {\n      \"step\": 78,\n      \"temperature\": 15,\n      \"concentration\": 0.2779575300186413,\n      \"growthRate\": 1.1928799992632255,\n      \"crystalYield\": 8.469506770209387\n    },\n    {\n      \"step\": 79,\n      \"temperature\": 15,\n      \"concentration\": 0.27743010389947687,\n      \"growthRate\": 1.1720580425876839,\n      \"crystalYield\": 8.53396996255171\n    },\n    {\n      \"step\": 80,\n      \"temperature\": 15,\n      \"concentration\": 0.2769118303842398,\n      \"growthRate\": 1.1517189227490923,\n      \"crystalYield\": 8.59731450330291\n    }\n  ]\n}\n",
+      "snapshotSha256": "81861bc88a3ec16210c8ff60e2f9f48da76d0f4a3ec92ba97a461e656c571259",
+      "inference": {
+        "mode": "offline_fixture",
+        "provider": "offline",
+        "baseUrlHost": null,
+        "requestedModel": null,
+        "responseModel": null,
+        "responseId": null,
+        "latencyMs": null,
+        "attempts": 0,
+        "usage": null,
+        "estimatedCostUsd": null,
+        "jsonModeUsed": null,
+        "startedAt": "2026-10-25T11:15:57.203Z",
+        "finishedAt": "2026-10-25T11:15:57.203Z",
+        "fixtureId": "offline-unstable-recovery",
+        "rawContent": "{\"hypothesis\":\"Cutting the cooling rate and concentration should reduce nucleation bursts and raise stability.\",\"rationale\":\"Fast cooling at high concentration exceeds the nucleation threshold in this model.\",\"changes\":{\"coolingRate\":0.6,\"concentration\":0.48},\"requestedAction\":\"simulation_only\",\"prediction\":[{\"metric\":\"nucleationEvents\",\"direction\":\"decrease\"},{\"metric\":\"stabilityScore\",\"direction\":\"increase\"}]}",
+        "rawContentSha256": "818e3fb22bbea88874fb7a8e0942b96ecdfb65094c76c8c848c2b3a4a45593da",
+        "notes": [
+          "OFFLINE DEMO: fixed fixture content, no model was called."
+        ],
+        "attestation": null
+      },
+      "inferenceError": null,
+      "plannerRejection": null,
+      "proposalId": "run-20261025111557-e19309ed-p1",
+      "proposalText": "{\n  \"schemaVersion\": \"qfabric-research-proposal/1\",\n  \"kind\": \"educational_parameter_change\",\n  \"proposalId\": \"run-20261025111557-e19309ed-p1\",\n  \"snapshotSha256\": \"81861bc88a3ec16210c8ff60e2f9f48da76d0f4a3ec92ba97a461e656c571259\",\n  \"source\": {\n    \"origin\": \"synthetic_fixture\",\n    \"providerLabel\": \"offline\",\n    \"modelLabel\": \"none\"\n  },\n  \"hypothesis\": \"Cutting the cooling rate and concentration should reduce nucleation bursts and raise stability.\",\n  \"rationale\": \"Fast cooling at high concentration exceeds the nucleation threshold in this model.\",\n  \"changes\": {\n    \"coolingRate\": 0.6,\n    \"concentration\": 0.48\n  },\n  \"requestedAction\": \"simulation_only\"\n}",
+      "proposalSha256": "fe78d79f33f09dc5e3e46f8a38d606e8e5393c814e2ae889393005e2ce129e5e",
+      "prediction": [
+        {
+          "metric": "nucleationEvents",
+          "direction": "decrease"
+        },
+        {
+          "metric": "stabilityScore",
+          "direction": "increase"
+        }
+      ],
+      "assessmentText": "{\n  \"schemaVersion\": \"qfabric-research-assessment/1\",\n  \"kind\": \"educational_research_assessment\",\n  \"status\": \"ready_for_review\",\n  \"proposalId\": \"run-20261025111557-e19309ed-p1\",\n  \"snapshotSha256\": \"81861bc88a3ec16210c8ff60e2f9f48da76d0f4a3ec92ba97a461e656c571259\",\n  \"proposalSha256\": \"fe78d79f33f09dc5e3e46f8a38d606e8e5393c814e2ae889393005e2ce129e5e\",\n  \"declaredOrigin\": {\n    \"origin\": \"synthetic_fixture\",\n    \"providerLabel\": \"offline\",\n    \"modelLabel\": \"none\"\n  },\n  \"hypothesis\": \"Cutting the cooling rate and concentration should reduce nucleation bursts and raise stability.\",\n  \"rationale\": \"Fast cooling at high concentration exceeds the nucleation threshold in this model.\",\n  \"changes\": [\n    {\n      \"parameter\": \"concentration\",\n      \"from\": 0.55,\n      \"to\": 0.48,\n      \"unit\": \"g/mL\"\n    },\n    {\n      \"parameter\": \"coolingRate\",\n      \"from\": 1.8,\n      \"to\": 0.6,\n      \"unit\": \"°C/min\"\n    }\n  ],\n  \"proposedInput\": {\n    \"temperature\": 80,\n    \"concentration\": 0.48,\n    \"stirringSpeed\": 900,\n    \"coolingRate\": 0.6,\n    \"impurityLevel\": 3.5,\n    \"timeSteps\": 80\n  },\n  \"rejectionReasons\": [],\n  \"reviewRequired\": true,\n  \"humanApproved\": false,\n  \"modelInvoked\": false,\n  \"hardwareDispatchAllowed\": false,\n  \"physicalMeasurement\": false,\n  \"scope\": \"educational_simulation_only\",\n  \"notice\": \"Model/source labels are unverified. No model, quantum device or physical equipment was called. This is not scientific process validation.\"\n}",
+      "reviewText": "{\n  \"schemaVersion\": \"qfabric-human-review/1\",\n  \"kind\": \"self_attested_educational_review\",\n  \"status\": \"approved_for_manual_simulation\",\n  \"reviewerLabel\": \"fixture-reviewer\",\n  \"reviewerAuthenticated\": false,\n  \"snapshotSha256\": \"81861bc88a3ec16210c8ff60e2f9f48da76d0f4a3ec92ba97a461e656c571259\",\n  \"proposalSha256\": \"fe78d79f33f09dc5e3e46f8a38d606e8e5393c814e2ae889393005e2ce129e5e\",\n  \"assessmentSha256\": \"deedee7161327300d15108d9a335e23b1ece05b06a348be6ecd3c9a996ce93b6\",\n  \"simulationInput\": {\n    \"temperature\": 80,\n    \"concentration\": 0.48,\n    \"stirringSpeed\": 900,\n    \"coolingRate\": 0.6,\n    \"impurityLevel\": 3.5,\n    \"timeSteps\": 80\n  },\n  \"automaticExecution\": false,\n  \"hardwareDispatchAllowed\": false,\n  \"notice\": \"Reviewer identity is self-declared, not authenticated; manual transfer to the educational simulator only. No quantum or process hardware control.\"\n}",
+      "experiment": {
+        "approvedInput": {
+          "temperature": 80,
+          "concentration": 0.48,
+          "stirringSpeed": 900,
+          "coolingRate": 0.6,
+          "impurityLevel": 3.5,
+          "timeSteps": 80
+        },
+        "baselineSummary": {
+          "avgGrowthRate": 1.9539351143870234,
+          "stabilityScore": 23.056915673502434,
+          "qualityScore": 38.14203318946359,
+          "finalYield": 8.59731450330291,
+          "maxSupersaturation": 1.3466955798521156,
+          "nucleationEvents": 6
+        },
+        "resultSummary": {
+          "avgGrowthRate": 1.4991779291378675,
+          "stabilityScore": 53.031881496797304,
+          "qualityScore": 79.79819345241978,
+          "finalYield": 6.596382888206618,
+          "maxSupersaturation": 1.3499579437362113,
+          "nucleationEvents": 2
+        },
+        "baselineRisk": "high",
+        "resultRisk": "medium",
+        "comparison": [
+          {
+            "metric": "avgGrowthRate",
+            "before": 1.9539351143870234,
+            "after": 1.4991779291378675,
+            "delta": -0.45475718524915587,
+            "direction": "decrease"
+          },
+          {
+            "metric": "stabilityScore",
+            "before": 23.056915673502434,
+            "after": 53.031881496797304,
+            "delta": 29.97496582329487,
+            "direction": "increase"
+          },
+          {
+            "metric": "qualityScore",
+            "before": 38.14203318946359,
+            "after": 79.79819345241978,
+            "delta": 41.65616026295619,
+            "direction": "increase"
+          },
+          {
+            "metric": "finalYield",
+            "before": 8.59731450330291,
+            "after": 6.596382888206618,
+            "delta": -2.0009316150962917,
+            "direction": "decrease"
+          },
+          {
+            "metric": "maxSupersaturation",
+            "before": 1.3466955798521156,
+            "after": 1.3499579437362113,
+            "delta": 0.0032623638840956204,
+            "direction": "increase"
+          },
+          {
+            "metric": "nucleationEvents",
+            "before": 6,
+            "after": 2,
+            "delta": -4,
+            "direction": "decrease"
+          }
+        ],
+        "checks": [
+          {
+            "id": "baseline_replay",
+            "passed": true,
+            "detail": "Re-running the baseline input reproduces the hashed snapshot byte-for-byte."
+          },
+          {
+            "id": "deterministic_replay",
+            "passed": true,
+            "detail": "Two independent runs of the approved input produce identical canonical output."
+          },
+          {
+            "id": "only_approved_parameters_changed",
+            "passed": true,
+            "detail": "Changed parameters: concentration, coolingRate; approved: coolingRate, concentration."
+          },
+          {
+            "id": "finite_outputs",
+            "passed": true,
+            "detail": "Every trajectory value and summary metric is a finite number."
+          },
+          {
+            "id": "trajectory_length",
+            "passed": true,
+            "detail": "Trajectory has 80 rows for timeSteps=80."
+          },
+          {
+            "id": "score_bounds",
+            "passed": true,
+            "detail": "Scores and yield stay within 0–100; growth and nucleation counts are non-negative."
+          },
+          {
+            "id": "engine_invariant_cooling_monotone",
+            "passed": true,
+            "detail": "Engine invariant: the cooling profile never increases temperature."
+          },
+          {
+            "id": "engine_invariant_mass_balance",
+            "passed": true,
+            "detail": "Engine invariant: concentration stays non-negative and yield never decreases."
+          }
+        ],
+        "predictionChecks": [
+          {
+            "metric": "nucleationEvents",
+            "direction": "decrease",
+            "observed": "decrease",
+            "outcome": "confirmed"
+          },
+          {
+            "metric": "stabilityScore",
+            "direction": "increase",
+            "observed": "increase",
+            "outcome": "confirmed"
+          }
+        ],
+        "resultSha256": "0f654f1529812de7a842f000c704cb5a79624273249643463c008e4533d69a97"
+      },
+      "interpretation": {
+        "origin": "deterministic",
+        "summary": "In the educational simulation, setting coolingRate→0.6, concentration→0.48 changed 6 metric(s): avgGrowthRate fell from 1.954 to 1.499; stabilityScore rose from 23.057 to 53.032; qualityScore rose from 38.142 to 79.798; finalYield fell from 8.597 to 6.596; maxSupersaturation rose from 1.347 to 1.350; nucleationEvents fell from 6.000 to 2.000. 2/2 predicted directions matched the simulator.",
+        "claims": [
+          {
+            "metric": "avgGrowthRate",
+            "direction": "decrease"
+          },
+          {
+            "metric": "stabilityScore",
+            "direction": "increase"
+          },
+          {
+            "metric": "qualityScore",
+            "direction": "increase"
+          },
+          {
+            "metric": "finalYield",
+            "direction": "decrease"
+          },
+          {
+            "metric": "maxSupersaturation",
+            "direction": "increase"
+          },
+          {
+            "metric": "nucleationEvents",
+            "direction": "decrease"
+          }
+        ],
+        "caveats": [
+          "Simplified pedagogical model; results are not laboratory measurements.",
+          "A matching prediction shows consistency with this model only, not physical validity."
+        ],
+        "followUpIdea": null,
+        "contradictions": [],
+        "overclaimWarnings": []
+      },
+      "interpretationInference": null,
+      "history": [
+        {
+          "state": "CREATED",
+          "at": "2026-10-25T11:15:57.203Z",
+          "detail": "Baseline unstable captured; snapshot sha256 81861bc88a3e…"
+        },
+        {
+          "state": "PROPOSED",
+          "at": "2026-10-25T11:15:57.204Z",
+          "detail": "OFFLINE fixture offline-unstable-recovery (no model call)"
+        },
+        {
+          "state": "VALIDATED",
+          "at": "2026-10-25T11:15:57.231Z",
+          "detail": "Research gate: ready_for_review (not an approval)"
+        },
+        {
+          "state": "AWAITING_REVIEW",
+          "at": "2026-10-25T11:15:57.231Z",
+          "detail": "Waiting for explicit human decision"
+        },
+        {
+          "state": "APPROVED",
+          "at": "2026-10-25T11:15:57.237Z",
+          "detail": "Self-attested approve by 'fixture-reviewer' (not authenticated)"
+        },
+        {
+          "state": "SIMULATED",
+          "at": "2026-10-25T11:15:57.250Z",
+          "detail": "Deterministic engine recomputed; 8/8 checks passed"
+        },
+        {
+          "state": "VERIFIED",
+          "at": "2026-10-25T11:15:57.251Z",
+          "detail": "All 8 checks and deterministic replay passed (computational verification only)."
+        }
+      ]
+    },
+    "limitations": [
+      "Results come from CrystalTwinAI's simplified educational model, not laboratory measurements.",
+      "Parameter bounds are educational model input limits, not physical safety limits.",
+      "Reviewer identity is self-declared; approval is not authenticated.",
+      "The integrity digest proves byte consistency since export, not authorship or live inference.",
+      "No quantum hardware, QICK execution, GPU acceleration or process equipment was involved."
+    ]
+  },
+  "integrity": {
+    "algorithm": "sha256/canonical-json",
+    "bodySha256": "3a8752af50264a93788f395290c53d14f3491f5290e5dd9c19ad9a19d34c322f",
+    "scope": "file_integrity_only",
+    "notice": "Detects modification after export. Not a signature; does not authenticate the producer."
+  }
+}

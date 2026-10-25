@@ -134,5 +134,11 @@ multi-user approval workflow. Rejected reviews release no input.
 4. Demonstrate a rejected prompt-injection / out-of-range proposal and a
    successful review as distinct paths for hackathon judges.
 
-**Not yet implemented:** model inference, a production operator identity
-system, actual NVIDIA GPU validation or physical quantum readout.
+**Update (CrystalPilot):** steps 1–4 are now implemented in CrystalTwinAI's
+`/pilot` app (server-side Nebius Token Factory client, before/after
+simulation comparison, mocked contract tests plus an opt-in live smoke test,
+and rejection demos). See [crystalpilot.md](crystalpilot.md). This QFabric
+module itself still makes no network or model calls.
+
+**Not implemented here:** a production operator identity system, actual
+NVIDIA GPU validation or physical quantum readout.

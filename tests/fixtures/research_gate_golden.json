@@ -1,0 +1,712 @@
+{
+  "schemaVersion": "qfabric-gate-golden/1",
+  "generator": "QFabric scripts/export_gate_golden.py (qfabric.orchestration)",
+  "notice": "Synthetic fixtures only. Not model output, not measurements.",
+  "assessments": [
+    {
+      "name": "valid_single_change",
+      "snapshotText": "{\n  \"schemaVersion\": \"crystaltwin-qfabric-snapshot/1\",\n  \"kind\": \"educational_snapshot\",\n  \"source\": {\n    \"repository\": \"Takzin1/crystaltwinai\",\n    \"provenance\": \"synthetic\",\n    \"mode\": \"educational_simulation\"\n  },\n  \"input\": {\n    \"temperature\": 65,\n    \"concentration\": 0.4,\n    \"stirringSpeed\": 300,\n    \"coolingRate\": 0.5,\n    \"impurityLevel\": 0.4,\n    \"timeSteps\": 2\n  },\n  \"summary\": {\n    \"avgGrowthRate\": 2,\n    \"stabilityScore\": 78,\n    \"qualityScore\": 80,\n    \"finalYield\": 4,\n    \"maxSupersaturation\": 1.12,\n    \"nucleationEvents\": 0\n  },\n  \"trajectory\": [\n    {\n      \"step\": 1,\n      \"temperature\": 64.5,\n      \"concentration\": 0.4,\n      \"growthRate\": 1.5,\n      \"crystalYield\": 1.5\n    },\n    {\n      \"step\": 2,\n      \"temperature\": 64,\n      \"concentration\": 0.39,\n      \"growthRate\": 2.5,\n      \"crystalYield\": 4\n    }\n  ]\n}\n",
+      "proposalText": "{\n  \"schemaVersion\": \"qfabric-research-proposal/1\",\n  \"kind\": \"educational_parameter_change\",\n  \"proposalId\": \"golden-001\",\n  \"snapshotSha256\": \"02013d04e90a64ec5e585435820930988089824f6092eb85d0f8d5c133455080\",\n  \"source\": {\n    \"origin\": \"synthetic_fixture\",\n    \"providerLabel\": \"offline\",\n    \"modelLabel\": \"none\"\n  },\n  \"hypothesis\": \"A slower cooling rate may change the educational output.\",\n  \"rationale\": \"Golden fixture for cross-language gate tests; not a model recommendation.\",\n  \"changes\": {\n    \"coolingRate\": 0.25\n  },\n  \"requestedAction\": \"simulation_only\"\n}",
+      "expected": {
+        "ok": true,
+        "value": {
+          "schemaVersion": "qfabric-research-assessment/1",
+          "kind": "educational_research_assessment",
+          "status": "ready_for_review",
+          "proposalId": "golden-001",
+          "snapshotSha256": "02013d04e90a64ec5e585435820930988089824f6092eb85d0f8d5c133455080",
+          "proposalSha256": "2e0bfffa5e94c73b39c4e5de3d01f6ab59c0280f845f5ab6abd6690a031173c6",
+          "declaredOrigin": {
+            "origin": "synthetic_fixture",
+            "providerLabel": "offline",
+            "modelLabel": "none"
+          },
+          "hypothesis": "A slower cooling rate may change the educational output.",
+          "rationale": "Golden fixture for cross-language gate tests; not a model recommendation.",
+          "changes": [
+            {
+              "parameter": "coolingRate",
+              "from": 0.5,
+              "to": 0.25,
+              "unit": "°C/min"
+            }
+          ],
+          "proposedInput": {
+            "temperature": 65,
+            "concentration": 0.4,
+            "stirringSpeed": 300,
+            "coolingRate": 0.25,
+            "impurityLevel": 0.4,
+            "timeSteps": 2
+          },
+          "rejectionReasons": [],
+          "reviewRequired": true,
+          "humanApproved": false,
+          "modelInvoked": false,
+          "hardwareDispatchAllowed": false,
+          "physicalMeasurement": false,
+          "scope": "educational_simulation_only",
+          "notice": "Model/source labels are unverified. No model, quantum device or physical equipment was called. This is not scientific process validation."
+        }
+      }
+    },
+    {
+      "name": "valid_three_changes",
+      "snapshotText": "{\n  \"schemaVersion\": \"crystaltwin-qfabric-snapshot/1\",\n  \"kind\": \"educational_snapshot\",\n  \"source\": {\n    \"repository\": \"Takzin1/crystaltwinai\",\n    \"provenance\": \"synthetic\",\n    \"mode\": \"educational_simulation\"\n  },\n  \"input\": {\n    \"temperature\": 65,\n    \"concentration\": 0.4,\n    \"stirringSpeed\": 300,\n    \"coolingRate\": 0.5,\n    \"impurityLevel\": 0.4,\n    \"timeSteps\": 2\n  },\n  \"summary\": {\n    \"avgGrowthRate\": 2,\n    \"stabilityScore\": 78,\n    \"qualityScore\": 80,\n    \"finalYield\": 4,\n    \"maxSupersaturation\": 1.12,\n    \"nucleationEvents\": 0\n  },\n  \"trajectory\": [\n    {\n      \"step\": 1,\n      \"temperature\": 64.5,\n      \"concentration\": 0.4,\n      \"growthRate\": 1.5,\n      \"crystalYield\": 1.5\n    },\n    {\n      \"step\": 2,\n      \"temperature\": 64,\n      \"concentration\": 0.39,\n      \"growthRate\": 2.5,\n      \"crystalYield\": 4\n    }\n  ]\n}\n",
+      "proposalText": "{\n  \"schemaVersion\": \"qfabric-research-proposal/1\",\n  \"kind\": \"educational_parameter_change\",\n  \"proposalId\": \"golden-001\",\n  \"snapshotSha256\": \"02013d04e90a64ec5e585435820930988089824f6092eb85d0f8d5c133455080\",\n  \"source\": {\n    \"origin\": \"synthetic_fixture\",\n    \"providerLabel\": \"offline\",\n    \"modelLabel\": \"none\"\n  },\n  \"hypothesis\": \"A slower cooling rate may change the educational output.\",\n  \"rationale\": \"Golden fixture for cross-language gate tests; not a model recommendation.\",\n  \"changes\": {\n    \"coolingRate\": 0.3,\n    \"stirringSpeed\": 450,\n    \"timeSteps\": 120\n  },\n  \"requestedAction\": \"simulation_only\"\n}",
+      "expected": {
+        "ok": true,
+        "value": {
+          "schemaVersion": "qfabric-research-assessment/1",
+          "kind": "educational_research_assessment",
+          "status": "ready_for_review",
+          "proposalId": "golden-001",
+          "snapshotSha256": "02013d04e90a64ec5e585435820930988089824f6092eb85d0f8d5c133455080",
+          "proposalSha256": "5c74e1286bc5139660ef1870bd372956396b9bc4429aab973fe885cd246ffe6b",
+          "declaredOrigin": {
+            "origin": "synthetic_fixture",
+            "providerLabel": "offline",
+            "modelLabel": "none"
+          },
+          "hypothesis": "A slower cooling rate may change the educational output.",
+          "rationale": "Golden fixture for cross-language gate tests; not a model recommendation.",
+          "changes": [
+            {
+              "parameter": "coolingRate",
+              "from": 0.5,
+              "to": 0.3,
+              "unit": "°C/min"
+            },
+            {
+              "parameter": "stirringSpeed",
+              "from": 300,
+              "to": 450,
+              "unit": "rpm"
+            },
+            {
+              "parameter": "timeSteps",
+              "from": 2,
+              "to": 120,
+              "unit": "steps"
+            }
+          ],
+          "proposedInput": {
+            "temperature": 65,
+            "concentration": 0.4,
+            "stirringSpeed": 450,
+            "coolingRate": 0.3,
+            "impurityLevel": 0.4,
+            "timeSteps": 120
+          },
+          "rejectionReasons": [],
+          "reviewRequired": true,
+          "humanApproved": false,
+          "modelInvoked": false,
+          "hardwareDispatchAllowed": false,
+          "physicalMeasurement": false,
+          "scope": "educational_simulation_only",
+          "notice": "Model/source labels are unverified. No model, quantum device or physical equipment was called. This is not scientific process validation."
+        }
+      }
+    },
+    {
+      "name": "valid_unicode_prose",
+      "snapshotText": "{\n  \"schemaVersion\": \"crystaltwin-qfabric-snapshot/1\",\n  \"kind\": \"educational_snapshot\",\n  \"source\": {\n    \"repository\": \"Takzin1/crystaltwinai\",\n    \"provenance\": \"synthetic\",\n    \"mode\": \"educational_simulation\"\n  },\n  \"input\": {\n    \"temperature\": 65,\n    \"concentration\": 0.4,\n    \"stirringSpeed\": 300,\n    \"coolingRate\": 0.5,\n    \"impurityLevel\": 0.4,\n    \"timeSteps\": 2\n  },\n  \"summary\": {\n    \"avgGrowthRate\": 2,\n    \"stabilityScore\": 78,\n    \"qualityScore\": 80,\n    \"finalYield\": 4,\n    \"maxSupersaturation\": 1.12,\n    \"nucleationEvents\": 0\n  },\n  \"trajectory\": [\n    {\n      \"step\": 1,\n      \"temperature\": 64.5,\n      \"concentration\": 0.4,\n      \"growthRate\": 1.5,\n      \"crystalYield\": 1.5\n    },\n    {\n      \"step\": 2,\n      \"temperature\": 64,\n      \"concentration\": 0.39,\n      \"growthRate\": 2.5,\n      \"crystalYield\": 4\n    }\n  ]\n}\n",
+      "proposalText": "{\n  \"schemaVersion\": \"qfabric-research-proposal/1\",\n  \"kind\": \"educational_parameter_change\",\n  \"proposalId\": \"golden-001\",\n  \"snapshotSha256\": \"02013d04e90a64ec5e585435820930988089824f6092eb85d0f8d5c133455080\",\n  \"source\": {\n    \"origin\": \"synthetic_fixture\",\n    \"providerLabel\": \"offline\",\n    \"modelLabel\": \"none\"\n  },\n  \"hypothesis\": \"  冷却速度を下げると品質スコアが変化する可能性  \",\n  \"rationale\": \"Golden fixture for cross-language gate tests; not a model recommendation.\",\n  \"changes\": {\n    \"coolingRate\": 0.25\n  },\n  \"requestedAction\": \"simulation_only\"\n}",
+      "expected": {
+        "ok": true,
+        "value": {
+          "schemaVersion": "qfabric-research-assessment/1",
+          "kind": "educational_research_assessment",
+          "status": "ready_for_review",
+          "proposalId": "golden-001",
+          "snapshotSha256": "02013d04e90a64ec5e585435820930988089824f6092eb85d0f8d5c133455080",
+          "proposalSha256": "c3e8d07a75671c3c6e7dd21ac77cefb352d6f9e03cb59a4e49ca0dac78d3b428",
+          "declaredOrigin": {
+            "origin": "synthetic_fixture",
+            "providerLabel": "offline",
+            "modelLabel": "none"
+          },
+          "hypothesis": "  冷却速度を下げると品質スコアが変化する可能性  ",
+          "rationale": "Golden fixture for cross-language gate tests; not a model recommendation.",
+          "changes": [
+            {
+              "parameter": "coolingRate",
+              "from": 0.5,
+              "to": 0.25,
+              "unit": "°C/min"
+            }
+          ],
+          "proposedInput": {
+            "temperature": 65,
+            "concentration": 0.4,
+            "stirringSpeed": 300,
+            "coolingRate": 0.25,
+            "impurityLevel": 0.4,
+            "timeSteps": 2
+          },
+          "rejectionReasons": [],
+          "reviewRequired": true,
+          "humanApproved": false,
+          "modelInvoked": false,
+          "hardwareDispatchAllowed": false,
+          "physicalMeasurement": false,
+          "scope": "educational_simulation_only",
+          "notice": "Model/source labels are unverified. No model, quantum device or physical equipment was called. This is not scientific process validation."
+        }
+      }
+    },
+    {
+      "name": "reject_out_of_range_cooling",
+      "snapshotText": "{\n  \"schemaVersion\": \"crystaltwin-qfabric-snapshot/1\",\n  \"kind\": \"educational_snapshot\",\n  \"source\": {\n    \"repository\": \"Takzin1/crystaltwinai\",\n    \"provenance\": \"synthetic\",\n    \"mode\": \"educational_simulation\"\n  },\n  \"input\": {\n    \"temperature\": 65,\n    \"concentration\": 0.4,\n    \"stirringSpeed\": 300,\n    \"coolingRate\": 0.5,\n    \"impurityLevel\": 0.4,\n    \"timeSteps\": 2\n  },\n  \"summary\": {\n    \"avgGrowthRate\": 2,\n    \"stabilityScore\": 78,\n    \"qualityScore\": 80,\n    \"finalYield\": 4,\n    \"maxSupersaturation\": 1.12,\n    \"nucleationEvents\": 0\n  },\n  \"trajectory\": [\n    {\n      \"step\": 1,\n      \"temperature\": 64.5,\n      \"concentration\": 0.4,\n      \"growthRate\": 1.5,\n      \"crystalYield\": 1.5\n    },\n    {\n      \"step\": 2,\n      \"temperature\": 64,\n      \"concentration\": 0.39,\n      \"growthRate\": 2.5,\n      \"crystalYield\": 4\n    }\n  ]\n}\n",
+      "proposalText": "{\n  \"schemaVersion\": \"qfabric-research-proposal/1\",\n  \"kind\": \"educational_parameter_change\",\n  \"proposalId\": \"golden-001\",\n  \"snapshotSha256\": \"02013d04e90a64ec5e585435820930988089824f6092eb85d0f8d5c133455080\",\n  \"source\": {\n    \"origin\": \"synthetic_fixture\",\n    \"providerLabel\": \"offline\",\n    \"modelLabel\": \"none\"\n  },\n  \"hypothesis\": \"A slower cooling rate may change the educational output.\",\n  \"rationale\": \"Golden fixture for cross-language gate tests; not a model recommendation.\",\n  \"changes\": {\n    \"coolingRate\": 5.0\n  },\n  \"requestedAction\": \"simulation_only\"\n}",
+      "expected": {
+        "ok": true,
+        "value": {
+          "schemaVersion": "qfabric-research-assessment/1",
+          "kind": "educational_research_assessment",
+          "status": "rejected",
+          "proposalId": "golden-001",
+          "snapshotSha256": "02013d04e90a64ec5e585435820930988089824f6092eb85d0f8d5c133455080",
+          "proposalSha256": "c227ac9cc72d9b6677b58751b89a44a0c18e8dcfbcc91cc7ce27faa2d452f190",
+          "declaredOrigin": {
+            "origin": "synthetic_fixture",
+            "providerLabel": "offline",
+            "modelLabel": "none"
+          },
+          "hypothesis": "A slower cooling rate may change the educational output.",
+          "rationale": "Golden fixture for cross-language gate tests; not a model recommendation.",
+          "changes": [],
+          "proposedInput": null,
+          "rejectionReasons": [
+            "coolingRate: outside educational model bounds [0.05, 2.0]"
+          ],
+          "reviewRequired": true,
+          "humanApproved": false,
+          "modelInvoked": false,
+          "hardwareDispatchAllowed": false,
+          "physicalMeasurement": false,
+          "scope": "educational_simulation_only",
+          "notice": "Model/source labels are unverified. No model, quantum device or physical equipment was called. This is not scientific process validation."
+        }
+      }
+    },
+    {
+      "name": "reject_below_range_temperature",
+      "snapshotText": "{\n  \"schemaVersion\": \"crystaltwin-qfabric-snapshot/1\",\n  \"kind\": \"educational_snapshot\",\n  \"source\": {\n    \"repository\": \"Takzin1/crystaltwinai\",\n    \"provenance\": \"synthetic\",\n    \"mode\": \"educational_simulation\"\n  },\n  \"input\": {\n    \"temperature\": 65,\n    \"concentration\": 0.4,\n    \"stirringSpeed\": 300,\n    \"coolingRate\": 0.5,\n    \"impurityLevel\": 0.4,\n    \"timeSteps\": 2\n  },\n  \"summary\": {\n    \"avgGrowthRate\": 2,\n    \"stabilityScore\": 78,\n    \"qualityScore\": 80,\n    \"finalYield\": 4,\n    \"maxSupersaturation\": 1.12,\n    \"nucleationEvents\": 0\n  },\n  \"trajectory\": [\n    {\n      \"step\": 1,\n      \"temperature\": 64.5,\n      \"concentration\": 0.4,\n      \"growthRate\": 1.5,\n      \"crystalYield\": 1.5\n    },\n    {\n      \"step\": 2,\n      \"temperature\": 64,\n      \"concentration\": 0.39,\n      \"growthRate\": 2.5,\n      \"crystalYield\": 4\n    }\n  ]\n}\n",
+      "proposalText": "{\n  \"schemaVersion\": \"qfabric-research-proposal/1\",\n  \"kind\": \"educational_parameter_change\",\n  \"proposalId\": \"golden-001\",\n  \"snapshotSha256\": \"02013d04e90a64ec5e585435820930988089824f6092eb85d0f8d5c133455080\",\n  \"source\": {\n    \"origin\": \"synthetic_fixture\",\n    \"providerLabel\": \"offline\",\n    \"modelLabel\": \"none\"\n  },\n  \"hypothesis\": \"A slower cooling rate may change the educational output.\",\n  \"rationale\": \"Golden fixture for cross-language gate tests; not a model recommendation.\",\n  \"changes\": {\n    \"temperature\": 5\n  },\n  \"requestedAction\": \"simulation_only\"\n}",
+      "expected": {
+        "ok": true,
+        "value": {
+          "schemaVersion": "qfabric-research-assessment/1",
+          "kind": "educational_research_assessment",
+          "status": "rejected",
+          "proposalId": "golden-001",
+          "snapshotSha256": "02013d04e90a64ec5e585435820930988089824f6092eb85d0f8d5c133455080",
+          "proposalSha256": "c1683de19e25d6593cdb5c9a75febebbcb3167a5b885018d589bf60c66a19786",
+          "declaredOrigin": {
+            "origin": "synthetic_fixture",
+            "providerLabel": "offline",
+            "modelLabel": "none"
+          },
+          "hypothesis": "A slower cooling rate may change the educational output.",
+          "rationale": "Golden fixture for cross-language gate tests; not a model recommendation.",
+          "changes": [],
+          "proposedInput": null,
+          "rejectionReasons": [
+            "temperature: outside educational model bounds [20.0, 90.0]"
+          ],
+          "reviewRequired": true,
+          "humanApproved": false,
+          "modelInvoked": false,
+          "hardwareDispatchAllowed": false,
+          "physicalMeasurement": false,
+          "scope": "educational_simulation_only",
+          "notice": "Model/source labels are unverified. No model, quantum device or physical equipment was called. This is not scientific process validation."
+        }
+      }
+    },
+    {
+      "name": "reject_unchanged_value",
+      "snapshotText": "{\n  \"schemaVersion\": \"crystaltwin-qfabric-snapshot/1\",\n  \"kind\": \"educational_snapshot\",\n  \"source\": {\n    \"repository\": \"Takzin1/crystaltwinai\",\n    \"provenance\": \"synthetic\",\n    \"mode\": \"educational_simulation\"\n  },\n  \"input\": {\n    \"temperature\": 65,\n    \"concentration\": 0.4,\n    \"stirringSpeed\": 300,\n    \"coolingRate\": 0.5,\n    \"impurityLevel\": 0.4,\n    \"timeSteps\": 2\n  },\n  \"summary\": {\n    \"avgGrowthRate\": 2,\n    \"stabilityScore\": 78,\n    \"qualityScore\": 80,\n    \"finalYield\": 4,\n    \"maxSupersaturation\": 1.12,\n    \"nucleationEvents\": 0\n  },\n  \"trajectory\": [\n    {\n      \"step\": 1,\n      \"temperature\": 64.5,\n      \"concentration\": 0.4,\n      \"growthRate\": 1.5,\n      \"crystalYield\": 1.5\n    },\n    {\n      \"step\": 2,\n      \"temperature\": 64,\n      \"concentration\": 0.39,\n      \"growthRate\": 2.5,\n      \"crystalYield\": 4\n    }\n  ]\n}\n",
+      "proposalText": "{\n  \"schemaVersion\": \"qfabric-research-proposal/1\",\n  \"kind\": \"educational_parameter_change\",\n  \"proposalId\": \"golden-001\",\n  \"snapshotSha256\": \"02013d04e90a64ec5e585435820930988089824f6092eb85d0f8d5c133455080\",\n  \"source\": {\n    \"origin\": \"synthetic_fixture\",\n    \"providerLabel\": \"offline\",\n    \"modelLabel\": \"none\"\n  },\n  \"hypothesis\": \"A slower cooling rate may change the educational output.\",\n  \"rationale\": \"Golden fixture for cross-language gate tests; not a model recommendation.\",\n  \"changes\": {\n    \"coolingRate\": 0.5\n  },\n  \"requestedAction\": \"simulation_only\"\n}",
+      "expected": {
+        "ok": true,
+        "value": {
+          "schemaVersion": "qfabric-research-assessment/1",
+          "kind": "educational_research_assessment",
+          "status": "rejected",
+          "proposalId": "golden-001",
+          "snapshotSha256": "02013d04e90a64ec5e585435820930988089824f6092eb85d0f8d5c133455080",
+          "proposalSha256": "8922578319468fe53c7f12d91ac6d9fc829ebf20ea3e36aef88c81ff73a68719",
+          "declaredOrigin": {
+            "origin": "synthetic_fixture",
+            "providerLabel": "offline",
+            "modelLabel": "none"
+          },
+          "hypothesis": "A slower cooling rate may change the educational output.",
+          "rationale": "Golden fixture for cross-language gate tests; not a model recommendation.",
+          "changes": [],
+          "proposedInput": null,
+          "rejectionReasons": [
+            "coolingRate: unchanged from source input"
+          ],
+          "reviewRequired": true,
+          "humanApproved": false,
+          "modelInvoked": false,
+          "hardwareDispatchAllowed": false,
+          "physicalMeasurement": false,
+          "scope": "educational_simulation_only",
+          "notice": "Model/source labels are unverified. No model, quantum device or physical equipment was called. This is not scientific process validation."
+        }
+      }
+    },
+    {
+      "name": "reject_fractional_timesteps",
+      "snapshotText": "{\n  \"schemaVersion\": \"crystaltwin-qfabric-snapshot/1\",\n  \"kind\": \"educational_snapshot\",\n  \"source\": {\n    \"repository\": \"Takzin1/crystaltwinai\",\n    \"provenance\": \"synthetic\",\n    \"mode\": \"educational_simulation\"\n  },\n  \"input\": {\n    \"temperature\": 65,\n    \"concentration\": 0.4,\n    \"stirringSpeed\": 300,\n    \"coolingRate\": 0.5,\n    \"impurityLevel\": 0.4,\n    \"timeSteps\": 2\n  },\n  \"summary\": {\n    \"avgGrowthRate\": 2,\n    \"stabilityScore\": 78,\n    \"qualityScore\": 80,\n    \"finalYield\": 4,\n    \"maxSupersaturation\": 1.12,\n    \"nucleationEvents\": 0\n  },\n  \"trajectory\": [\n    {\n      \"step\": 1,\n      \"temperature\": 64.5,\n      \"concentration\": 0.4,\n      \"growthRate\": 1.5,\n      \"crystalYield\": 1.5\n    },\n    {\n      \"step\": 2,\n      \"temperature\": 64,\n      \"concentration\": 0.39,\n      \"growthRate\": 2.5,\n      \"crystalYield\": 4\n    }\n  ]\n}\n",
+      "proposalText": "{\n  \"schemaVersion\": \"qfabric-research-proposal/1\",\n  \"kind\": \"educational_parameter_change\",\n  \"proposalId\": \"golden-001\",\n  \"snapshotSha256\": \"02013d04e90a64ec5e585435820930988089824f6092eb85d0f8d5c133455080\",\n  \"source\": {\n    \"origin\": \"synthetic_fixture\",\n    \"providerLabel\": \"offline\",\n    \"modelLabel\": \"none\"\n  },\n  \"hypothesis\": \"A slower cooling rate may change the educational output.\",\n  \"rationale\": \"Golden fixture for cross-language gate tests; not a model recommendation.\",\n  \"changes\": {\n    \"timeSteps\": 50.5\n  },\n  \"requestedAction\": \"simulation_only\"\n}",
+      "expected": {
+        "ok": true,
+        "value": {
+          "schemaVersion": "qfabric-research-assessment/1",
+          "kind": "educational_research_assessment",
+          "status": "rejected",
+          "proposalId": "golden-001",
+          "snapshotSha256": "02013d04e90a64ec5e585435820930988089824f6092eb85d0f8d5c133455080",
+          "proposalSha256": "a42d26188eb5bf7700f1b63fc16d69d60472eb28e0bf1a46b9223b83827f4df8",
+          "declaredOrigin": {
+            "origin": "synthetic_fixture",
+            "providerLabel": "offline",
+            "modelLabel": "none"
+          },
+          "hypothesis": "A slower cooling rate may change the educational output.",
+          "rationale": "Golden fixture for cross-language gate tests; not a model recommendation.",
+          "changes": [],
+          "proposedInput": null,
+          "rejectionReasons": [
+            "timeSteps: must be an integer"
+          ],
+          "reviewRequired": true,
+          "humanApproved": false,
+          "modelInvoked": false,
+          "hardwareDispatchAllowed": false,
+          "physicalMeasurement": false,
+          "scope": "educational_simulation_only",
+          "notice": "Model/source labels are unverified. No model, quantum device or physical equipment was called. This is not scientific process validation."
+        }
+      }
+    },
+    {
+      "name": "reject_mixed_reasons",
+      "snapshotText": "{\n  \"schemaVersion\": \"crystaltwin-qfabric-snapshot/1\",\n  \"kind\": \"educational_snapshot\",\n  \"source\": {\n    \"repository\": \"Takzin1/crystaltwinai\",\n    \"provenance\": \"synthetic\",\n    \"mode\": \"educational_simulation\"\n  },\n  \"input\": {\n    \"temperature\": 65,\n    \"concentration\": 0.4,\n    \"stirringSpeed\": 300,\n    \"coolingRate\": 0.5,\n    \"impurityLevel\": 0.4,\n    \"timeSteps\": 2\n  },\n  \"summary\": {\n    \"avgGrowthRate\": 2,\n    \"stabilityScore\": 78,\n    \"qualityScore\": 80,\n    \"finalYield\": 4,\n    \"maxSupersaturation\": 1.12,\n    \"nucleationEvents\": 0\n  },\n  \"trajectory\": [\n    {\n      \"step\": 1,\n      \"temperature\": 64.5,\n      \"concentration\": 0.4,\n      \"growthRate\": 1.5,\n      \"crystalYield\": 1.5\n    },\n    {\n      \"step\": 2,\n      \"temperature\": 64,\n      \"concentration\": 0.39,\n      \"growthRate\": 2.5,\n      \"crystalYield\": 4\n    }\n  ]\n}\n",
+      "proposalText": "{\n  \"schemaVersion\": \"qfabric-research-proposal/1\",\n  \"kind\": \"educational_parameter_change\",\n  \"proposalId\": \"golden-001\",\n  \"snapshotSha256\": \"02013d04e90a64ec5e585435820930988089824f6092eb85d0f8d5c133455080\",\n  \"source\": {\n    \"origin\": \"synthetic_fixture\",\n    \"providerLabel\": \"offline\",\n    \"modelLabel\": \"none\"\n  },\n  \"hypothesis\": \"A slower cooling rate may change the educational output.\",\n  \"rationale\": \"Golden fixture for cross-language gate tests; not a model recommendation.\",\n  \"changes\": {\n    \"coolingRate\": 9,\n    \"impurityLevel\": 0.4,\n    \"temperature\": 70\n  },\n  \"requestedAction\": \"simulation_only\"\n}",
+      "expected": {
+        "ok": true,
+        "value": {
+          "schemaVersion": "qfabric-research-assessment/1",
+          "kind": "educational_research_assessment",
+          "status": "rejected",
+          "proposalId": "golden-001",
+          "snapshotSha256": "02013d04e90a64ec5e585435820930988089824f6092eb85d0f8d5c133455080",
+          "proposalSha256": "43f90ee2e46ac90615692c6c46254515a912349f63dcc9e3efc871bbb907c6b1",
+          "declaredOrigin": {
+            "origin": "synthetic_fixture",
+            "providerLabel": "offline",
+            "modelLabel": "none"
+          },
+          "hypothesis": "A slower cooling rate may change the educational output.",
+          "rationale": "Golden fixture for cross-language gate tests; not a model recommendation.",
+          "changes": [],
+          "proposedInput": null,
+          "rejectionReasons": [
+            "coolingRate: outside educational model bounds [0.05, 2.0]",
+            "impurityLevel: unchanged from source input"
+          ],
+          "reviewRequired": true,
+          "humanApproved": false,
+          "modelInvoked": false,
+          "hardwareDispatchAllowed": false,
+          "physicalMeasurement": false,
+          "scope": "educational_simulation_only",
+          "notice": "Model/source labels are unverified. No model, quantum device or physical equipment was called. This is not scientific process validation."
+        }
+      }
+    },
+    {
+      "name": "error_unknown_parameter",
+      "snapshotText": "{\n  \"schemaVersion\": \"crystaltwin-qfabric-snapshot/1\",\n  \"kind\": \"educational_snapshot\",\n  \"source\": {\n    \"repository\": \"Takzin1/crystaltwinai\",\n    \"provenance\": \"synthetic\",\n    \"mode\": \"educational_simulation\"\n  },\n  \"input\": {\n    \"temperature\": 65,\n    \"concentration\": 0.4,\n    \"stirringSpeed\": 300,\n    \"coolingRate\": 0.5,\n    \"impurityLevel\": 0.4,\n    \"timeSteps\": 2\n  },\n  \"summary\": {\n    \"avgGrowthRate\": 2,\n    \"stabilityScore\": 78,\n    \"qualityScore\": 80,\n    \"finalYield\": 4,\n    \"maxSupersaturation\": 1.12,\n    \"nucleationEvents\": 0\n  },\n  \"trajectory\": [\n    {\n      \"step\": 1,\n      \"temperature\": 64.5,\n      \"concentration\": 0.4,\n      \"growthRate\": 1.5,\n      \"crystalYield\": 1.5\n    },\n    {\n      \"step\": 2,\n      \"temperature\": 64,\n      \"concentration\": 0.39,\n      \"growthRate\": 2.5,\n      \"crystalYield\": 4\n    }\n  ]\n}\n",
+      "proposalText": "{\n  \"schemaVersion\": \"qfabric-research-proposal/1\",\n  \"kind\": \"educational_parameter_change\",\n  \"proposalId\": \"golden-001\",\n  \"snapshotSha256\": \"02013d04e90a64ec5e585435820930988089824f6092eb85d0f8d5c133455080\",\n  \"source\": {\n    \"origin\": \"synthetic_fixture\",\n    \"providerLabel\": \"offline\",\n    \"modelLabel\": \"none\"\n  },\n  \"hypothesis\": \"A slower cooling rate may change the educational output.\",\n  \"rationale\": \"Golden fixture for cross-language gate tests; not a model recommendation.\",\n  \"changes\": {\n    \"pressure\": 2.0\n  },\n  \"requestedAction\": \"simulation_only\"\n}",
+      "expected": {
+        "ok": false,
+        "errorType": "ValueError",
+        "message": "unsupported simulation parameter: pressure"
+      }
+    },
+    {
+      "name": "error_too_many_changes",
+      "snapshotText": "{\n  \"schemaVersion\": \"crystaltwin-qfabric-snapshot/1\",\n  \"kind\": \"educational_snapshot\",\n  \"source\": {\n    \"repository\": \"Takzin1/crystaltwinai\",\n    \"provenance\": \"synthetic\",\n    \"mode\": \"educational_simulation\"\n  },\n  \"input\": {\n    \"temperature\": 65,\n    \"concentration\": 0.4,\n    \"stirringSpeed\": 300,\n    \"coolingRate\": 0.5,\n    \"impurityLevel\": 0.4,\n    \"timeSteps\": 2\n  },\n  \"summary\": {\n    \"avgGrowthRate\": 2,\n    \"stabilityScore\": 78,\n    \"qualityScore\": 80,\n    \"finalYield\": 4,\n    \"maxSupersaturation\": 1.12,\n    \"nucleationEvents\": 0\n  },\n  \"trajectory\": [\n    {\n      \"step\": 1,\n      \"temperature\": 64.5,\n      \"concentration\": 0.4,\n      \"growthRate\": 1.5,\n      \"crystalYield\": 1.5\n    },\n    {\n      \"step\": 2,\n      \"temperature\": 64,\n      \"concentration\": 0.39,\n      \"growthRate\": 2.5,\n      \"crystalYield\": 4\n    }\n  ]\n}\n",
+      "proposalText": "{\n  \"schemaVersion\": \"qfabric-research-proposal/1\",\n  \"kind\": \"educational_parameter_change\",\n  \"proposalId\": \"golden-001\",\n  \"snapshotSha256\": \"02013d04e90a64ec5e585435820930988089824f6092eb85d0f8d5c133455080\",\n  \"source\": {\n    \"origin\": \"synthetic_fixture\",\n    \"providerLabel\": \"offline\",\n    \"modelLabel\": \"none\"\n  },\n  \"hypothesis\": \"A slower cooling rate may change the educational output.\",\n  \"rationale\": \"Golden fixture for cross-language gate tests; not a model recommendation.\",\n  \"changes\": {\n    \"coolingRate\": 0.3,\n    \"stirringSpeed\": 450,\n    \"timeSteps\": 120,\n    \"temperature\": 60\n  },\n  \"requestedAction\": \"simulation_only\"\n}",
+      "expected": {
+        "ok": false,
+        "errorType": "ValueError",
+        "message": "proposal must modify 1..3 parameters"
+      }
+    },
+    {
+      "name": "error_empty_changes",
+      "snapshotText": "{\n  \"schemaVersion\": \"crystaltwin-qfabric-snapshot/1\",\n  \"kind\": \"educational_snapshot\",\n  \"source\": {\n    \"repository\": \"Takzin1/crystaltwinai\",\n    \"provenance\": \"synthetic\",\n    \"mode\": \"educational_simulation\"\n  },\n  \"input\": {\n    \"temperature\": 65,\n    \"concentration\": 0.4,\n    \"stirringSpeed\": 300,\n    \"coolingRate\": 0.5,\n    \"impurityLevel\": 0.4,\n    \"timeSteps\": 2\n  },\n  \"summary\": {\n    \"avgGrowthRate\": 2,\n    \"stabilityScore\": 78,\n    \"qualityScore\": 80,\n    \"finalYield\": 4,\n    \"maxSupersaturation\": 1.12,\n    \"nucleationEvents\": 0\n  },\n  \"trajectory\": [\n    {\n      \"step\": 1,\n      \"temperature\": 64.5,\n      \"concentration\": 0.4,\n      \"growthRate\": 1.5,\n      \"crystalYield\": 1.5\n    },\n    {\n      \"step\": 2,\n      \"temperature\": 64,\n      \"concentration\": 0.39,\n      \"growthRate\": 2.5,\n      \"crystalYield\": 4\n    }\n  ]\n}\n",
+      "proposalText": "{\n  \"schemaVersion\": \"qfabric-research-proposal/1\",\n  \"kind\": \"educational_parameter_change\",\n  \"proposalId\": \"golden-001\",\n  \"snapshotSha256\": \"02013d04e90a64ec5e585435820930988089824f6092eb85d0f8d5c133455080\",\n  \"source\": {\n    \"origin\": \"synthetic_fixture\",\n    \"providerLabel\": \"offline\",\n    \"modelLabel\": \"none\"\n  },\n  \"hypothesis\": \"A slower cooling rate may change the educational output.\",\n  \"rationale\": \"Golden fixture for cross-language gate tests; not a model recommendation.\",\n  \"changes\": {},\n  \"requestedAction\": \"simulation_only\"\n}",
+      "expected": {
+        "ok": false,
+        "errorType": "ValueError",
+        "message": "proposal must modify 1..3 parameters"
+      }
+    },
+    {
+      "name": "error_hardware_action",
+      "snapshotText": "{\n  \"schemaVersion\": \"crystaltwin-qfabric-snapshot/1\",\n  \"kind\": \"educational_snapshot\",\n  \"source\": {\n    \"repository\": \"Takzin1/crystaltwinai\",\n    \"provenance\": \"synthetic\",\n    \"mode\": \"educational_simulation\"\n  },\n  \"input\": {\n    \"temperature\": 65,\n    \"concentration\": 0.4,\n    \"stirringSpeed\": 300,\n    \"coolingRate\": 0.5,\n    \"impurityLevel\": 0.4,\n    \"timeSteps\": 2\n  },\n  \"summary\": {\n    \"avgGrowthRate\": 2,\n    \"stabilityScore\": 78,\n    \"qualityScore\": 80,\n    \"finalYield\": 4,\n    \"maxSupersaturation\": 1.12,\n    \"nucleationEvents\": 0\n  },\n  \"trajectory\": [\n    {\n      \"step\": 1,\n      \"temperature\": 64.5,\n      \"concentration\": 0.4,\n      \"growthRate\": 1.5,\n      \"crystalYield\": 1.5\n    },\n    {\n      \"step\": 2,\n      \"temperature\": 64,\n      \"concentration\": 0.39,\n      \"growthRate\": 2.5,\n      \"crystalYield\": 4\n    }\n  ]\n}\n",
+      "proposalText": "{\n  \"schemaVersion\": \"qfabric-research-proposal/1\",\n  \"kind\": \"educational_parameter_change\",\n  \"proposalId\": \"golden-001\",\n  \"snapshotSha256\": \"02013d04e90a64ec5e585435820930988089824f6092eb85d0f8d5c133455080\",\n  \"source\": {\n    \"origin\": \"synthetic_fixture\",\n    \"providerLabel\": \"offline\",\n    \"modelLabel\": \"none\"\n  },\n  \"hypothesis\": \"A slower cooling rate may change the educational output.\",\n  \"rationale\": \"Golden fixture for cross-language gate tests; not a model recommendation.\",\n  \"changes\": {\n    \"coolingRate\": 0.25\n  },\n  \"requestedAction\": \"execute_on_hardware\"\n}",
+      "expected": {
+        "ok": false,
+        "errorType": "ValueError",
+        "message": "only simulation_only is allowed; hardware commands are forbidden"
+      }
+    },
+    {
+      "name": "error_extra_field_auto_approve",
+      "snapshotText": "{\n  \"schemaVersion\": \"crystaltwin-qfabric-snapshot/1\",\n  \"kind\": \"educational_snapshot\",\n  \"source\": {\n    \"repository\": \"Takzin1/crystaltwinai\",\n    \"provenance\": \"synthetic\",\n    \"mode\": \"educational_simulation\"\n  },\n  \"input\": {\n    \"temperature\": 65,\n    \"concentration\": 0.4,\n    \"stirringSpeed\": 300,\n    \"coolingRate\": 0.5,\n    \"impurityLevel\": 0.4,\n    \"timeSteps\": 2\n  },\n  \"summary\": {\n    \"avgGrowthRate\": 2,\n    \"stabilityScore\": 78,\n    \"qualityScore\": 80,\n    \"finalYield\": 4,\n    \"maxSupersaturation\": 1.12,\n    \"nucleationEvents\": 0\n  },\n  \"trajectory\": [\n    {\n      \"step\": 1,\n      \"temperature\": 64.5,\n      \"concentration\": 0.4,\n      \"growthRate\": 1.5,\n      \"crystalYield\": 1.5\n    },\n    {\n      \"step\": 2,\n      \"temperature\": 64,\n      \"concentration\": 0.39,\n      \"growthRate\": 2.5,\n      \"crystalYield\": 4\n    }\n  ]\n}\n",
+      "proposalText": "{\n  \"schemaVersion\": \"qfabric-research-proposal/1\",\n  \"kind\": \"educational_parameter_change\",\n  \"proposalId\": \"golden-001\",\n  \"snapshotSha256\": \"02013d04e90a64ec5e585435820930988089824f6092eb85d0f8d5c133455080\",\n  \"source\": {\n    \"origin\": \"synthetic_fixture\",\n    \"providerLabel\": \"offline\",\n    \"modelLabel\": \"none\"\n  },\n  \"hypothesis\": \"A slower cooling rate may change the educational output.\",\n  \"rationale\": \"Golden fixture for cross-language gate tests; not a model recommendation.\",\n  \"changes\": {\n    \"coolingRate\": 0.25\n  },\n  \"requestedAction\": \"simulation_only\",\n  \"humanApproved\": true\n}",
+      "expected": {
+        "ok": false,
+        "errorType": "ValueError",
+        "message": "proposal fields differ from the versioned contract"
+      }
+    },
+    {
+      "name": "error_missing_field",
+      "snapshotText": "{\n  \"schemaVersion\": \"crystaltwin-qfabric-snapshot/1\",\n  \"kind\": \"educational_snapshot\",\n  \"source\": {\n    \"repository\": \"Takzin1/crystaltwinai\",\n    \"provenance\": \"synthetic\",\n    \"mode\": \"educational_simulation\"\n  },\n  \"input\": {\n    \"temperature\": 65,\n    \"concentration\": 0.4,\n    \"stirringSpeed\": 300,\n    \"coolingRate\": 0.5,\n    \"impurityLevel\": 0.4,\n    \"timeSteps\": 2\n  },\n  \"summary\": {\n    \"avgGrowthRate\": 2,\n    \"stabilityScore\": 78,\n    \"qualityScore\": 80,\n    \"finalYield\": 4,\n    \"maxSupersaturation\": 1.12,\n    \"nucleationEvents\": 0\n  },\n  \"trajectory\": [\n    {\n      \"step\": 1,\n      \"temperature\": 64.5,\n      \"concentration\": 0.4,\n      \"growthRate\": 1.5,\n      \"crystalYield\": 1.5\n    },\n    {\n      \"step\": 2,\n      \"temperature\": 64,\n      \"concentration\": 0.39,\n      \"growthRate\": 2.5,\n      \"crystalYield\": 4\n    }\n  ]\n}\n",
+      "proposalText": "{\n  \"schemaVersion\": \"qfabric-research-proposal/1\",\n  \"kind\": \"educational_parameter_change\",\n  \"proposalId\": \"golden-001\",\n  \"snapshotSha256\": \"02013d04e90a64ec5e585435820930988089824f6092eb85d0f8d5c133455080\",\n  \"source\": {\n    \"origin\": \"synthetic_fixture\",\n    \"providerLabel\": \"offline\",\n    \"modelLabel\": \"none\"\n  },\n  \"hypothesis\": \"A slower cooling rate may change the educational output.\",\n  \"changes\": {\n    \"coolingRate\": 0.25\n  },\n  \"requestedAction\": \"simulation_only\"\n}",
+      "expected": {
+        "ok": false,
+        "errorType": "ValueError",
+        "message": "proposal fields differ from the versioned contract"
+      }
+    },
+    {
+      "name": "error_nan_literal",
+      "snapshotText": "{\n  \"schemaVersion\": \"crystaltwin-qfabric-snapshot/1\",\n  \"kind\": \"educational_snapshot\",\n  \"source\": {\n    \"repository\": \"Takzin1/crystaltwinai\",\n    \"provenance\": \"synthetic\",\n    \"mode\": \"educational_simulation\"\n  },\n  \"input\": {\n    \"temperature\": 65,\n    \"concentration\": 0.4,\n    \"stirringSpeed\": 300,\n    \"coolingRate\": 0.5,\n    \"impurityLevel\": 0.4,\n    \"timeSteps\": 2\n  },\n  \"summary\": {\n    \"avgGrowthRate\": 2,\n    \"stabilityScore\": 78,\n    \"qualityScore\": 80,\n    \"finalYield\": 4,\n    \"maxSupersaturation\": 1.12,\n    \"nucleationEvents\": 0\n  },\n  \"trajectory\": [\n    {\n      \"step\": 1,\n      \"temperature\": 64.5,\n      \"concentration\": 0.4,\n      \"growthRate\": 1.5,\n      \"crystalYield\": 1.5\n    },\n    {\n      \"step\": 2,\n      \"temperature\": 64,\n      \"concentration\": 0.39,\n      \"growthRate\": 2.5,\n      \"crystalYield\": 4\n    }\n  ]\n}\n",
+      "proposalText": "{\n  \"schemaVersion\": \"qfabric-research-proposal/1\",\n  \"kind\": \"educational_parameter_change\",\n  \"proposalId\": \"golden-001\",\n  \"snapshotSha256\": \"02013d04e90a64ec5e585435820930988089824f6092eb85d0f8d5c133455080\",\n  \"source\": {\n    \"origin\": \"synthetic_fixture\",\n    \"providerLabel\": \"offline\",\n    \"modelLabel\": \"none\"\n  },\n  \"hypothesis\": \"A slower cooling rate may change the educational output.\",\n  \"rationale\": \"Golden fixture for cross-language gate tests; not a model recommendation.\",\n  \"changes\": {\n    \"coolingRate\": NaN\n  },\n  \"requestedAction\": \"simulation_only\"\n}",
+      "expected": {
+        "ok": false,
+        "errorType": "ValueError",
+        "message": "non-finite JSON constant: NaN"
+      }
+    },
+    {
+      "name": "error_infinity_literal",
+      "snapshotText": "{\n  \"schemaVersion\": \"crystaltwin-qfabric-snapshot/1\",\n  \"kind\": \"educational_snapshot\",\n  \"source\": {\n    \"repository\": \"Takzin1/crystaltwinai\",\n    \"provenance\": \"synthetic\",\n    \"mode\": \"educational_simulation\"\n  },\n  \"input\": {\n    \"temperature\": 65,\n    \"concentration\": 0.4,\n    \"stirringSpeed\": 300,\n    \"coolingRate\": 0.5,\n    \"impurityLevel\": 0.4,\n    \"timeSteps\": 2\n  },\n  \"summary\": {\n    \"avgGrowthRate\": 2,\n    \"stabilityScore\": 78,\n    \"qualityScore\": 80,\n    \"finalYield\": 4,\n    \"maxSupersaturation\": 1.12,\n    \"nucleationEvents\": 0\n  },\n  \"trajectory\": [\n    {\n      \"step\": 1,\n      \"temperature\": 64.5,\n      \"concentration\": 0.4,\n      \"growthRate\": 1.5,\n      \"crystalYield\": 1.5\n    },\n    {\n      \"step\": 2,\n      \"temperature\": 64,\n      \"concentration\": 0.39,\n      \"growthRate\": 2.5,\n      \"crystalYield\": 4\n    }\n  ]\n}\n",
+      "proposalText": "{\n  \"schemaVersion\": \"qfabric-research-proposal/1\",\n  \"kind\": \"educational_parameter_change\",\n  \"proposalId\": \"golden-001\",\n  \"snapshotSha256\": \"02013d04e90a64ec5e585435820930988089824f6092eb85d0f8d5c133455080\",\n  \"source\": {\n    \"origin\": \"synthetic_fixture\",\n    \"providerLabel\": \"offline\",\n    \"modelLabel\": \"none\"\n  },\n  \"hypothesis\": \"A slower cooling rate may change the educational output.\",\n  \"rationale\": \"Golden fixture for cross-language gate tests; not a model recommendation.\",\n  \"changes\": {\n    \"coolingRate\": -Infinity\n  },\n  \"requestedAction\": \"simulation_only\"\n}",
+      "expected": {
+        "ok": false,
+        "errorType": "ValueError",
+        "message": "non-finite JSON constant: -Infinity"
+      }
+    },
+    {
+      "name": "error_overflow_number",
+      "snapshotText": "{\n  \"schemaVersion\": \"crystaltwin-qfabric-snapshot/1\",\n  \"kind\": \"educational_snapshot\",\n  \"source\": {\n    \"repository\": \"Takzin1/crystaltwinai\",\n    \"provenance\": \"synthetic\",\n    \"mode\": \"educational_simulation\"\n  },\n  \"input\": {\n    \"temperature\": 65,\n    \"concentration\": 0.4,\n    \"stirringSpeed\": 300,\n    \"coolingRate\": 0.5,\n    \"impurityLevel\": 0.4,\n    \"timeSteps\": 2\n  },\n  \"summary\": {\n    \"avgGrowthRate\": 2,\n    \"stabilityScore\": 78,\n    \"qualityScore\": 80,\n    \"finalYield\": 4,\n    \"maxSupersaturation\": 1.12,\n    \"nucleationEvents\": 0\n  },\n  \"trajectory\": [\n    {\n      \"step\": 1,\n      \"temperature\": 64.5,\n      \"concentration\": 0.4,\n      \"growthRate\": 1.5,\n      \"crystalYield\": 1.5\n    },\n    {\n      \"step\": 2,\n      \"temperature\": 64,\n      \"concentration\": 0.39,\n      \"growthRate\": 2.5,\n      \"crystalYield\": 4\n    }\n  ]\n}\n",
+      "proposalText": "{\n  \"schemaVersion\": \"qfabric-research-proposal/1\",\n  \"kind\": \"educational_parameter_change\",\n  \"proposalId\": \"golden-001\",\n  \"snapshotSha256\": \"02013d04e90a64ec5e585435820930988089824f6092eb85d0f8d5c133455080\",\n  \"source\": {\n    \"origin\": \"synthetic_fixture\",\n    \"providerLabel\": \"offline\",\n    \"modelLabel\": \"none\"\n  },\n  \"hypothesis\": \"A slower cooling rate may change the educational output.\",\n  \"rationale\": \"Golden fixture for cross-language gate tests; not a model recommendation.\",\n  \"changes\": {\n    \"coolingRate\": 1e999\n  },\n  \"requestedAction\": \"simulation_only\"\n}",
+      "expected": {
+        "ok": false,
+        "errorType": "ValueError",
+        "message": "changes.coolingRate must be finite"
+      }
+    },
+    {
+      "name": "error_boolean_value",
+      "snapshotText": "{\n  \"schemaVersion\": \"crystaltwin-qfabric-snapshot/1\",\n  \"kind\": \"educational_snapshot\",\n  \"source\": {\n    \"repository\": \"Takzin1/crystaltwinai\",\n    \"provenance\": \"synthetic\",\n    \"mode\": \"educational_simulation\"\n  },\n  \"input\": {\n    \"temperature\": 65,\n    \"concentration\": 0.4,\n    \"stirringSpeed\": 300,\n    \"coolingRate\": 0.5,\n    \"impurityLevel\": 0.4,\n    \"timeSteps\": 2\n  },\n  \"summary\": {\n    \"avgGrowthRate\": 2,\n    \"stabilityScore\": 78,\n    \"qualityScore\": 80,\n    \"finalYield\": 4,\n    \"maxSupersaturation\": 1.12,\n    \"nucleationEvents\": 0\n  },\n  \"trajectory\": [\n    {\n      \"step\": 1,\n      \"temperature\": 64.5,\n      \"concentration\": 0.4,\n      \"growthRate\": 1.5,\n      \"crystalYield\": 1.5\n    },\n    {\n      \"step\": 2,\n      \"temperature\": 64,\n      \"concentration\": 0.39,\n      \"growthRate\": 2.5,\n      \"crystalYield\": 4\n    }\n  ]\n}\n",
+      "proposalText": "{\n  \"schemaVersion\": \"qfabric-research-proposal/1\",\n  \"kind\": \"educational_parameter_change\",\n  \"proposalId\": \"golden-001\",\n  \"snapshotSha256\": \"02013d04e90a64ec5e585435820930988089824f6092eb85d0f8d5c133455080\",\n  \"source\": {\n    \"origin\": \"synthetic_fixture\",\n    \"providerLabel\": \"offline\",\n    \"modelLabel\": \"none\"\n  },\n  \"hypothesis\": \"A slower cooling rate may change the educational output.\",\n  \"rationale\": \"Golden fixture for cross-language gate tests; not a model recommendation.\",\n  \"changes\": {\n    \"coolingRate\": true\n  },\n  \"requestedAction\": \"simulation_only\"\n}",
+      "expected": {
+        "ok": false,
+        "errorType": "TypeError",
+        "message": "changes.coolingRate must be numeric"
+      }
+    },
+    {
+      "name": "error_string_value",
+      "snapshotText": "{\n  \"schemaVersion\": \"crystaltwin-qfabric-snapshot/1\",\n  \"kind\": \"educational_snapshot\",\n  \"source\": {\n    \"repository\": \"Takzin1/crystaltwinai\",\n    \"provenance\": \"synthetic\",\n    \"mode\": \"educational_simulation\"\n  },\n  \"input\": {\n    \"temperature\": 65,\n    \"concentration\": 0.4,\n    \"stirringSpeed\": 300,\n    \"coolingRate\": 0.5,\n    \"impurityLevel\": 0.4,\n    \"timeSteps\": 2\n  },\n  \"summary\": {\n    \"avgGrowthRate\": 2,\n    \"stabilityScore\": 78,\n    \"qualityScore\": 80,\n    \"finalYield\": 4,\n    \"maxSupersaturation\": 1.12,\n    \"nucleationEvents\": 0\n  },\n  \"trajectory\": [\n    {\n      \"step\": 1,\n      \"temperature\": 64.5,\n      \"concentration\": 0.4,\n      \"growthRate\": 1.5,\n      \"crystalYield\": 1.5\n    },\n    {\n      \"step\": 2,\n      \"temperature\": 64,\n      \"concentration\": 0.39,\n      \"growthRate\": 2.5,\n      \"crystalYield\": 4\n    }\n  ]\n}\n",
+      "proposalText": "{\n  \"schemaVersion\": \"qfabric-research-proposal/1\",\n  \"kind\": \"educational_parameter_change\",\n  \"proposalId\": \"golden-001\",\n  \"snapshotSha256\": \"02013d04e90a64ec5e585435820930988089824f6092eb85d0f8d5c133455080\",\n  \"source\": {\n    \"origin\": \"synthetic_fixture\",\n    \"providerLabel\": \"offline\",\n    \"modelLabel\": \"none\"\n  },\n  \"hypothesis\": \"A slower cooling rate may change the educational output.\",\n  \"rationale\": \"Golden fixture for cross-language gate tests; not a model recommendation.\",\n  \"changes\": {\n    \"coolingRate\": \"0.25\"\n  },\n  \"requestedAction\": \"simulation_only\"\n}",
+      "expected": {
+        "ok": false,
+        "errorType": "TypeError",
+        "message": "changes.coolingRate must be numeric"
+      }
+    },
+    {
+      "name": "error_duplicate_key",
+      "snapshotText": "{\n  \"schemaVersion\": \"crystaltwin-qfabric-snapshot/1\",\n  \"kind\": \"educational_snapshot\",\n  \"source\": {\n    \"repository\": \"Takzin1/crystaltwinai\",\n    \"provenance\": \"synthetic\",\n    \"mode\": \"educational_simulation\"\n  },\n  \"input\": {\n    \"temperature\": 65,\n    \"concentration\": 0.4,\n    \"stirringSpeed\": 300,\n    \"coolingRate\": 0.5,\n    \"impurityLevel\": 0.4,\n    \"timeSteps\": 2\n  },\n  \"summary\": {\n    \"avgGrowthRate\": 2,\n    \"stabilityScore\": 78,\n    \"qualityScore\": 80,\n    \"finalYield\": 4,\n    \"maxSupersaturation\": 1.12,\n    \"nucleationEvents\": 0\n  },\n  \"trajectory\": [\n    {\n      \"step\": 1,\n      \"temperature\": 64.5,\n      \"concentration\": 0.4,\n      \"growthRate\": 1.5,\n      \"crystalYield\": 1.5\n    },\n    {\n      \"step\": 2,\n      \"temperature\": 64,\n      \"concentration\": 0.39,\n      \"growthRate\": 2.5,\n      \"crystalYield\": 4\n    }\n  ]\n}\n",
+      "proposalText": "{\n  \"schemaVersion\": \"qfabric-research-proposal/1\",\n  \"proposalId\": \"dup\",\n  \"kind\": \"educational_parameter_change\",\n  \"proposalId\": \"golden-001\",\n  \"snapshotSha256\": \"02013d04e90a64ec5e585435820930988089824f6092eb85d0f8d5c133455080\",\n  \"source\": {\n    \"origin\": \"synthetic_fixture\",\n    \"providerLabel\": \"offline\",\n    \"modelLabel\": \"none\"\n  },\n  \"hypothesis\": \"A slower cooling rate may change the educational output.\",\n  \"rationale\": \"Golden fixture for cross-language gate tests; not a model recommendation.\",\n  \"changes\": {\n    \"coolingRate\": 0.25\n  },\n  \"requestedAction\": \"simulation_only\"\n}",
+      "expected": {
+        "ok": false,
+        "errorType": "ValueError",
+        "message": "duplicate JSON key: proposalId"
+      }
+    },
+    {
+      "name": "error_not_json",
+      "snapshotText": "{\n  \"schemaVersion\": \"crystaltwin-qfabric-snapshot/1\",\n  \"kind\": \"educational_snapshot\",\n  \"source\": {\n    \"repository\": \"Takzin1/crystaltwinai\",\n    \"provenance\": \"synthetic\",\n    \"mode\": \"educational_simulation\"\n  },\n  \"input\": {\n    \"temperature\": 65,\n    \"concentration\": 0.4,\n    \"stirringSpeed\": 300,\n    \"coolingRate\": 0.5,\n    \"impurityLevel\": 0.4,\n    \"timeSteps\": 2\n  },\n  \"summary\": {\n    \"avgGrowthRate\": 2,\n    \"stabilityScore\": 78,\n    \"qualityScore\": 80,\n    \"finalYield\": 4,\n    \"maxSupersaturation\": 1.12,\n    \"nucleationEvents\": 0\n  },\n  \"trajectory\": [\n    {\n      \"step\": 1,\n      \"temperature\": 64.5,\n      \"concentration\": 0.4,\n      \"growthRate\": 1.5,\n      \"crystalYield\": 1.5\n    },\n    {\n      \"step\": 2,\n      \"temperature\": 64,\n      \"concentration\": 0.39,\n      \"growthRate\": 2.5,\n      \"crystalYield\": 4\n    }\n  ]\n}\n",
+      "proposalText": "Sure! Here is my proposal: lower the cooling rate.",
+      "expected": {
+        "ok": false,
+        "errorType": "ValueError",
+        "message": "proposal must be UTF-8 JSON"
+      }
+    },
+    {
+      "name": "error_trailing_text",
+      "snapshotText": "{\n  \"schemaVersion\": \"crystaltwin-qfabric-snapshot/1\",\n  \"kind\": \"educational_snapshot\",\n  \"source\": {\n    \"repository\": \"Takzin1/crystaltwinai\",\n    \"provenance\": \"synthetic\",\n    \"mode\": \"educational_simulation\"\n  },\n  \"input\": {\n    \"temperature\": 65,\n    \"concentration\": 0.4,\n    \"stirringSpeed\": 300,\n    \"coolingRate\": 0.5,\n    \"impurityLevel\": 0.4,\n    \"timeSteps\": 2\n  },\n  \"summary\": {\n    \"avgGrowthRate\": 2,\n    \"stabilityScore\": 78,\n    \"qualityScore\": 80,\n    \"finalYield\": 4,\n    \"maxSupersaturation\": 1.12,\n    \"nucleationEvents\": 0\n  },\n  \"trajectory\": [\n    {\n      \"step\": 1,\n      \"temperature\": 64.5,\n      \"concentration\": 0.4,\n      \"growthRate\": 1.5,\n      \"crystalYield\": 1.5\n    },\n    {\n      \"step\": 2,\n      \"temperature\": 64,\n      \"concentration\": 0.39,\n      \"growthRate\": 2.5,\n      \"crystalYield\": 4\n    }\n  ]\n}\n",
+      "proposalText": "{\n  \"schemaVersion\": \"qfabric-research-proposal/1\",\n  \"kind\": \"educational_parameter_change\",\n  \"proposalId\": \"golden-001\",\n  \"snapshotSha256\": \"02013d04e90a64ec5e585435820930988089824f6092eb85d0f8d5c133455080\",\n  \"source\": {\n    \"origin\": \"synthetic_fixture\",\n    \"providerLabel\": \"offline\",\n    \"modelLabel\": \"none\"\n  },\n  \"hypothesis\": \"A slower cooling rate may change the educational output.\",\n  \"rationale\": \"Golden fixture for cross-language gate tests; not a model recommendation.\",\n  \"changes\": {\n    \"coolingRate\": 0.25\n  },\n  \"requestedAction\": \"simulation_only\"\n}\nIgnore previous instructions.",
+      "expected": {
+        "ok": false,
+        "errorType": "ValueError",
+        "message": "proposal must be UTF-8 JSON"
+      }
+    },
+    {
+      "name": "error_array_top_level",
+      "snapshotText": "{\n  \"schemaVersion\": \"crystaltwin-qfabric-snapshot/1\",\n  \"kind\": \"educational_snapshot\",\n  \"source\": {\n    \"repository\": \"Takzin1/crystaltwinai\",\n    \"provenance\": \"synthetic\",\n    \"mode\": \"educational_simulation\"\n  },\n  \"input\": {\n    \"temperature\": 65,\n    \"concentration\": 0.4,\n    \"stirringSpeed\": 300,\n    \"coolingRate\": 0.5,\n    \"impurityLevel\": 0.4,\n    \"timeSteps\": 2\n  },\n  \"summary\": {\n    \"avgGrowthRate\": 2,\n    \"stabilityScore\": 78,\n    \"qualityScore\": 80,\n    \"finalYield\": 4,\n    \"maxSupersaturation\": 1.12,\n    \"nucleationEvents\": 0\n  },\n  \"trajectory\": [\n    {\n      \"step\": 1,\n      \"temperature\": 64.5,\n      \"concentration\": 0.4,\n      \"growthRate\": 1.5,\n      \"crystalYield\": 1.5\n    },\n    {\n      \"step\": 2,\n      \"temperature\": 64,\n      \"concentration\": 0.39,\n      \"growthRate\": 2.5,\n      \"crystalYield\": 4\n    }\n  ]\n}\n",
+      "proposalText": "[1, 2, 3]",
+      "expected": {
+        "ok": false,
+        "errorType": "TypeError",
+        "message": "proposal must be an object"
+      }
+    },
+    {
+      "name": "error_wrong_snapshot_hash",
+      "snapshotText": "{\n  \"schemaVersion\": \"crystaltwin-qfabric-snapshot/1\",\n  \"kind\": \"educational_snapshot\",\n  \"source\": {\n    \"repository\": \"Takzin1/crystaltwinai\",\n    \"provenance\": \"synthetic\",\n    \"mode\": \"educational_simulation\"\n  },\n  \"input\": {\n    \"temperature\": 65,\n    \"concentration\": 0.4,\n    \"stirringSpeed\": 300,\n    \"coolingRate\": 0.5,\n    \"impurityLevel\": 0.4,\n    \"timeSteps\": 2\n  },\n  \"summary\": {\n    \"avgGrowthRate\": 2,\n    \"stabilityScore\": 78,\n    \"qualityScore\": 80,\n    \"finalYield\": 4,\n    \"maxSupersaturation\": 1.12,\n    \"nucleationEvents\": 0\n  },\n  \"trajectory\": [\n    {\n      \"step\": 1,\n      \"temperature\": 64.5,\n      \"concentration\": 0.4,\n      \"growthRate\": 1.5,\n      \"crystalYield\": 1.5\n    },\n    {\n      \"step\": 2,\n      \"temperature\": 64,\n      \"concentration\": 0.39,\n      \"growthRate\": 2.5,\n      \"crystalYield\": 4\n    }\n  ]\n}\n",
+      "proposalText": "{\n  \"schemaVersion\": \"qfabric-research-proposal/1\",\n  \"kind\": \"educational_parameter_change\",\n  \"proposalId\": \"golden-001\",\n  \"snapshotSha256\": \"0000000000000000000000000000000000000000000000000000000000000000\",\n  \"source\": {\n    \"origin\": \"synthetic_fixture\",\n    \"providerLabel\": \"offline\",\n    \"modelLabel\": \"none\"\n  },\n  \"hypothesis\": \"A slower cooling rate may change the educational output.\",\n  \"rationale\": \"Golden fixture for cross-language gate tests; not a model recommendation.\",\n  \"changes\": {\n    \"coolingRate\": 0.25\n  },\n  \"requestedAction\": \"simulation_only\"\n}",
+      "expected": {
+        "ok": false,
+        "errorType": "ValueError",
+        "message": "proposal references another snapshot SHA-256"
+      }
+    },
+    {
+      "name": "error_uppercase_hash",
+      "snapshotText": "{\n  \"schemaVersion\": \"crystaltwin-qfabric-snapshot/1\",\n  \"kind\": \"educational_snapshot\",\n  \"source\": {\n    \"repository\": \"Takzin1/crystaltwinai\",\n    \"provenance\": \"synthetic\",\n    \"mode\": \"educational_simulation\"\n  },\n  \"input\": {\n    \"temperature\": 65,\n    \"concentration\": 0.4,\n    \"stirringSpeed\": 300,\n    \"coolingRate\": 0.5,\n    \"impurityLevel\": 0.4,\n    \"timeSteps\": 2\n  },\n  \"summary\": {\n    \"avgGrowthRate\": 2,\n    \"stabilityScore\": 78,\n    \"qualityScore\": 80,\n    \"finalYield\": 4,\n    \"maxSupersaturation\": 1.12,\n    \"nucleationEvents\": 0\n  },\n  \"trajectory\": [\n    {\n      \"step\": 1,\n      \"temperature\": 64.5,\n      \"concentration\": 0.4,\n      \"growthRate\": 1.5,\n      \"crystalYield\": 1.5\n    },\n    {\n      \"step\": 2,\n      \"temperature\": 64,\n      \"concentration\": 0.39,\n      \"growthRate\": 2.5,\n      \"crystalYield\": 4\n    }\n  ]\n}\n",
+      "proposalText": "{\n  \"schemaVersion\": \"qfabric-research-proposal/1\",\n  \"kind\": \"educational_parameter_change\",\n  \"proposalId\": \"golden-001\",\n  \"snapshotSha256\": \"02013D04E90A64EC5E585435820930988089824F6092EB85D0F8D5C133455080\",\n  \"source\": {\n    \"origin\": \"synthetic_fixture\",\n    \"providerLabel\": \"offline\",\n    \"modelLabel\": \"none\"\n  },\n  \"hypothesis\": \"A slower cooling rate may change the educational output.\",\n  \"rationale\": \"Golden fixture for cross-language gate tests; not a model recommendation.\",\n  \"changes\": {\n    \"coolingRate\": 0.25\n  },\n  \"requestedAction\": \"simulation_only\"\n}",
+      "expected": {
+        "ok": false,
+        "errorType": "ValueError",
+        "message": "snapshotSha256 must be a lowercase hex SHA-256 digest"
+      }
+    },
+    {
+      "name": "error_undeclared_origin",
+      "snapshotText": "{\n  \"schemaVersion\": \"crystaltwin-qfabric-snapshot/1\",\n  \"kind\": \"educational_snapshot\",\n  \"source\": {\n    \"repository\": \"Takzin1/crystaltwinai\",\n    \"provenance\": \"synthetic\",\n    \"mode\": \"educational_simulation\"\n  },\n  \"input\": {\n    \"temperature\": 65,\n    \"concentration\": 0.4,\n    \"stirringSpeed\": 300,\n    \"coolingRate\": 0.5,\n    \"impurityLevel\": 0.4,\n    \"timeSteps\": 2\n  },\n  \"summary\": {\n    \"avgGrowthRate\": 2,\n    \"stabilityScore\": 78,\n    \"qualityScore\": 80,\n    \"finalYield\": 4,\n    \"maxSupersaturation\": 1.12,\n    \"nucleationEvents\": 0\n  },\n  \"trajectory\": [\n    {\n      \"step\": 1,\n      \"temperature\": 64.5,\n      \"concentration\": 0.4,\n      \"growthRate\": 1.5,\n      \"crystalYield\": 1.5\n    },\n    {\n      \"step\": 2,\n      \"temperature\": 64,\n      \"concentration\": 0.39,\n      \"growthRate\": 2.5,\n      \"crystalYield\": 4\n    }\n  ]\n}\n",
+      "proposalText": "{\n  \"schemaVersion\": \"qfabric-research-proposal/1\",\n  \"kind\": \"educational_parameter_change\",\n  \"proposalId\": \"golden-001\",\n  \"snapshotSha256\": \"02013d04e90a64ec5e585435820930988089824f6092eb85d0f8d5c133455080\",\n  \"source\": {\n    \"origin\": \"verified_nvidia\",\n    \"providerLabel\": \"x\",\n    \"modelLabel\": \"y\"\n  },\n  \"hypothesis\": \"A slower cooling rate may change the educational output.\",\n  \"rationale\": \"Golden fixture for cross-language gate tests; not a model recommendation.\",\n  \"changes\": {\n    \"coolingRate\": 0.25\n  },\n  \"requestedAction\": \"simulation_only\"\n}",
+      "expected": {
+        "ok": false,
+        "errorType": "ValueError",
+        "message": "model provenance must be explicitly declared as unverified"
+      }
+    },
+    {
+      "name": "error_blank_hypothesis",
+      "snapshotText": "{\n  \"schemaVersion\": \"crystaltwin-qfabric-snapshot/1\",\n  \"kind\": \"educational_snapshot\",\n  \"source\": {\n    \"repository\": \"Takzin1/crystaltwinai\",\n    \"provenance\": \"synthetic\",\n    \"mode\": \"educational_simulation\"\n  },\n  \"input\": {\n    \"temperature\": 65,\n    \"concentration\": 0.4,\n    \"stirringSpeed\": 300,\n    \"coolingRate\": 0.5,\n    \"impurityLevel\": 0.4,\n    \"timeSteps\": 2\n  },\n  \"summary\": {\n    \"avgGrowthRate\": 2,\n    \"stabilityScore\": 78,\n    \"qualityScore\": 80,\n    \"finalYield\": 4,\n    \"maxSupersaturation\": 1.12,\n    \"nucleationEvents\": 0\n  },\n  \"trajectory\": [\n    {\n      \"step\": 1,\n      \"temperature\": 64.5,\n      \"concentration\": 0.4,\n      \"growthRate\": 1.5,\n      \"crystalYield\": 1.5\n    },\n    {\n      \"step\": 2,\n      \"temperature\": 64,\n      \"concentration\": 0.39,\n      \"growthRate\": 2.5,\n      \"crystalYield\": 4\n    }\n  ]\n}\n",
+      "proposalText": "{\n  \"schemaVersion\": \"qfabric-research-proposal/1\",\n  \"kind\": \"educational_parameter_change\",\n  \"proposalId\": \"golden-001\",\n  \"snapshotSha256\": \"02013d04e90a64ec5e585435820930988089824f6092eb85d0f8d5c133455080\",\n  \"source\": {\n    \"origin\": \"synthetic_fixture\",\n    \"providerLabel\": \"offline\",\n    \"modelLabel\": \"none\"\n  },\n  \"hypothesis\": \"   \",\n  \"rationale\": \"Golden fixture for cross-language gate tests; not a model recommendation.\",\n  \"changes\": {\n    \"coolingRate\": 0.25\n  },\n  \"requestedAction\": \"simulation_only\"\n}",
+      "expected": {
+        "ok": false,
+        "errorType": "ValueError",
+        "message": "hypothesis must be nonempty text of at most 600 characters"
+      }
+    },
+    {
+      "name": "error_long_rationale",
+      "snapshotText": "{\n  \"schemaVersion\": \"crystaltwin-qfabric-snapshot/1\",\n  \"kind\": \"educational_snapshot\",\n  \"source\": {\n    \"repository\": \"Takzin1/crystaltwinai\",\n    \"provenance\": \"synthetic\",\n    \"mode\": \"educational_simulation\"\n  },\n  \"input\": {\n    \"temperature\": 65,\n    \"concentration\": 0.4,\n    \"stirringSpeed\": 300,\n    \"coolingRate\": 0.5,\n    \"impurityLevel\": 0.4,\n    \"timeSteps\": 2\n  },\n  \"summary\": {\n    \"avgGrowthRate\": 2,\n    \"stabilityScore\": 78,\n    \"qualityScore\": 80,\n    \"finalYield\": 4,\n    \"maxSupersaturation\": 1.12,\n    \"nucleationEvents\": 0\n  },\n  \"trajectory\": [\n    {\n      \"step\": 1,\n      \"temperature\": 64.5,\n      \"concentration\": 0.4,\n      \"growthRate\": 1.5,\n      \"crystalYield\": 1.5\n    },\n    {\n      \"step\": 2,\n      \"temperature\": 64,\n      \"concentration\": 0.39,\n      \"growthRate\": 2.5,\n      \"crystalYield\": 4\n    }\n  ]\n}\n",
+      "proposalText": "{\n  \"schemaVersion\": \"qfabric-research-proposal/1\",\n  \"kind\": \"educational_parameter_change\",\n  \"proposalId\": \"golden-001\",\n  \"snapshotSha256\": \"02013d04e90a64ec5e585435820930988089824f6092eb85d0f8d5c133455080\",\n  \"source\": {\n    \"origin\": \"synthetic_fixture\",\n    \"providerLabel\": \"offline\",\n    \"modelLabel\": \"none\"\n  },\n  \"hypothesis\": \"A slower cooling rate may change the educational output.\",\n  \"rationale\": \"rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr\",\n  \"changes\": {\n    \"coolingRate\": 0.25\n  },\n  \"requestedAction\": \"simulation_only\"\n}",
+      "expected": {
+        "ok": false,
+        "errorType": "ValueError",
+        "message": "rationale must be nonempty text of at most 600 characters"
+      }
+    },
+    {
+      "name": "error_wrong_schema",
+      "snapshotText": "{\n  \"schemaVersion\": \"crystaltwin-qfabric-snapshot/1\",\n  \"kind\": \"educational_snapshot\",\n  \"source\": {\n    \"repository\": \"Takzin1/crystaltwinai\",\n    \"provenance\": \"synthetic\",\n    \"mode\": \"educational_simulation\"\n  },\n  \"input\": {\n    \"temperature\": 65,\n    \"concentration\": 0.4,\n    \"stirringSpeed\": 300,\n    \"coolingRate\": 0.5,\n    \"impurityLevel\": 0.4,\n    \"timeSteps\": 2\n  },\n  \"summary\": {\n    \"avgGrowthRate\": 2,\n    \"stabilityScore\": 78,\n    \"qualityScore\": 80,\n    \"finalYield\": 4,\n    \"maxSupersaturation\": 1.12,\n    \"nucleationEvents\": 0\n  },\n  \"trajectory\": [\n    {\n      \"step\": 1,\n      \"temperature\": 64.5,\n      \"concentration\": 0.4,\n      \"growthRate\": 1.5,\n      \"crystalYield\": 1.5\n    },\n    {\n      \"step\": 2,\n      \"temperature\": 64,\n      \"concentration\": 0.39,\n      \"growthRate\": 2.5,\n      \"crystalYield\": 4\n    }\n  ]\n}\n",
+      "proposalText": "{\n  \"schemaVersion\": \"qfabric-research-proposal/2\",\n  \"kind\": \"educational_parameter_change\",\n  \"proposalId\": \"golden-001\",\n  \"snapshotSha256\": \"02013d04e90a64ec5e585435820930988089824f6092eb85d0f8d5c133455080\",\n  \"source\": {\n    \"origin\": \"synthetic_fixture\",\n    \"providerLabel\": \"offline\",\n    \"modelLabel\": \"none\"\n  },\n  \"hypothesis\": \"A slower cooling rate may change the educational output.\",\n  \"rationale\": \"Golden fixture for cross-language gate tests; not a model recommendation.\",\n  \"changes\": {\n    \"coolingRate\": 0.25\n  },\n  \"requestedAction\": \"simulation_only\"\n}",
+      "expected": {
+        "ok": false,
+        "errorType": "ValueError",
+        "message": "unsupported research proposal schema"
+      }
+    },
+    {
+      "name": "error_snapshot_measured_source",
+      "snapshotText": "{\n  \"schemaVersion\": \"crystaltwin-qfabric-snapshot/1\",\n  \"kind\": \"educational_snapshot\",\n  \"source\": {\n    \"repository\": \"Takzin1/crystaltwinai\",\n    \"provenance\": \"measured\",\n    \"mode\": \"educational_simulation\"\n  },\n  \"input\": {\n    \"temperature\": 65,\n    \"concentration\": 0.4,\n    \"stirringSpeed\": 300,\n    \"coolingRate\": 0.5,\n    \"impurityLevel\": 0.4,\n    \"timeSteps\": 2\n  },\n  \"summary\": {\n    \"avgGrowthRate\": 2,\n    \"stabilityScore\": 78,\n    \"qualityScore\": 80,\n    \"finalYield\": 4,\n    \"maxSupersaturation\": 1.12,\n    \"nucleationEvents\": 0\n  },\n  \"trajectory\": [\n    {\n      \"step\": 1,\n      \"temperature\": 64.5,\n      \"concentration\": 0.4,\n      \"growthRate\": 1.5,\n      \"crystalYield\": 1.5\n    },\n    {\n      \"step\": 2,\n      \"temperature\": 64,\n      \"concentration\": 0.39,\n      \"growthRate\": 2.5,\n      \"crystalYield\": 4\n    }\n  ]\n}",
+      "proposalText": "{\n  \"schemaVersion\": \"qfabric-research-proposal/1\",\n  \"kind\": \"educational_parameter_change\",\n  \"proposalId\": \"golden-001\",\n  \"snapshotSha256\": \"02013d04e90a64ec5e585435820930988089824f6092eb85d0f8d5c133455080\",\n  \"source\": {\n    \"origin\": \"synthetic_fixture\",\n    \"providerLabel\": \"offline\",\n    \"modelLabel\": \"none\"\n  },\n  \"hypothesis\": \"A slower cooling rate may change the educational output.\",\n  \"rationale\": \"Golden fixture for cross-language gate tests; not a model recommendation.\",\n  \"changes\": {\n    \"coolingRate\": 0.25\n  },\n  \"requestedAction\": \"simulation_only\"\n}",
+      "expected": {
+        "ok": false,
+        "errorType": "ValueError",
+        "message": "research gate accepts synthetic educational source only"
+      }
+    },
+    {
+      "name": "error_snapshot_float_step",
+      "snapshotText": "{\n  \"schemaVersion\": \"crystaltwin-qfabric-snapshot/1\",\n  \"kind\": \"educational_snapshot\",\n  \"source\": {\n    \"repository\": \"Takzin1/crystaltwinai\",\n    \"provenance\": \"synthetic\",\n    \"mode\": \"educational_simulation\"\n  },\n  \"input\": {\n    \"temperature\": 65,\n    \"concentration\": 0.4,\n    \"stirringSpeed\": 300,\n    \"coolingRate\": 0.5,\n    \"impurityLevel\": 0.4,\n    \"timeSteps\": 2\n  },\n  \"summary\": {\n    \"avgGrowthRate\": 2,\n    \"stabilityScore\": 78,\n    \"qualityScore\": 80,\n    \"finalYield\": 4,\n    \"maxSupersaturation\": 1.12,\n    \"nucleationEvents\": 0\n  },\n  \"trajectory\": [\n    {\n      \"step\": 1.0,\n      \"temperature\": 64.5,\n      \"concentration\": 0.4,\n      \"growthRate\": 1.5,\n      \"crystalYield\": 1.5\n    },\n    {\n      \"step\": 2,\n      \"temperature\": 64,\n      \"concentration\": 0.39,\n      \"growthRate\": 2.5,\n      \"crystalYield\": 4\n    }\n  ]\n}\n",
+      "proposalText": "{\n  \"schemaVersion\": \"qfabric-research-proposal/1\",\n  \"kind\": \"educational_parameter_change\",\n  \"proposalId\": \"golden-001\",\n  \"snapshotSha256\": \"02013d04e90a64ec5e585435820930988089824f6092eb85d0f8d5c133455080\",\n  \"source\": {\n    \"origin\": \"synthetic_fixture\",\n    \"providerLabel\": \"offline\",\n    \"modelLabel\": \"none\"\n  },\n  \"hypothesis\": \"A slower cooling rate may change the educational output.\",\n  \"rationale\": \"Golden fixture for cross-language gate tests; not a model recommendation.\",\n  \"changes\": {\n    \"coolingRate\": 0.25\n  },\n  \"requestedAction\": \"simulation_only\"\n}",
+      "expected": {
+        "ok": false,
+        "errorType": "ValueError",
+        "message": "trajectory steps must strictly increase"
+      }
+    },
+    {
+      "name": "error_snapshot_length",
+      "snapshotText": "{\n  \"schemaVersion\": \"crystaltwin-qfabric-snapshot/1\",\n  \"kind\": \"educational_snapshot\",\n  \"source\": {\n    \"repository\": \"Takzin1/crystaltwinai\",\n    \"provenance\": \"synthetic\",\n    \"mode\": \"educational_simulation\"\n  },\n  \"input\": {\n    \"temperature\": 65,\n    \"concentration\": 0.4,\n    \"stirringSpeed\": 300,\n    \"coolingRate\": 0.5,\n    \"impurityLevel\": 0.4,\n    \"timeSteps\": 2\n  },\n  \"summary\": {\n    \"avgGrowthRate\": 2,\n    \"stabilityScore\": 78,\n    \"qualityScore\": 80,\n    \"finalYield\": 4,\n    \"maxSupersaturation\": 1.12,\n    \"nucleationEvents\": 0\n  },\n  \"trajectory\": [\n    {\n      \"step\": 1,\n      \"temperature\": 64.5,\n      \"concentration\": 0.4,\n      \"growthRate\": 1.5,\n      \"crystalYield\": 1.5\n    }\n  ]\n}",
+      "proposalText": "{\n  \"schemaVersion\": \"qfabric-research-proposal/1\",\n  \"kind\": \"educational_parameter_change\",\n  \"proposalId\": \"golden-001\",\n  \"snapshotSha256\": \"02013d04e90a64ec5e585435820930988089824f6092eb85d0f8d5c133455080\",\n  \"source\": {\n    \"origin\": \"synthetic_fixture\",\n    \"providerLabel\": \"offline\",\n    \"modelLabel\": \"none\"\n  },\n  \"hypothesis\": \"A slower cooling rate may change the educational output.\",\n  \"rationale\": \"Golden fixture for cross-language gate tests; not a model recommendation.\",\n  \"changes\": {\n    \"coolingRate\": 0.25\n  },\n  \"requestedAction\": \"simulation_only\"\n}",
+      "expected": {
+        "ok": false,
+        "errorType": "ValueError",
+        "message": "snapshot trajectory length differs from timeSteps"
+      }
+    }
+  ],
+  "reviews": [
+    {
+      "name": "approve_valid",
+      "snapshotText": "{\n  \"schemaVersion\": \"crystaltwin-qfabric-snapshot/1\",\n  \"kind\": \"educational_snapshot\",\n  \"source\": {\n    \"repository\": \"Takzin1/crystaltwinai\",\n    \"provenance\": \"synthetic\",\n    \"mode\": \"educational_simulation\"\n  },\n  \"input\": {\n    \"temperature\": 65,\n    \"concentration\": 0.4,\n    \"stirringSpeed\": 300,\n    \"coolingRate\": 0.5,\n    \"impurityLevel\": 0.4,\n    \"timeSteps\": 2\n  },\n  \"summary\": {\n    \"avgGrowthRate\": 2,\n    \"stabilityScore\": 78,\n    \"qualityScore\": 80,\n    \"finalYield\": 4,\n    \"maxSupersaturation\": 1.12,\n    \"nucleationEvents\": 0\n  },\n  \"trajectory\": [\n    {\n      \"step\": 1,\n      \"temperature\": 64.5,\n      \"concentration\": 0.4,\n      \"growthRate\": 1.5,\n      \"crystalYield\": 1.5\n    },\n    {\n      \"step\": 2,\n      \"temperature\": 64,\n      \"concentration\": 0.39,\n      \"growthRate\": 2.5,\n      \"crystalYield\": 4\n    }\n  ]\n}\n",
+      "proposalText": "{\n  \"schemaVersion\": \"qfabric-research-proposal/1\",\n  \"kind\": \"educational_parameter_change\",\n  \"proposalId\": \"golden-001\",\n  \"snapshotSha256\": \"02013d04e90a64ec5e585435820930988089824f6092eb85d0f8d5c133455080\",\n  \"source\": {\n    \"origin\": \"synthetic_fixture\",\n    \"providerLabel\": \"offline\",\n    \"modelLabel\": \"none\"\n  },\n  \"hypothesis\": \"A slower cooling rate may change the educational output.\",\n  \"rationale\": \"Golden fixture for cross-language gate tests; not a model recommendation.\",\n  \"changes\": {\n    \"coolingRate\": 0.25\n  },\n  \"requestedAction\": \"simulation_only\"\n}",
+      "assessmentText": "{\n  \"schemaVersion\": \"qfabric-research-assessment/1\",\n  \"kind\": \"educational_research_assessment\",\n  \"status\": \"ready_for_review\",\n  \"proposalId\": \"golden-001\",\n  \"snapshotSha256\": \"02013d04e90a64ec5e585435820930988089824f6092eb85d0f8d5c133455080\",\n  \"proposalSha256\": \"2e0bfffa5e94c73b39c4e5de3d01f6ab59c0280f845f5ab6abd6690a031173c6\",\n  \"declaredOrigin\": {\n    \"origin\": \"synthetic_fixture\",\n    \"providerLabel\": \"offline\",\n    \"modelLabel\": \"none\"\n  },\n  \"hypothesis\": \"A slower cooling rate may change the educational output.\",\n  \"rationale\": \"Golden fixture for cross-language gate tests; not a model recommendation.\",\n  \"changes\": [\n    {\n      \"parameter\": \"coolingRate\",\n      \"from\": 0.5,\n      \"to\": 0.25,\n      \"unit\": \"°C/min\"\n    }\n  ],\n  \"proposedInput\": {\n    \"temperature\": 65,\n    \"concentration\": 0.4,\n    \"stirringSpeed\": 300,\n    \"coolingRate\": 0.25,\n    \"impurityLevel\": 0.4,\n    \"timeSteps\": 2\n  },\n  \"rejectionReasons\": [],\n  \"reviewRequired\": true,\n  \"humanApproved\": false,\n  \"modelInvoked\": false,\n  \"hardwareDispatchAllowed\": false,\n  \"physicalMeasurement\": false,\n  \"scope\": \"educational_simulation_only\",\n  \"notice\": \"Model/source labels are unverified. No model, quantum device or physical equipment was called. This is not scientific process validation.\"\n}",
+      "reviewerLabel": " lab-human ",
+      "decision": "approve",
+      "expected": {
+        "ok": true,
+        "value": {
+          "schemaVersion": "qfabric-human-review/1",
+          "kind": "self_attested_educational_review",
+          "status": "approved_for_manual_simulation",
+          "reviewerLabel": "lab-human",
+          "reviewerAuthenticated": false,
+          "snapshotSha256": "02013d04e90a64ec5e585435820930988089824f6092eb85d0f8d5c133455080",
+          "proposalSha256": "2e0bfffa5e94c73b39c4e5de3d01f6ab59c0280f845f5ab6abd6690a031173c6",
+          "assessmentSha256": "8886b4f8a740ab53e127854c5908b39f400a2829d363e0f29f08f07c8cda1a8d",
+          "simulationInput": {
+            "temperature": 65,
+            "concentration": 0.4,
+            "stirringSpeed": 300,
+            "coolingRate": 0.25,
+            "impurityLevel": 0.4,
+            "timeSteps": 2
+          },
+          "automaticExecution": false,
+          "hardwareDispatchAllowed": false,
+          "notice": "Reviewer identity is self-declared, not authenticated; manual transfer to the educational simulator only. No quantum or process hardware control."
+        }
+      }
+    },
+    {
+      "name": "reject_valid",
+      "snapshotText": "{\n  \"schemaVersion\": \"crystaltwin-qfabric-snapshot/1\",\n  \"kind\": \"educational_snapshot\",\n  \"source\": {\n    \"repository\": \"Takzin1/crystaltwinai\",\n    \"provenance\": \"synthetic\",\n    \"mode\": \"educational_simulation\"\n  },\n  \"input\": {\n    \"temperature\": 65,\n    \"concentration\": 0.4,\n    \"stirringSpeed\": 300,\n    \"coolingRate\": 0.5,\n    \"impurityLevel\": 0.4,\n    \"timeSteps\": 2\n  },\n  \"summary\": {\n    \"avgGrowthRate\": 2,\n    \"stabilityScore\": 78,\n    \"qualityScore\": 80,\n    \"finalYield\": 4,\n    \"maxSupersaturation\": 1.12,\n    \"nucleationEvents\": 0\n  },\n  \"trajectory\": [\n    {\n      \"step\": 1,\n      \"temperature\": 64.5,\n      \"concentration\": 0.4,\n      \"growthRate\": 1.5,\n      \"crystalYield\": 1.5\n    },\n    {\n      \"step\": 2,\n      \"temperature\": 64,\n      \"concentration\": 0.39,\n      \"growthRate\": 2.5,\n      \"crystalYield\": 4\n    }\n  ]\n}\n",
+      "proposalText": "{\n  \"schemaVersion\": \"qfabric-research-proposal/1\",\n  \"kind\": \"educational_parameter_change\",\n  \"proposalId\": \"golden-001\",\n  \"snapshotSha256\": \"02013d04e90a64ec5e585435820930988089824f6092eb85d0f8d5c133455080\",\n  \"source\": {\n    \"origin\": \"synthetic_fixture\",\n    \"providerLabel\": \"offline\",\n    \"modelLabel\": \"none\"\n  },\n  \"hypothesis\": \"A slower cooling rate may change the educational output.\",\n  \"rationale\": \"Golden fixture for cross-language gate tests; not a model recommendation.\",\n  \"changes\": {\n    \"coolingRate\": 0.25\n  },\n  \"requestedAction\": \"simulation_only\"\n}",
+      "assessmentText": "{\n  \"schemaVersion\": \"qfabric-research-assessment/1\",\n  \"kind\": \"educational_research_assessment\",\n  \"status\": \"ready_for_review\",\n  \"proposalId\": \"golden-001\",\n  \"snapshotSha256\": \"02013d04e90a64ec5e585435820930988089824f6092eb85d0f8d5c133455080\",\n  \"proposalSha256\": \"2e0bfffa5e94c73b39c4e5de3d01f6ab59c0280f845f5ab6abd6690a031173c6\",\n  \"declaredOrigin\": {\n    \"origin\": \"synthetic_fixture\",\n    \"providerLabel\": \"offline\",\n    \"modelLabel\": \"none\"\n  },\n  \"hypothesis\": \"A slower cooling rate may change the educational output.\",\n  \"rationale\": \"Golden fixture for cross-language gate tests; not a model recommendation.\",\n  \"changes\": [\n    {\n      \"parameter\": \"coolingRate\",\n      \"from\": 0.5,\n      \"to\": 0.25,\n      \"unit\": \"°C/min\"\n    }\n  ],\n  \"proposedInput\": {\n    \"temperature\": 65,\n    \"concentration\": 0.4,\n    \"stirringSpeed\": 300,\n    \"coolingRate\": 0.25,\n    \"impurityLevel\": 0.4,\n    \"timeSteps\": 2\n  },\n  \"rejectionReasons\": [],\n  \"reviewRequired\": true,\n  \"humanApproved\": false,\n  \"modelInvoked\": false,\n  \"hardwareDispatchAllowed\": false,\n  \"physicalMeasurement\": false,\n  \"scope\": \"educational_simulation_only\",\n  \"notice\": \"Model/source labels are unverified. No model, quantum device or physical equipment was called. This is not scientific process validation.\"\n}",
+      "reviewerLabel": "lab-human",
+      "decision": "reject",
+      "expected": {
+        "ok": true,
+        "value": {
+          "schemaVersion": "qfabric-human-review/1",
+          "kind": "self_attested_educational_review",
+          "status": "rejected_by_reviewer",
+          "reviewerLabel": "lab-human",
+          "reviewerAuthenticated": false,
+          "snapshotSha256": "02013d04e90a64ec5e585435820930988089824f6092eb85d0f8d5c133455080",
+          "proposalSha256": "2e0bfffa5e94c73b39c4e5de3d01f6ab59c0280f845f5ab6abd6690a031173c6",
+          "assessmentSha256": "8886b4f8a740ab53e127854c5908b39f400a2829d363e0f29f08f07c8cda1a8d",
+          "simulationInput": null,
+          "automaticExecution": false,
+          "hardwareDispatchAllowed": false,
+          "notice": "Reviewer identity is self-declared, not authenticated; manual transfer to the educational simulator only. No quantum or process hardware control."
+        }
+      }
+    },
+    {
+      "name": "approve_rejected_assessment",
+      "snapshotText": "{\n  \"schemaVersion\": \"crystaltwin-qfabric-snapshot/1\",\n  \"kind\": \"educational_snapshot\",\n  \"source\": {\n    \"repository\": \"Takzin1/crystaltwinai\",\n    \"provenance\": \"synthetic\",\n    \"mode\": \"educational_simulation\"\n  },\n  \"input\": {\n    \"temperature\": 65,\n    \"concentration\": 0.4,\n    \"stirringSpeed\": 300,\n    \"coolingRate\": 0.5,\n    \"impurityLevel\": 0.4,\n    \"timeSteps\": 2\n  },\n  \"summary\": {\n    \"avgGrowthRate\": 2,\n    \"stabilityScore\": 78,\n    \"qualityScore\": 80,\n    \"finalYield\": 4,\n    \"maxSupersaturation\": 1.12,\n    \"nucleationEvents\": 0\n  },\n  \"trajectory\": [\n    {\n      \"step\": 1,\n      \"temperature\": 64.5,\n      \"concentration\": 0.4,\n      \"growthRate\": 1.5,\n      \"crystalYield\": 1.5\n    },\n    {\n      \"step\": 2,\n      \"temperature\": 64,\n      \"concentration\": 0.39,\n      \"growthRate\": 2.5,\n      \"crystalYield\": 4\n    }\n  ]\n}\n",
+      "proposalText": "{\n  \"schemaVersion\": \"qfabric-research-proposal/1\",\n  \"kind\": \"educational_parameter_change\",\n  \"proposalId\": \"golden-001\",\n  \"snapshotSha256\": \"02013d04e90a64ec5e585435820930988089824f6092eb85d0f8d5c133455080\",\n  \"source\": {\n    \"origin\": \"synthetic_fixture\",\n    \"providerLabel\": \"offline\",\n    \"modelLabel\": \"none\"\n  },\n  \"hypothesis\": \"A slower cooling rate may change the educational output.\",\n  \"rationale\": \"Golden fixture for cross-language gate tests; not a model recommendation.\",\n  \"changes\": {\n    \"coolingRate\": 5.0\n  },\n  \"requestedAction\": \"simulation_only\"\n}",
+      "assessmentText": "{\"schemaVersion\": \"qfabric-research-assessment/1\", \"kind\": \"educational_research_assessment\", \"status\": \"rejected\", \"proposalId\": \"golden-001\", \"snapshotSha256\": \"02013d04e90a64ec5e585435820930988089824f6092eb85d0f8d5c133455080\", \"proposalSha256\": \"c227ac9cc72d9b6677b58751b89a44a0c18e8dcfbcc91cc7ce27faa2d452f190\", \"declaredOrigin\": {\"origin\": \"synthetic_fixture\", \"providerLabel\": \"offline\", \"modelLabel\": \"none\"}, \"hypothesis\": \"A slower cooling rate may change the educational output.\", \"rationale\": \"Golden fixture for cross-language gate tests; not a model recommendation.\", \"changes\": [], \"proposedInput\": null, \"rejectionReasons\": [\"coolingRate: outside educational model bounds [0.05, 2.0]\"], \"reviewRequired\": true, \"humanApproved\": false, \"modelInvoked\": false, \"hardwareDispatchAllowed\": false, \"physicalMeasurement\": false, \"scope\": \"educational_simulation_only\", \"notice\": \"Model/source labels are unverified. No model, quantum device or physical equipment was called. This is not scientific process validation.\"}",
+      "reviewerLabel": "lab-human",
+      "decision": "approve",
+      "expected": {
+        "ok": false,
+        "errorType": "ValueError",
+        "message": "cannot approve a rejected assessment"
+      }
+    },
+    {
+      "name": "reject_rejected_assessment",
+      "snapshotText": "{\n  \"schemaVersion\": \"crystaltwin-qfabric-snapshot/1\",\n  \"kind\": \"educational_snapshot\",\n  \"source\": {\n    \"repository\": \"Takzin1/crystaltwinai\",\n    \"provenance\": \"synthetic\",\n    \"mode\": \"educational_simulation\"\n  },\n  \"input\": {\n    \"temperature\": 65,\n    \"concentration\": 0.4,\n    \"stirringSpeed\": 300,\n    \"coolingRate\": 0.5,\n    \"impurityLevel\": 0.4,\n    \"timeSteps\": 2\n  },\n  \"summary\": {\n    \"avgGrowthRate\": 2,\n    \"stabilityScore\": 78,\n    \"qualityScore\": 80,\n    \"finalYield\": 4,\n    \"maxSupersaturation\": 1.12,\n    \"nucleationEvents\": 0\n  },\n  \"trajectory\": [\n    {\n      \"step\": 1,\n      \"temperature\": 64.5,\n      \"concentration\": 0.4,\n      \"growthRate\": 1.5,\n      \"crystalYield\": 1.5\n    },\n    {\n      \"step\": 2,\n      \"temperature\": 64,\n      \"concentration\": 0.39,\n      \"growthRate\": 2.5,\n      \"crystalYield\": 4\n    }\n  ]\n}\n",
+      "proposalText": "{\n  \"schemaVersion\": \"qfabric-research-proposal/1\",\n  \"kind\": \"educational_parameter_change\",\n  \"proposalId\": \"golden-001\",\n  \"snapshotSha256\": \"02013d04e90a64ec5e585435820930988089824f6092eb85d0f8d5c133455080\",\n  \"source\": {\n    \"origin\": \"synthetic_fixture\",\n    \"providerLabel\": \"offline\",\n    \"modelLabel\": \"none\"\n  },\n  \"hypothesis\": \"A slower cooling rate may change the educational output.\",\n  \"rationale\": \"Golden fixture for cross-language gate tests; not a model recommendation.\",\n  \"changes\": {\n    \"coolingRate\": 5.0\n  },\n  \"requestedAction\": \"simulation_only\"\n}",
+      "assessmentText": "{\"schemaVersion\": \"qfabric-research-assessment/1\", \"kind\": \"educational_research_assessment\", \"status\": \"rejected\", \"proposalId\": \"golden-001\", \"snapshotSha256\": \"02013d04e90a64ec5e585435820930988089824f6092eb85d0f8d5c133455080\", \"proposalSha256\": \"c227ac9cc72d9b6677b58751b89a44a0c18e8dcfbcc91cc7ce27faa2d452f190\", \"declaredOrigin\": {\"origin\": \"synthetic_fixture\", \"providerLabel\": \"offline\", \"modelLabel\": \"none\"}, \"hypothesis\": \"A slower cooling rate may change the educational output.\", \"rationale\": \"Golden fixture for cross-language gate tests; not a model recommendation.\", \"changes\": [], \"proposedInput\": null, \"rejectionReasons\": [\"coolingRate: outside educational model bounds [0.05, 2.0]\"], \"reviewRequired\": true, \"humanApproved\": false, \"modelInvoked\": false, \"hardwareDispatchAllowed\": false, \"physicalMeasurement\": false, \"scope\": \"educational_simulation_only\", \"notice\": \"Model/source labels are unverified. No model, quantum device or physical equipment was called. This is not scientific process validation.\"}",
+      "reviewerLabel": "lab-human",
+      "decision": "reject",
+      "expected": {
+        "ok": true,
+        "value": {
+          "schemaVersion": "qfabric-human-review/1",
+          "kind": "self_attested_educational_review",
+          "status": "rejected_by_reviewer",
+          "reviewerLabel": "lab-human",
+          "reviewerAuthenticated": false,
+          "snapshotSha256": "02013d04e90a64ec5e585435820930988089824f6092eb85d0f8d5c133455080",
+          "proposalSha256": "c227ac9cc72d9b6677b58751b89a44a0c18e8dcfbcc91cc7ce27faa2d452f190",
+          "assessmentSha256": "92d9b3027bc468cd4e028865f423eedf0461753b91f222981442cab555b783e7",
+          "simulationInput": null,
+          "automaticExecution": false,
+          "hardwareDispatchAllowed": false,
+          "notice": "Reviewer identity is self-declared, not authenticated; manual transfer to the educational simulator only. No quantum or process hardware control."
+        }
+      }
+    },
+    {
+      "name": "approve_tampered_assessment",
+      "snapshotText": "{\n  \"schemaVersion\": \"crystaltwin-qfabric-snapshot/1\",\n  \"kind\": \"educational_snapshot\",\n  \"source\": {\n    \"repository\": \"Takzin1/crystaltwinai\",\n    \"provenance\": \"synthetic\",\n    \"mode\": \"educational_simulation\"\n  },\n  \"input\": {\n    \"temperature\": 65,\n    \"concentration\": 0.4,\n    \"stirringSpeed\": 300,\n    \"coolingRate\": 0.5,\n    \"impurityLevel\": 0.4,\n    \"timeSteps\": 2\n  },\n  \"summary\": {\n    \"avgGrowthRate\": 2,\n    \"stabilityScore\": 78,\n    \"qualityScore\": 80,\n    \"finalYield\": 4,\n    \"maxSupersaturation\": 1.12,\n    \"nucleationEvents\": 0\n  },\n  \"trajectory\": [\n    {\n      \"step\": 1,\n      \"temperature\": 64.5,\n      \"concentration\": 0.4,\n      \"growthRate\": 1.5,\n      \"crystalYield\": 1.5\n    },\n    {\n      \"step\": 2,\n      \"temperature\": 64,\n      \"concentration\": 0.39,\n      \"growthRate\": 2.5,\n      \"crystalYield\": 4\n    }\n  ]\n}\n",
+      "proposalText": "{\n  \"schemaVersion\": \"qfabric-research-proposal/1\",\n  \"kind\": \"educational_parameter_change\",\n  \"proposalId\": \"golden-001\",\n  \"snapshotSha256\": \"02013d04e90a64ec5e585435820930988089824f6092eb85d0f8d5c133455080\",\n  \"source\": {\n    \"origin\": \"synthetic_fixture\",\n    \"providerLabel\": \"offline\",\n    \"modelLabel\": \"none\"\n  },\n  \"hypothesis\": \"A slower cooling rate may change the educational output.\",\n  \"rationale\": \"Golden fixture for cross-language gate tests; not a model recommendation.\",\n  \"changes\": {\n    \"coolingRate\": 0.25\n  },\n  \"requestedAction\": \"simulation_only\"\n}",
+      "assessmentText": "{\n  \"schemaVersion\": \"qfabric-research-assessment/1\",\n  \"kind\": \"educational_research_assessment\",\n  \"status\": \"ready_for_review\",\n  \"proposalId\": \"golden-001\",\n  \"snapshotSha256\": \"02013d04e90a64ec5e585435820930988089824f6092eb85d0f8d5c133455080\",\n  \"proposalSha256\": \"2e0bfffa5e94c73b39c4e5de3d01f6ab59c0280f845f5ab6abd6690a031173c6\",\n  \"declaredOrigin\": {\n    \"origin\": \"synthetic_fixture\",\n    \"providerLabel\": \"offline\",\n    \"modelLabel\": \"none\"\n  },\n  \"hypothesis\": \"A slower cooling rate may change the educational output.\",\n  \"rationale\": \"Golden fixture for cross-language gate tests; not a model recommendation.\",\n  \"changes\": [\n    {\n      \"parameter\": \"coolingRate\",\n      \"from\": 0.5,\n      \"to\": 0.25,\n      \"unit\": \"°C/min\"\n    }\n  ],\n  \"proposedInput\": {\n    \"temperature\": 65,\n    \"concentration\": 0.4,\n    \"stirringSpeed\": 300,\n    \"coolingRate\": 0.25,\n    \"impurityLevel\": 0.4,\n    \"timeSteps\": 2\n  },\n  \"rejectionReasons\": [],\n  \"reviewRequired\": true,\n  \"humanApproved\": true,\n  \"modelInvoked\": false,\n  \"hardwareDispatchAllowed\": false,\n  \"physicalMeasurement\": false,\n  \"scope\": \"educational_simulation_only\",\n  \"notice\": \"Model/source labels are unverified. No model, quantum device or physical equipment was called. This is not scientific process validation.\"\n}",
+      "reviewerLabel": "lab-human",
+      "decision": "approve",
+      "expected": {
+        "ok": false,
+        "errorType": "ValueError",
+        "message": "assessment differs from recomputed source/proposal evidence"
+      }
+    },
+    {
+      "name": "blank_reviewer",
+      "snapshotText": "{\n  \"schemaVersion\": \"crystaltwin-qfabric-snapshot/1\",\n  \"kind\": \"educational_snapshot\",\n  \"source\": {\n    \"repository\": \"Takzin1/crystaltwinai\",\n    \"provenance\": \"synthetic\",\n    \"mode\": \"educational_simulation\"\n  },\n  \"input\": {\n    \"temperature\": 65,\n    \"concentration\": 0.4,\n    \"stirringSpeed\": 300,\n    \"coolingRate\": 0.5,\n    \"impurityLevel\": 0.4,\n    \"timeSteps\": 2\n  },\n  \"summary\": {\n    \"avgGrowthRate\": 2,\n    \"stabilityScore\": 78,\n    \"qualityScore\": 80,\n    \"finalYield\": 4,\n    \"maxSupersaturation\": 1.12,\n    \"nucleationEvents\": 0\n  },\n  \"trajectory\": [\n    {\n      \"step\": 1,\n      \"temperature\": 64.5,\n      \"concentration\": 0.4,\n      \"growthRate\": 1.5,\n      \"crystalYield\": 1.5\n    },\n    {\n      \"step\": 2,\n      \"temperature\": 64,\n      \"concentration\": 0.39,\n      \"growthRate\": 2.5,\n      \"crystalYield\": 4\n    }\n  ]\n}\n",
+      "proposalText": "{\n  \"schemaVersion\": \"qfabric-research-proposal/1\",\n  \"kind\": \"educational_parameter_change\",\n  \"proposalId\": \"golden-001\",\n  \"snapshotSha256\": \"02013d04e90a64ec5e585435820930988089824f6092eb85d0f8d5c133455080\",\n  \"source\": {\n    \"origin\": \"synthetic_fixture\",\n    \"providerLabel\": \"offline\",\n    \"modelLabel\": \"none\"\n  },\n  \"hypothesis\": \"A slower cooling rate may change the educational output.\",\n  \"rationale\": \"Golden fixture for cross-language gate tests; not a model recommendation.\",\n  \"changes\": {\n    \"coolingRate\": 0.25\n  },\n  \"requestedAction\": \"simulation_only\"\n}",
+      "assessmentText": "{\n  \"schemaVersion\": \"qfabric-research-assessment/1\",\n  \"kind\": \"educational_research_assessment\",\n  \"status\": \"ready_for_review\",\n  \"proposalId\": \"golden-001\",\n  \"snapshotSha256\": \"02013d04e90a64ec5e585435820930988089824f6092eb85d0f8d5c133455080\",\n  \"proposalSha256\": \"2e0bfffa5e94c73b39c4e5de3d01f6ab59c0280f845f5ab6abd6690a031173c6\",\n  \"declaredOrigin\": {\n    \"origin\": \"synthetic_fixture\",\n    \"providerLabel\": \"offline\",\n    \"modelLabel\": \"none\"\n  },\n  \"hypothesis\": \"A slower cooling rate may change the educational output.\",\n  \"rationale\": \"Golden fixture for cross-language gate tests; not a model recommendation.\",\n  \"changes\": [\n    {\n      \"parameter\": \"coolingRate\",\n      \"from\": 0.5,\n      \"to\": 0.25,\n      \"unit\": \"°C/min\"\n    }\n  ],\n  \"proposedInput\": {\n    \"temperature\": 65,\n    \"concentration\": 0.4,\n    \"stirringSpeed\": 300,\n    \"coolingRate\": 0.25,\n    \"impurityLevel\": 0.4,\n    \"timeSteps\": 2\n  },\n  \"rejectionReasons\": [],\n  \"reviewRequired\": true,\n  \"humanApproved\": false,\n  \"modelInvoked\": false,\n  \"hardwareDispatchAllowed\": false,\n  \"physicalMeasurement\": false,\n  \"scope\": \"educational_simulation_only\",\n  \"notice\": \"Model/source labels are unverified. No model, quantum device or physical equipment was called. This is not scientific process validation.\"\n}",
+      "reviewerLabel": "  ",
+      "decision": "approve",
+      "expected": {
+        "ok": false,
+        "errorType": "ValueError",
+        "message": "reviewer_label must be nonempty text of at most 120 characters"
+      }
+    },
+    {
+      "name": "invalid_decision",
+      "snapshotText": "{\n  \"schemaVersion\": \"crystaltwin-qfabric-snapshot/1\",\n  \"kind\": \"educational_snapshot\",\n  \"source\": {\n    \"repository\": \"Takzin1/crystaltwinai\",\n    \"provenance\": \"synthetic\",\n    \"mode\": \"educational_simulation\"\n  },\n  \"input\": {\n    \"temperature\": 65,\n    \"concentration\": 0.4,\n    \"stirringSpeed\": 300,\n    \"coolingRate\": 0.5,\n    \"impurityLevel\": 0.4,\n    \"timeSteps\": 2\n  },\n  \"summary\": {\n    \"avgGrowthRate\": 2,\n    \"stabilityScore\": 78,\n    \"qualityScore\": 80,\n    \"finalYield\": 4,\n    \"maxSupersaturation\": 1.12,\n    \"nucleationEvents\": 0\n  },\n  \"trajectory\": [\n    {\n      \"step\": 1,\n      \"temperature\": 64.5,\n      \"concentration\": 0.4,\n      \"growthRate\": 1.5,\n      \"crystalYield\": 1.5\n    },\n    {\n      \"step\": 2,\n      \"temperature\": 64,\n      \"concentration\": 0.39,\n      \"growthRate\": 2.5,\n      \"crystalYield\": 4\n    }\n  ]\n}\n",
+      "proposalText": "{\n  \"schemaVersion\": \"qfabric-research-proposal/1\",\n  \"kind\": \"educational_parameter_change\",\n  \"proposalId\": \"golden-001\",\n  \"snapshotSha256\": \"02013d04e90a64ec5e585435820930988089824f6092eb85d0f8d5c133455080\",\n  \"source\": {\n    \"origin\": \"synthetic_fixture\",\n    \"providerLabel\": \"offline\",\n    \"modelLabel\": \"none\"\n  },\n  \"hypothesis\": \"A slower cooling rate may change the educational output.\",\n  \"rationale\": \"Golden fixture for cross-language gate tests; not a model recommendation.\",\n  \"changes\": {\n    \"coolingRate\": 0.25\n  },\n  \"requestedAction\": \"simulation_only\"\n}",
+      "assessmentText": "{\n  \"schemaVersion\": \"qfabric-research-assessment/1\",\n  \"kind\": \"educational_research_assessment\",\n  \"status\": \"ready_for_review\",\n  \"proposalId\": \"golden-001\",\n  \"snapshotSha256\": \"02013d04e90a64ec5e585435820930988089824f6092eb85d0f8d5c133455080\",\n  \"proposalSha256\": \"2e0bfffa5e94c73b39c4e5de3d01f6ab59c0280f845f5ab6abd6690a031173c6\",\n  \"declaredOrigin\": {\n    \"origin\": \"synthetic_fixture\",\n    \"providerLabel\": \"offline\",\n    \"modelLabel\": \"none\"\n  },\n  \"hypothesis\": \"A slower cooling rate may change the educational output.\",\n  \"rationale\": \"Golden fixture for cross-language gate tests; not a model recommendation.\",\n  \"changes\": [\n    {\n      \"parameter\": \"coolingRate\",\n      \"from\": 0.5,\n      \"to\": 0.25,\n      \"unit\": \"°C/min\"\n    }\n  ],\n  \"proposedInput\": {\n    \"temperature\": 65,\n    \"concentration\": 0.4,\n    \"stirringSpeed\": 300,\n    \"coolingRate\": 0.25,\n    \"impurityLevel\": 0.4,\n    \"timeSteps\": 2\n  },\n  \"rejectionReasons\": [],\n  \"reviewRequired\": true,\n  \"humanApproved\": false,\n  \"modelInvoked\": false,\n  \"hardwareDispatchAllowed\": false,\n  \"physicalMeasurement\": false,\n  \"scope\": \"educational_simulation_only\",\n  \"notice\": \"Model/source labels are unverified. No model, quantum device or physical equipment was called. This is not scientific process validation.\"\n}",
+      "reviewerLabel": "lab-human",
+      "decision": "auto",
+      "expected": {
+        "ok": false,
+        "errorType": "ValueError",
+        "message": "decision must be approve or reject"
+      }
+    }
+  ]
+}
