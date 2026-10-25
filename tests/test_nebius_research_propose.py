@@ -97,13 +97,21 @@ def test_untrusted_response_fails_closed(response):
 
 
 @pytest.mark.parametrize("changes", [
-    {"qick.acquire": 1}, {"temperature": True}, {"timeSteps": 13.5},
+    {"qick.acquire": 1}, {"temperature": True},
     {"coolingRate": 0.25, "temperature": 50, "timeSteps": 100,
      "concentration": 0.4},
 ])
 def test_nonconforming_parameters_are_refused(changes):
     with pytest.raises((TypeError, ValueError)):
         adapter.build_proposal(SNAPSHOT, transport=lambda _: _response(changes=changes))
+
+
+def test_fractional_timestep_is_assessed_and_rejected():
+    _, assessment, _ = adapter.build_proposal(
+        SNAPSHOT, transport=lambda _: _response(changes={"timeSteps": 13.5}),
+    )
+    assert assessment["status"] == "rejected"
+    assert assessment["proposedInput"] is None
 
 
 def test_provider_credentials_required_and_not_leaked(monkeypatch):
