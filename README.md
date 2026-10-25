@@ -241,8 +241,10 @@ cryptographic authorship, measured data or GPU use.
 
 **Implemented:** model-neutral, untrusted research-proposal schema, hash-bound
 CrystalTwinAI input, strict educational parameter guards, rejection reasons
-and a self-attested human-review boundary. **Not implemented:** Nebius/NVIDIA
-model inference, automated physical control or authenticated approvals.
+and a self-attested human-review boundary. **New (opt-in):** a separate
+Nebius Token Factory/NVIDIA Nemotron HTTP proposal adapter (mock-tested, not
+live-credential-verified). **Not implemented:** automatic simulation,
+physical control or authenticated human approvals.
 
 ~~~bash
 python scripts/research_agent_gate.py prepare tests/fixtures/crystaltwin_snapshot.synthetic.json proposal.json --parameter coolingRate --value 0.25
@@ -253,6 +255,16 @@ python scripts/research_agent_gate.py review tests/fixtures/crystaltwin_snapshot
 The prepare command generates an explicitly **synthetic fixture**; it does not
 pretend to contact Nemotron. See the
 [Experiment Orchestration specification](docs/integrations/experiment-orchestration.md).
+Optional provider integration (requires a local `NEBIUS_API_KEY`, never called
+by CI):
+
+~~~bash
+python scripts/nebius_research_propose.py tests/fixtures/crystaltwin_snapshot.synthetic.json model-proposal.json nebius-receipt.json
+python scripts/research_agent_gate.py assess tests/fixtures/crystaltwin_snapshot.synthetic.json model-proposal.json model-assessment.json
+~~~
+
+See the [Nebius/Nemotron adapter security and usage guide](docs/integrations/nebius-token-factory.md).
+
 
 ## Quantum research datasets — source catalog (documentation)
 
