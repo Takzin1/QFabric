@@ -11,8 +11,9 @@ import json
 import os
 import re
 import sys
+from collections.abc import Callable
 from pathlib import Path
-from typing import Any, Callable
+from typing import Any
 from urllib import error, request
 
 from qfabric.orchestration import (
@@ -57,7 +58,7 @@ def _parse_json(raw: bytes, limit: int) -> dict[str, Any]:
     except (UnicodeDecodeError, json.JSONDecodeError, RecursionError) as exc:
         raise ValueError("model/provider response is not valid UTF-8 JSON") from exc
     if not isinstance(value, dict):
-        raise ValueError("model/provider response must be a JSON object")
+        raise TypeError("model/provider response must be a JSON object")
     return value
 
 
@@ -134,13 +135,13 @@ def build_proposal(
         raise ValueError("tool calls are not supported")
     content = message.get("content")
     if not isinstance(content, str):
-        raise ValueError("model content must be a JSON string")
+        raise TypeError("model content must be a JSON string")
     model_raw = content.encode("utf-8")
     suggested = _parse_json(model_raw, MAX_MODEL_TEXT)
     if set(suggested) != {"hypothesis", "rationale", "changes"}:
         raise ValueError("model response has unexpected fields")
     if not isinstance(suggested["changes"], dict):
-        raise ValueError("model changes must be a JSON object")
+        raise TypeError("model changes must be a JSON object")
     proposal = {
         "schemaVersion": PROPOSAL_VERSION,
         "kind": "educational_parameter_change",
