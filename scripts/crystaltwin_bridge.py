@@ -18,7 +18,6 @@ from time import perf_counter
 from typing import Any
 
 from qfabric.crystaltwin_contract import validate_snapshot_semantics
-
 from qfabric.models import ControlCommand, ExperimentRequest
 from qfabric.profiles.qick import QickGeneratorBinding, QickPlanAdapter
 from qfabric.profiles.qick_readout import QickReadoutIntent, QickReadoutPlanner
