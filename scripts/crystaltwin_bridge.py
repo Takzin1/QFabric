@@ -17,6 +17,7 @@ from pathlib import Path
 from time import perf_counter
 from typing import Any
 
+from qfabric.crystaltwin_contract import validate_snapshot_semantics
 from qfabric.models import ControlCommand, ExperimentRequest
 from qfabric.profiles.qick import QickGeneratorBinding, QickPlanAdapter
 from qfabric.profiles.qick_readout import QickReadoutIntent, QickReadoutPlanner
@@ -100,6 +101,7 @@ def validate_snapshot(data: Any) -> dict[str, Any]:
         raise ValueError("timeSteps must be an integer")
     if len(trajectory) != int(control["timeSteps"]):
         raise ValueError("trajectory length does not match timeSteps")
+    validate_snapshot_semantics(doc)
     return doc
 
 

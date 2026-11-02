@@ -12,6 +12,8 @@ import json
 import math
 from typing import Any
 
+from qfabric.crystaltwin_contract import validate_snapshot_semantics
+
 SNAPSHOT_VERSION = "crystaltwin-qfabric-snapshot/1"
 PROPOSAL_VERSION = "qfabric-research-proposal/1"
 ASSESSMENT_VERSION = "qfabric-research-assessment/1"
@@ -154,6 +156,7 @@ def parse_snapshot(raw: bytes) -> dict[str, Any]:
         previous = step
         for name in ROW_FIELDS - {"step"}:
             _number(record[name], f"trajectory.{name}")
+    validate_snapshot_semantics(doc)
     return doc
 
 
