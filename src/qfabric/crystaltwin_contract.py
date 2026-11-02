@@ -22,7 +22,7 @@ INPUT_BOUNDS = {
 
 def _finite(value: Any, name: str) -> float:
     if isinstance(value, bool) or not isinstance(value, (int, float)):
-        raise ValueError(f"{name} requires a finite number")
+        raise TypeError(f"{name} requires a finite number")
     try:
         number = float(value)
     except (ValueError, OverflowError) as exc:
