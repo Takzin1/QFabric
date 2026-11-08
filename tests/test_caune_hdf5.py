@@ -50,7 +50,7 @@ def _fixture(directory: Path) -> Path:
             result = delays.create_group(f"delay_{i}/result")
             result.attrs["delay"] = str(i * 8e-7)
             population = 0.86 * math.exp(-(i * 0.8) / 13) + 0.08
-            ones = int(round(population * 10000))
+            ones = round(population * 10000)
             bits = np.zeros((10000, 1), dtype="uint8")
             bits[:ones] = 1
             result.create_dataset("hard_measurements/50", data=bits)
