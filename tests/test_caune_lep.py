@@ -38,7 +38,7 @@ def test_source_pins_and_exact_round_sets_are_separate() -> None:
     assert MAIN_ROUNDS == tuple(range(5, 26, 2))
     assert RESET_ROUNDS == (7, 11, 15, 19, 23)
     assert all(len(spec["sha256"]) == 64 for spec in SOURCE_SPECS.values())
-    assert len(set(spec["sha256"] for spec in SOURCE_SPECS.values())) == 5
+    assert len({spec["sha256"] for spec in SOURCE_SPECS.values()}) == 5
     for name in SOURCE_SPECS:
         observed = parse_lep_table(_fixture(name), name, enforce_pin=False)
         assert observed["rows"] == len(SOURCE_SPECS[name]["expectedRounds"])
