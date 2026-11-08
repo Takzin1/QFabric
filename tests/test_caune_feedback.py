@@ -18,8 +18,8 @@ from qfabric.caune_feedback import (
 
 def _fig4b() -> bytes:
     lines = [
-        "rounds,control_system_logic,control_system_logic_std,decoding_time,"
-        "decoding_time_std,delay_measured_by_qubit,delay_measured_by_qubit_std",
+        ("rounds,control_system_logic,control_system_logic_std,decoding_time,"
+         "decoding_time_std,delay_measured_by_qubit,delay_measured_by_qubit_std"),
     ]
     for n in range(2, 10):
         lines.append(f"{n},{float(3000+n*1000)},500,{float(n*700)},400,{n+2}.5,0.6")
