@@ -44,7 +44,7 @@ def test_synthetic_timing_groups_are_clock_consistent() -> None:
     assert all(entry["meanUsPerRound"] == pytest.approx(1.12) for entry in report["groups"])
     assert all(entry["repetitionFractionAbove1UsPerRound"] == 0.5
                for entry in report["groups"])
-    assert all(entry["p99UsPerRound"] == 1.6 for entry in report["groups"])
+    assert all(entry["p99UsPerRound"] == pytest.approx(1.6) for entry in report["groups"])
 
 
 def test_uploaded_raw_byte_pins_are_separate_from_synthetic_fixtures() -> None:
