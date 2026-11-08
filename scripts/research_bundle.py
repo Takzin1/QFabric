@@ -12,7 +12,7 @@ import json
 from pathlib import Path
 from typing import Any
 
-from scripts.crystaltwin_bridge import MAX_INPUT_BYTES, verify_report
+from crystaltwin_bridge import MAX_INPUT_BYTES, verify_report
 
 SCHEMA = "ctqf-research-bundle/1"
 MAX_MANIFEST_BYTES = 16 * 1024
