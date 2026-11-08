@@ -37,7 +37,7 @@ def _load_json(raw: bytes) -> dict[str, Any]:
     except (UnicodeDecodeError, json.JSONDecodeError) as exc:
         raise ValueError("invalid UTF-8 JSON") from exc
     if not isinstance(parsed, dict):
-        raise ValueError("JSON document must be an object")
+        raise TypeError("JSON document must be an object")
     return parsed
 
 
