@@ -112,7 +112,7 @@ def test_raw_source_pin_rejects_unrelated_fixture() -> None:
 
 @pytest.mark.parametrize(("source", "old", "new"), [
     ("fig4b", b"5000.0", b"0"),
-    ("fig4b", b"1.4", b"nan"),
+    ("fig4b", b"1400.0", b"nan"),
     ("gamma", b"0.2", b"-0.2"),
     ("gamma", b"0.2", b"nan"),
     ("kde", b"2,2.0,", b"2,NaN,"),
