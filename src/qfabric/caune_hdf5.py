@@ -69,6 +69,79 @@ def _bits(dataset: Any, *, rows: int, cols: int) -> list[int]:
     return values[:, -1].astype("int8").tolist()
 
 
+
+def _audit_double_measurement_reference(
+    reference: Any, h5py: Any, *, measured_zero_as_one: float,
+    fitted_t1: dict[str, float],
+) -> dict[str, Any]:
+    """Reconstruct Appendix E2/E3 post-measurement estimates from two shots.
+
+    Equal numbers of initially prepared 0/1 shots are pooled by the first
+    measured bit. This is a source-specific descriptive calculation, not the
+    original author's uncertainty propagation or a hardware reset procedure.
+    """
+    double = _child(reference, "double_measurement", h5py)
+    counts = [[0, 0], [0, 0]]
+    by_preparation = []
+    for state, prepared in (("zeros", 0), ("ones", 1)):
+        group = _child(double, f"{state}/result", h5py)
+        if int(group.attrs.get("init", -1)) != prepared:
+            raise ValueError("double-measurement preparation label mismatch")
+        ds = _child(group, "hard_measurements/50", h5py, dataset=True)
+        if ds.shape != (10000, 2) or ds.dtype.kind != "u":
+            raise ValueError("double-measurement reference has wrong binary shape")
+        observations = ds[()]
+        if not ((observations == 0) | (observations == 1)).all():
+            raise ValueError("double-measurement reference is not binary")
+        pairs = [[0, 0], [0, 0]]
+        for first, second in observations:
+            i, j = int(first), int(second)
+            pairs[i][j] += 1
+            counts[i][j] += 1
+        by_preparation.append({
+            "preparedState": prepared, "shots": 10000,
+            "firstThenSecondBitCounts": pairs,
+        })
+    t1 = fitted_t1["fittedT1Us"]
+    a = fitted_t1["fittedAmplitudeA"]
+    b = fitted_t1["fittedOffsetB"]
+    ringdown_us = 0.5  # Appendix E3 and Fig. 4(f), 500 ns ringdown.
+    excited_second_one = a * math.exp(-ringdown_us / t1) + b
+    denominator = excited_second_one - measured_zero_as_one
+    if denominator <= 0:
+        raise ValueError("cannot infer post-measurement state from calibration")
+    estimates = []
+    for first in (0, 1):
+        total = sum(counts[first])
+        if not total:
+            raise ValueError("no first-measurement outcomes for a state")
+        p = counts[first][1] / total
+        q = (p - measured_zero_as_one) / denominator
+        if not 0 <= q <= 1:
+            raise ValueError("post-measurement inference left probability domain")
+        estimates.append({
+            "firstMeasuredBit": first,
+            "conditionalSamples": total,
+            "secondMeasuredOneFraction": p,
+            "inferredPostFirstStateOneFraction": q,
+            "inferredPostFirstStateZeroFraction": 1 - q,
+        })
+    return {
+        "source": "reference_data/double_measurement",
+        "twoReadoutShotsPerPreparation": 10000,
+        "preparedStateSpecificCounts": by_preparation,
+        "pooledFirstThenSecondCounts": counts,
+        "pooledFirstStateConditionals": estimates,
+        "assumedBalancedPreparationForPooledReference": True,
+        "ringdownDelayUsFromPaper": ringdown_us,
+        "pM2OneGivenZeroFromCalibration": measured_zero_as_one,
+        "pM2OneGivenOneFromT1Reference": excited_second_one,
+        "equation": "Supplementary Appendix E2/E3",
+        "uncertaintyOfDerivedStateNotPropagated": True,
+        "qubitReinitializationPerformedByQFabric": False,
+    }
+
+
 def audit_fast_feedback_hdf5(
     source: str | Path, *, enforce_pin: bool = True,
 ) -> dict[str, Any]:
@@ -173,6 +246,10 @@ def audit_fast_feedback_hdf5(
                 raise ValueError("degenerate T1 population measurement")
             points.append((delay_seconds * 1e6, p, sigma))
         fitted = _weighted_exponential_fit(points)
+        double_measurement = _audit_double_measurement_reference(
+            reference, h5py,
+            measured_zero_as_one=fractions["zeros"], fitted_t1=fitted,
+        )
         return {
             "schemaVersion": SCHEMA,
             "filename": HDF5_NAME, "userCopySha256": digest, "fileBytes": size,
@@ -188,6 +265,7 @@ def audit_fast_feedback_hdf5(
                     fractions["ones"] + (1 - fractions["zeros"])
                 ) / 2,
             },
+            "doubleMeasurementReference": double_measurement,
             "t1RawShotReference": {
                 "numberOfDelays": 13, "shotsPerDelay": 10000,
                 "delayUnit": "microseconds",
@@ -202,6 +280,8 @@ def audit_fast_feedback_hdf5(
             "readoutSignalsPreservedOnlyInOriginalLocalHdf5": True,
             "embeddedStimProgramsNeverReadOrExecuted": True,
             "hdf5TimingClockUnitVerified": False,
+            "fpgaRegisterBitfieldSemanticsVerified": False,
+            "fastFeedbackLogicalCorrectionRecovered": False,
             "rawMeasurementProvenanceAuthenticatedAgainstZenodo": False,
             "rawFileRedistributionRightsVerified": False,
             "qfabricHardwareExecuted": False,
