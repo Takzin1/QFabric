@@ -56,7 +56,7 @@ def _child(parent: Any, path: str, h5py: Any, *, dataset: bool = False) -> Any:
         target = target[part]
     expected = h5py.Dataset if dataset else h5py.Group
     if not isinstance(target, expected):
-        raise ValueError("HDF5 node has incorrect type")
+        raise TypeError("HDF5 node has incorrect type")
     return target
 
 
