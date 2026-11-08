@@ -1,12 +1,17 @@
 """Offline reproducibility tests: source-byte substitution must fail closed."""
 
 import copy
+import importlib
 import json
+import sys
 from pathlib import Path
 
 import pytest
 
-from scripts import crystaltwin_bridge, research_bundle
+# scripts/ is deliberately an un-packaged CLI directory in this repository.
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
+crystaltwin_bridge = importlib.import_module("crystaltwin_bridge")
+research_bundle = importlib.import_module("research_bundle")
 
 SNAPSHOT_FILE = Path(__file__).parent / "fixtures" / "crystaltwin_snapshot.synthetic.json"
 
