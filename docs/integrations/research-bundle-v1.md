@@ -14,8 +14,8 @@ python -m pip install -e ".[dev]"
 pytest
 python scripts/crystaltwin_bridge.py tests/fixtures/crystaltwin_snapshot.synthetic.json /tmp/ctqf-report.json --backend cpu --shots 256
 python scripts/crystaltwin_bridge.py tests/fixtures/crystaltwin_snapshot.synthetic.json /tmp/ctqf-report.json --verify
-python -m scripts.research_bundle tests/fixtures/crystaltwin_snapshot.synthetic.json /tmp/ctqf-report.json /tmp/ctqf-bundle.json
-python -m scripts.research_bundle tests/fixtures/crystaltwin_snapshot.synthetic.json /tmp/ctqf-report.json /tmp/ctqf-bundle.json --verify
+python scripts/research_bundle.py tests/fixtures/crystaltwin_snapshot.synthetic.json /tmp/ctqf-report.json /tmp/ctqf-bundle.json
+python scripts/research_bundle.py tests/fixtures/crystaltwin_snapshot.synthetic.json /tmp/ctqf-report.json /tmp/ctqf-bundle.json --verify
 ```
 
 The manifest records exact SHA-256 of the snapshot **and** report, a
