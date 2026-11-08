@@ -10,7 +10,8 @@ from __future__ import annotations
 
 import hashlib
 import math
-from typing import Any, Mapping
+from collections.abc import Mapping
+from typing import Any
 
 SCHEMA = "qfabric-caune-2024-lep-figure-audit/1"
 PAPER_URL = "https://arxiv.org/abs/2410.05202"
