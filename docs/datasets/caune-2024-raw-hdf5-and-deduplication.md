@@ -43,6 +43,59 @@ pytest
 
 The offline JSON contains only newly derived numeric summaries, source-byte hashes, explicit duplicate classifications, hard-bit means, and scientific limitations. Existing report files are never overwritten. The optional `research-hdf5` extra installs `h5py`; **QFabric's public core remains free of h5py and vendor hardware SDK imports**. CI installs this extra to test generated *synthetic* HDF5 files and malformed/externally linked adversarial cases. The authors' raw HDF5 itself is **not in CI**.
 
+## Follow-up: Appendix E2/E3, two-shot postmeasurement calibration (2026-11-08)
+
+The source HDF5 also contains an additional **non-duplicate** reference:
+`reference_data/double_measurement/{zeros,ones}/result/hard_measurements/50`.
+Each preparation has **10,000 separate pairs** of sequential Qubit-50 hard
+measurements. The original paper Supplementary Appendix E, Fig. 4(f),
+Eqs. **(E2)–(E3)** uses a **500 ns** ringdown and the readout confusion
+matrix together with `m(t)=A exp(-t/T1)+B` to infer the state immediately
+after the first measurement. The paper does **not** name HDF5 FPGA
+registers `DASR`, `DSR` or `MGUEVCNTR` with sufficient precision to
+assign an end-to-end microsecond latency or decoder corrections here.
+
+The independent audit added to `caune_hdf5.py` preserves both
+preparation-specific pair count matrices before pooling equal-sized
+`zeros` and `ones` references. Row = first measured bit, column = second
+measured bit; pooled **author raw-source** counts:
+
+| First measured | Second 0 | Second 1 | \(P(M_2=1 \mid M_1)\) |
+| ---: | ---: | ---: | ---: |
+| 0 | 9,750 | 424 | 0.041675 |
+| 1 | 1,426 | 8,400 | 0.854875 |
+
+Using `P(M=1|S=0)=0.0328` from the separate 10k prepared-zero
+reference and **the raw-shot T1 fit** `A≈0.86579, T1≈13.189 µs,
+B≈0.08269`, the paper's Eq. E2–E3 gives:
+
+```text
+m(0.5 us) = A * exp(-0.5/T1) + B ≈ 0.916271
+
+P(S_1'=1|M_1'=j) =
+  [ P(M_2'=1|M_1'=j) - P(M_2'=1|S_1'=0) ] /
+  [ m(0.5 us) - P(M_2'=1|S_1'=0) ]
+```
+
+The resulting estimates are **≈0.010045 for first measured bit 0**
+and **≈0.930506 for first measured bit 1**. They are conditional
+model-based postmeasurement state fractions, not measured quantum-state
+tomography, decoder LEP, or independent hardware results. The preparation
+groups are pooled with an explicitly declared balanced-prior convention,
+and **uncertainty propagation is not performed**. Nonphysical inferred
+probabilities, mismatched preparation labels, bad shapes, nonbinary data
+or HDF5 external links cause an error rather than a silent correction.
+
+**What remains blocked:** Figure 4(b) feedback-latency reproduction
+cannot be derived from the unlabeled HDF5 `result/time` integers alone,
+and the raw `DASR`/other register bitfield meanings are not established
+by the provided paper. The HDF5 auditor explicitly reports
+`hdf5TimingClockUnitVerified=false`,
+`fpgaRegisterBitfieldSemanticsVerified=false` and
+`fastFeedbackLogicalCorrectionRecovered=false`.
+Do not present estimates from this calibration as a claim that QFabric
+has implemented a real-time quantum decoder.
+
 ## Scientific holdout gates
 
 1. Authenticate Zenodo's exact HDF5 version, original published checksum, data dictionary and redistribution license before publishing any raw measurements.
