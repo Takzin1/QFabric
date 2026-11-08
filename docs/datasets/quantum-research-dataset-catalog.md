@@ -10,7 +10,7 @@
 
 | ID | 優先 | 論文・公開データ | 年 | データ種別 | 公開形式・概算容量 | QFabricへの想定用途 | 取り込み状態 |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| QRD-001 | **P0** | [Caune et al., *Demonstrating real-time and low-latency quantum error correction with superconducting qubits*](https://arxiv.org/abs/2410.05202) / [Zenodo v1](https://zenodo.org/records/13961130) / [Zenodo v2](https://zenodo.org/records/15364358) | 2024（v2: 2025） | **実機由来** | CSV / TXT / HDF5、v2全体約 **1.2 GB**。小ファイルあり | FPGAデコード遅延、readout/feedback参照、証拠管理 | metadata-reviewed; raw-not-fetched |
+| QRD-001 | **P0** | [Caune et al., *Demonstrating real-time and low-latency quantum error correction with superconducting qubits*](https://arxiv.org/abs/2410.05202) / [Zenodo v1](https://zenodo.org/records/13961130) / [Zenodo v2](https://zenodo.org/records/15364358) | 2024（v2: 2025） | **実機由来** | CSV / TXT / HDF5、v2全体約 **1.2 GB**。小ファイルあり | FPGAデコード遅延、readout/feedback参照、証拠管理 | 3 user-supplied files locally audited; upstream origin/license unchecked |
 | QRD-002 | **P1** | [Stein, *Calibration-Conditioned FiLM Decoders…*](https://arxiv.org/abs/2601.16123) / [Zenodo](https://zenodo.org/records/20768087) | 2026 | **IBM Quantum実機由来** | TAR.GZ内JSON・OpenQASM、README、約 **145.7 MB** | T1/T2、較正履歴、測定ビット列の来歴管理 | metadata-reviewed; raw-not-fetched |
 | QRD-003 | **P2** | [Gunyho et al., *Single-Shot Readout of a Superconducting Qubit Using a Thermal Detector*](https://doi.org/10.1038/s41928-024-01147-7) / [arXiv](https://arxiv.org/abs/2303.03668) / [Zenodo](https://zenodo.org/records/10000511) | 2023データ／2024論文 | **実機実験由来** | ZIP、約 **922.9 MB**（内部形式は未調査） | 単一ショット読み出し解析の比較候補 | metadata-reviewed; raw-not-fetched |
 | QRD-004 | **P3** | [Perrier, Youssry & Ferrie, *QDataSet*](https://doi.org/10.1038/s41597-022-01639-1) / [GitHub](https://github.com/eperrier/QDataSet) / [ソフトウェアDOI](https://doi.org/10.5281/zenodo.5202814) | 2022 | **数値シミュレーション** | 大規模圧縮データ（論文記載で合計約 **14 TB**）、生成コード・notebooks | 制御パルス、ノイズ・量子状態ベンチマーク | metadata-reviewed; subset availability unverified |
@@ -19,7 +19,7 @@
 
 ## 2. 個別調査票
 
-### QRD-001 — Real-time/low-latency quantum error correction
+### QRD-001 — Real-time/low-latency quantum error correction\n\n**2026-11-08追加:** ユーザー提供のデコーダ時間CSV（30万行）と欠陥率TXT 2本をオフラインで検査。入力の完全なSHA-256・列・クロック整合・集計結果は [Caune local evidence audit](caune-2024-local-evidence-audit.md) を参照。原データはGitHubに同梱せず、公開元のチェックサム・版・ライセンスは別途要確認。
 
 - **著者:** Laura Caune, Luka Skoric, Nick S. Blunt ほか（原典参照）
 - **論文:** https://arxiv.org/abs/2410.05202
