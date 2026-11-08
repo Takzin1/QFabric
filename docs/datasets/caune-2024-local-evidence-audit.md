@@ -75,6 +75,10 @@ pytest
 
 The CLI checks all three **uploaded-copy SHA-256 pins**, input sizes, schema, finite values, strict sequential rounds, 156.25 MHz cycle/time identity across 300,000 rows, and 100,000 records in each 9/17/25 group. It refuses an existing output file. No raw input is embedded in the package. CI runs **synthetic parser/adversarial tests only**; CI does not contain or validate the private local measured source bytes.
 
+## Follow-on Figure 4 feedback analysis (2026-11-08)
+
+Four additional user-uploaded author figure CSVs for 2–9 rounds, Supplementary Gamma fits and the 13-point T1 reference are handled in [caune-2024-feedback-evidence.md](caune-2024-feedback-evidence.md). This is a **different-day** feedback-experiment source from the 9/17/25-round throughput dataset. Do not pair source records across those experiments. Raw files and licensing remain outside the public repository.
+
 ## Next research gates
 
 1. Verify exact Zenodo record/version, published file-specific checksums and license against these pinned SHA-256 hashes; only then consider third-party raw data publication.
