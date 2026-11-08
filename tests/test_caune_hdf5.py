@@ -45,6 +45,21 @@ def _fixture(directory: Path) -> Path:
             bits = np.zeros((10000, 1), dtype="uint8")
             bits[:ones] = 1
             result.create_dataset("hard_measurements/50", data=bits)
+        # Independent synthetic, balanced prepared-state references.
+        double = reference.create_group("double_measurement")
+        for state, prepared, cells in (
+            ("zeros", 0, ((9300, 400), (290, 10))),
+            ("ones", 1, ((400, 100), (1000, 8500))),
+        ):
+            result = double.create_group(f"{state}/result")
+            result.attrs["init"] = prepared
+            observations = np.concatenate([
+                np.tile(np.array([[first, second]], dtype="uint8"), (count, 1))
+                for first, counts in enumerate(cells)
+                for second, count in enumerate(counts)
+            ])
+            assert observations.shape == (10000, 2)
+            result.create_dataset("hard_measurements/50", data=observations)
         delays = reference.create_group("delays")
         for i in range(13):
             result = delays.create_group(f"delay_{i}/result")
@@ -72,6 +87,18 @@ def test_synthetic_hdf5_schema_t1_and_native_time_are_audited(tmp_path: Path) ->
     assert report["t1RawShotReference"]["weightedExponentialFit"]["fittedT1Us"] == (
         pytest.approx(13, abs=0.1)
     )
+    reference = report["doubleMeasurementReference"]
+    assert reference["twoReadoutShotsPerPreparation"] == 10000
+    assert reference["pooledFirstThenSecondCounts"] == [[9700, 500], [1290, 8510]]
+    assert reference["pooledFirstStateConditionals"][0][
+        "inferredPostFirstStateOneFraction"
+    ] == pytest.approx(0.0185, abs=0.002)
+    assert reference["pooledFirstStateConditionals"][1][
+        "inferredPostFirstStateOneFraction"
+    ] == pytest.approx(0.955, abs=0.003)
+    assert reference["uncertaintyOfDerivedStateNotPropagated"] is True
+    assert report["fpgaRegisterBitfieldSemanticsVerified"] is False
+    assert report["fastFeedbackLogicalCorrectionRecovered"] is False
     assert report["hdf5TimingClockUnitVerified"] is False
     assert report["newQuantumMeasurements"] is False
     assert report["qfabricHardwareExecuted"] is False
@@ -110,4 +137,36 @@ def test_wrong_fpga_register_shape_fails(tmp_path: Path) -> None:
             "decoder_shot_results", data=np.zeros((1000, 7), dtype="int32"),
         )
     with pytest.raises(ValueError, match="register shape"):
+        audit_fast_feedback_hdf5(path, enforce_pin=False)
+
+
+def test_double_measurement_rejects_bad_preparation_and_nonbinary_source(tmp_path: Path) -> None:
+    path = _fixture(tmp_path)
+    with h5py.File(path, "r+") as f:
+        f["reference_data/double_measurement/ones/result"].attrs["init"] = 0
+    with pytest.raises(ValueError, match="preparation label"):
+        audit_fast_feedback_hdf5(path, enforce_pin=False)
+
+    path = _fixture(tmp_path)
+    with h5py.File(path, "r+") as f:
+        f["reference_data/double_measurement/ones/result/hard_measurements/50"][0, 1] = 2
+    with pytest.raises(ValueError, match="not binary"):
+        audit_fast_feedback_hdf5(path, enforce_pin=False)
+
+
+def test_double_measurement_rejects_wrong_shape_and_external_link(tmp_path: Path) -> None:
+    path = _fixture(tmp_path)
+    with h5py.File(path, "r+") as f:
+        name = "reference_data/double_measurement/zeros/result/hard_measurements/50"
+        del f[name]
+        f.create_dataset(name, data=np.zeros((10000, 1), dtype="uint8"))
+    with pytest.raises(ValueError, match="wrong binary shape"):
+        audit_fast_feedback_hdf5(path, enforce_pin=False)
+
+    path = _fixture(tmp_path)
+    with h5py.File(path, "r+") as f:
+        name = "reference_data/double_measurement/zeros/result/hard_measurements/50"
+        del f[name]
+        f[name] = h5py.ExternalLink("/tmp/untrusted.h5", "fake")
+    with pytest.raises(ValueError, match="nonlocal HDF5 link"):
         audit_fast_feedback_hdf5(path, enforce_pin=False)
