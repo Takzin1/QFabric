@@ -97,11 +97,10 @@ def test_five_files_required_no_filename_swap_and_missing_rounds_rejected() -> N
     with pytest.raises(ValueError, match="all five"):
         audit_caune_lep_bundle({k: v for k, v in files.items() if k != "lep_fpga.txt"},
                                enforce_pin=False)
+    lines = _fixture("lep_fpga.txt").splitlines(keepends=True)
+    missing_final = b"".join(lines[:-1])
     with pytest.raises(ValueError, match="missing"):
-        parse_lep_table(
-            _fixture("lep_fpga.txt").replace(b"25  ", b"26  ", 1),
-            "lep_fpga.txt", enforce_pin=False,
-        )
+        parse_lep_table(missing_final, "lep_fpga.txt", enforce_pin=False)
     with pytest.raises(ValueError, match="out-of-range"):
         parse_lep_table(
             _fixture("lep_fpga.txt").replace(b"25  ", b"26  ", 1),
