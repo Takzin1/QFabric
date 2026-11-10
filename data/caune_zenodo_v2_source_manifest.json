@@ -1,0 +1,74 @@
+{
+  "schemaVersion": "qfabric-caune-zenodo-v2-source-manifest/1",
+  "zenodoRecordId": "15364358",
+  "sourceRecordUrl": "https://zenodo.org/records/15364358",
+  "sourceVersion": "v2",
+  "publishedPaperDoi": "10.1038/s41467-026-73331-6",
+  "underlyingConceptDoi": "10.5281/zenodo.13961129",
+  "publisherMd5Source": "Zenodo v2 record file list checked 2026-11-10",
+  "datasetLicenseReview": "not_verified_do_not_redistribute",
+  "rawFilesRedistributed": false,
+  "notes": "Excludes 3 large stability HDF5 files (130 MB, 344 MB, 741 MB); only 15 bounded-source audit inputs. Publisher MD5 values are claims until downloaded bytes match.",
+  "files": [
+    {
+      "name": "decoder_timings_each_repetition.csv",
+      "publishedMd5": "ec6e10f742b7c29627dad8ff9a97a592"
+    },
+    {
+      "name": "defect_rates_per_round.txt",
+      "publishedMd5": "5a8ced211b16bc1ae2c26fae278a1f15"
+    },
+    {
+      "name": "defect_rates_per_round_stability_9.txt",
+      "publishedMd5": "a6d2c8493c0bba8523ddbfcf83309143"
+    },
+    {
+      "name": "fast_feedback_raw_data.h5",
+      "publishedMd5": "3b2503a80f2b92916660489e2f07e880"
+    },
+    {
+      "name": "fig4b_decoding_response_time.csv",
+      "publishedMd5": "2d590ae96377117481b4eb872fed33d9"
+    },
+    {
+      "name": "figS4c_feedback_response_time_probability_density_data.csv",
+      "publishedMd5": "63d4d2d4ce6e35547fb3a6358d3dc8ea"
+    },
+    {
+      "name": "figS4c_feedback_response_time_probability_density_fit_parameters.csv",
+      "publishedMd5": "d24ce4160f0ae511d5aa0e5b9518dc33"
+    },
+    {
+      "name": "figS4d_t1_time_fitting.csv",
+      "publishedMd5": "adb06c6532ca2b3c48979bf25dea3be1"
+    },
+    {
+      "name": "lep_belief_matching.txt",
+      "publishedMd5": "1022c52a26bacc13588887bb14b3eed9"
+    },
+    {
+      "name": "lep_fpga.txt",
+      "publishedMd5": "0a27b8bf75f8fc2bc1aeb8803240ae83"
+    },
+    {
+      "name": "lep_mwpm.txt",
+      "publishedMd5": "038321fc4fe983235dea6020cbc70ff3"
+    },
+    {
+      "name": "lep_mwpm_soft_info_pairwise_correlation_graph.txt",
+      "publishedMd5": "7b25e188aa2b01ddb7b938a04cec0644"
+    },
+    {
+      "name": "lep_mwpm_soft_info_pairwise_correlation_graph_with_resets.txt",
+      "publishedMd5": "e2ab588f83c33336ad8190ceb053156b"
+    },
+    {
+      "name": "lep_mwpm_stability_9.txt",
+      "publishedMd5": "4d222f2320ea18166dda8cc63336fd96"
+    },
+    {
+      "name": "mean_decoding_time.txt",
+      "publishedMd5": "a974fc5bde3b75a275d0ebd14a7ea7e0"
+    }
+  ]
+}
