@@ -10,7 +10,10 @@ from pathlib import Path
 import pytest
 
 from qfabric.caune_zenodo import (
-    ALLOWED, _pinned_download_url, download_checked, load_manifest,
+    ALLOWED,
+    _pinned_download_url,
+    download_checked,
+    load_manifest,
     validate_manifest,
 )
 
