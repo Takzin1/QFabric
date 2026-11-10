@@ -1,0 +1,92 @@
+{
+  "schemaVersion": "qfabric-caune-v2-observed-source-digests/1",
+  "recordUrl": "https://zenodo.org/records/15364358",
+  "recordVersion": "v2",
+  "firstSuccessfulRun": "https://github.com/Takzin1/QFabric/actions/runs/42816800744",
+  "firstSuccessfulCommit": "1d5678723d10acbd1264359e27453bd9056157fd",
+  "observedAt": "2026-11-10",
+  "status": "original_files_downloaded_MD5_matched_and_prior_user_copy_SHA256_matched",
+  "verifiedFileCount": 15,
+  "verifiedDownloadedBytes": 13346073,
+  "datasetLicenseReviewed": false,
+  "rawFilesIncluded": false,
+  "independentHardwareMeasurements": false,
+  "note": "SHA-256 values computed from downloaded Zenodo v2 bytes by QFabric GitHub Actions; not a claim of physical result reproduction. Original files are not in Git.",
+  "files": [
+    {
+      "name": "decoder_timings_each_repetition.csv",
+      "bytes": 7742162,
+      "sha256": "8f23b21a27004381734fefeef80e5326e0a67c391212fcb792950cf9b51bd324"
+    },
+    {
+      "name": "defect_rates_per_round.txt",
+      "bytes": 1846,
+      "sha256": "c923029ef8ececd2253f5efc1fe0054f549db79bdafee0671a61af1ed474ca54"
+    },
+    {
+      "name": "defect_rates_per_round_stability_9.txt",
+      "bytes": 1988,
+      "sha256": "ebe0126c80fbba48b3b7dc04b3b02c6857a4aef1963089ca3dd1593e3eb46f79"
+    },
+    {
+      "name": "fast_feedback_raw_data.h5",
+      "bytes": 5582749,
+      "sha256": "dd2a3d48e86ea81094b44439fb58a3d9788757e26799bd4ee7497eb94798ed08"
+    },
+    {
+      "name": "fig4b_decoding_response_time.csv",
+      "bytes": 917,
+      "sha256": "00155d0e94fb799679476ca759d71edd2c3a21cc6967a80d20244e3c150ea2a4"
+    },
+    {
+      "name": "figS4c_feedback_response_time_probability_density_data.csv",
+      "bytes": 13881,
+      "sha256": "48e5e19a74316d34d3a4819d5e88707e90a0a863e16e74e6f8bf682eec4fc61a"
+    },
+    {
+      "name": "figS4c_feedback_response_time_probability_density_fit_parameters.csv",
+      "bytes": 337,
+      "sha256": "f56ae6a00dc8adbcfd344fed8a1f5a6105df1eb91bdc2202330eb80ed4ac295f"
+    },
+    {
+      "name": "figS4d_t1_time_fitting.csv",
+      "bytes": 378,
+      "sha256": "94c135e6e6d5eb40cc078becc7bfe866aa2e2a72cda7bad53162891df16d117e"
+    },
+    {
+      "name": "lep_belief_matching.txt",
+      "bytes": 275,
+      "sha256": "3c28afe0f1970aa829089f1543dcf22babbe1c6cb4731835cc87c006b52c28b4"
+    },
+    {
+      "name": "lep_fpga.txt",
+      "bytes": 275,
+      "sha256": "9e3893c60ef1302d958d5752762089480beae65e5aed0f522af489b8917e7c36"
+    },
+    {
+      "name": "lep_mwpm.txt",
+      "bytes": 275,
+      "sha256": "2243153c8564f5441fcfe1cefcd40ba2bd51c3c75f3841f70f92a5e63539aea7"
+    },
+    {
+      "name": "lep_mwpm_soft_info_pairwise_correlation_graph.txt",
+      "bytes": 263,
+      "sha256": "106be5ff47bcb3e7474932461b2886371a7cdf2ea60783100856ba7777fb85f8"
+    },
+    {
+      "name": "lep_mwpm_soft_info_pairwise_correlation_graph_with_resets.txt",
+      "bytes": 131,
+      "sha256": "95dba7ac221519828d942c203f51d2e0b7a150b81fed337c9c4bd357a4c66164"
+    },
+    {
+      "name": "lep_mwpm_stability_9.txt",
+      "bytes": 285,
+      "sha256": "d5d8b1d9ee0937e8b154ee40a681705d127fd7ad709df8784f0813a1b453e001"
+    },
+    {
+      "name": "mean_decoding_time.txt",
+      "bytes": 311,
+      "sha256": "0e163c3b8c7c80140333f4a1832396248466c10d150fa08da39a6d58b5d1bf30"
+    }
+  ]
+}

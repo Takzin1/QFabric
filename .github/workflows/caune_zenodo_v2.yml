@@ -1,0 +1,41 @@
+name: Caune Zenodo v2 source authentication
+
+on:
+  push:
+    branches:
+      - research/caune-zenodo-v2-evidence-20261110
+  pull_request:
+    paths:
+      - data/caune_zenodo_v2_source_manifest.json
+      - src/qfabric/caune_zenodo.py
+      - scripts/caune_zenodo_v2_reproduce.py
+      - tests/test_caune_zenodo.py
+      - .github/workflows/caune_zenodo_v2.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify-public-author-files:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Install only local scientific dependencies
+        run: python -m pip install -e ".[dev,research-hdf5]"
+      - name: Validate fixed source allowlist without network
+        run: python scripts/caune_zenodo_v2_reproduce.py --mode metadata
+      - name: Download and authenticate original 15 Zenodo v2 files
+        run: python scripts/caune_zenodo_v2_reproduce.py --mode reproduce --output "$RUNNER_TEMP/caune-zenodo-v2-derived.json"
+      - name: Retain derived verification only (no author raw data)
+        uses: actions/upload-artifact@v4
+        with:
+          name: caune-v2-derived-reproduction
+          path: ${{ runner.temp }}/caune-zenodo-v2-derived.json
+          if-no-files-found: error
+          retention-days: 7
