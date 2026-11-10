@@ -9,6 +9,11 @@ from pathlib import Path
 
 import pytest
 
+from qfabric.caune_addenda import SHA256 as SUMMARY_SOURCE_SHA256
+from qfabric.caune_evidence import EXPECTED_SHA256 as TIMING_SOURCE_SHA256
+from qfabric.caune_feedback import SOURCE_SHA256 as FIGURE_SOURCE_SHA256
+from qfabric.caune_hdf5 import HDF5_NAME, HDF5_SHA256
+from qfabric.caune_lep import SOURCE_SPECS
 from qfabric.caune_zenodo import (
     ALLOWED,
     _pinned_download_url,
@@ -101,3 +106,21 @@ def test_redirect_to_untrusted_origin_rejected(tmp_path: Path) -> None:
 
 def test_manifest_is_parseable_standard_json() -> None:
     assert json.loads(MANIFEST.read_text())["sourceVersion"] == "v2"
+
+def test_authenticated_zenodo_sha_snapshot_matches_existing_15_pins() -> None:
+    snapshot = json.loads((
+        Path(__file__).resolve().parents[1] /
+        "data/reference/caune_zenodo_v2_authenticated_digests_2026-11-10.json"
+    ).read_text())
+    pinned = {
+        **TIMING_SOURCE_SHA256,
+        **FIGURE_SOURCE_SHA256,
+        **SUMMARY_SOURCE_SHA256,
+        HDF5_NAME: HDF5_SHA256,
+        **{name: spec["sha256"] for name, spec in SOURCE_SPECS.items()},
+    }
+    observed = {row["name"]: row["sha256"] for row in snapshot["files"]}
+    assert observed == pinned
+    assert snapshot["verifiedDownloadedBytes"] == sum(row["bytes"] for row in snapshot["files"])
+    assert snapshot["verifiedFileCount"] == len(ALLOWED)
+    assert snapshot["rawFilesIncluded"] is False
