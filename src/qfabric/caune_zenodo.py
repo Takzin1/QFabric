@@ -11,9 +11,11 @@ import hashlib
 import json
 import re
 import tempfile
+import time
 from collections.abc import Callable
 from pathlib import Path
 from typing import Any
+from urllib.error import HTTPError, URLError
 from urllib.parse import quote, urlparse
 from urllib.request import Request, urlopen
 
@@ -107,7 +109,7 @@ def download_checked(
     md5, sha256 = hashlib.md5(), hashlib.sha256()
     total = 0
     try:
-        with opener(req, timeout=45) as response:
+        with opener(req, timeout=90) as response:
             if not _trusted_download_url(response.geturl()):
                 raise ValueError("Zenodo download redirected outside trusted origin")
             with destination.open("xb") as target:
@@ -189,7 +191,18 @@ def reproduce(manifest: dict[str, Any], *, opener: Callable[..., Any] = urlopen)
         checksums = []
         total = 0
         for entry in entries:
-            result = download_checked(entry, directory, opener=opener)
+            for attempt in range(3):
+                try:
+                    result = download_checked(entry, directory, opener=opener)
+                    break
+                except HTTPError as exc:
+                    if attempt == 2 or exc.code not in (429, 500, 502, 503, 504):
+                        raise
+                    time.sleep(2 ** attempt)
+                except (TimeoutError, URLError, ConnectionResetError):
+                    if attempt == 2:
+                        raise
+                    time.sleep(2 ** attempt)
             total += result["bytes"]
             if total > MAX_TOTAL_BYTES:
                 raise ValueError("total original data exceeds intake size cap")
