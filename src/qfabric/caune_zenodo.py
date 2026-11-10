@@ -12,7 +12,8 @@ import json
 import re
 import tempfile
 from pathlib import Path
-from typing import Any, Callable
+from collections.abc import Callable
+from typing import Any
 from urllib.parse import quote, urlparse
 from urllib.request import Request, urlopen
 
@@ -65,7 +66,7 @@ def validate_manifest(data: Any) -> list[dict[str, str]]:
         if not isinstance(md5, str) or not re.fullmatch(r"[0-9a-f]{32}", md5):
             raise ValueError("malformed Zenodo published MD5")
         result.append({"name": name, "publishedMd5": md5})
-    if {x["name"] for x in result} != ALLOWED or len(set(x["name"] for x in result)) != len(result):
+    if {x["name"] for x in result} != ALLOWED or len({x["name"] for x in result}) != len(result):
         raise ValueError("missing or duplicated Caune file")
     return result
 
@@ -103,7 +104,7 @@ def download_checked(
         _pinned_download_url(name),
         headers={"User-Agent": "QFabric-research-evidence/0.9 (Zenodo v2; offline audit)"},
     )
-    md5, sha256 = hashlib.md5(), hashlib.sha256()  # noqa: S324 - match provider checksum
+    md5, sha256 = hashlib.md5(), hashlib.sha256()
     total = 0
     try:
         with opener(req, timeout=45) as response:
