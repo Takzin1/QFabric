@@ -1,0 +1,70 @@
+{
+  "schemaVersion": "qfabric-research-traceability/1",
+  "reviewedOn": "2026-11-16",
+  "note": "Each row links one formula or method to its source, the code that implements it and the test that checks it. A row records software correctness only; it is not evidence that a published result was reproduced. Chapter and section pointers were written without the books at hand; confirm them before scholarly citation.",
+  "entries": [
+    {
+      "id": "TRC-001",
+      "method": "Distribution-free confidence interval for a quantile from order statistics (binomial ranks)",
+      "reference": "David and Nagaraja, Order Statistics, 3rd ed. (2003), section 7.1, DOI 10.1002/0471722162",
+      "implementation": "qfabric.research.stats:quantile_rank_interval",
+      "tests": [
+        "tests/test_research_stats.py::test_quantile_ranks_match_independent_binomial_table",
+        "tests/test_research_stats.py::test_quantile_interval_coverage_on_a_skewed_distribution"
+      ],
+      "assumption": "independent identically distributed samples"
+    },
+    {
+      "id": "TRC-002",
+      "method": "Wilson score interval for a binomial proportion",
+      "reference": "Wilson, J. Am. Stat. Assoc. 22, 209 (1927), DOI 10.1080/01621459.1927.10502953",
+      "implementation": "qfabric.research.stats:wilson_interval",
+      "tests": [
+        "tests/test_research_stats.py::test_mean_interval_needs_thirty_samples_and_wilson_checks_counts",
+        "tests/test_decoder_benchmark.py::test_monte_carlo_intervals_are_consistent_with_exact_values"
+      ],
+      "assumption": "independent Bernoulli trials; nominal coverage"
+    },
+    {
+      "id": "TRC-003",
+      "method": "Minimum-weight (maximum-likelihood for p < 1/2) decoding of the repetition code by majority vote",
+      "reference": "MacKay, Information Theory, Inference, and Learning Algorithms (2003), section 1.2",
+      "implementation": "qfabric.research.decoders:majority_vote",
+      "tests": [
+        "tests/test_decoder_benchmark.py::test_majority_vote_is_minimum_weight_for_every_syndrome"
+      ],
+      "assumption": "independent bit flips with equal probability below one half"
+    },
+    {
+      "id": "TRC-004",
+      "method": "Syndrome decoding of the [7,4,3] Hamming code",
+      "reference": "Hamming, Bell Syst. Tech. J. 29, 147 (1950), DOI 10.1002/j.1538-7305.1950.tb00463.x",
+      "implementation": "qfabric.research.decoders:hamming_syndrome",
+      "tests": [
+        "tests/test_decoder_benchmark.py::test_hamming_syndrome_decoder_matches_oracle_and_textbook_failure_count"
+      ],
+      "assumption": "at most one bit flip per block for guaranteed correction"
+    },
+    {
+      "id": "TRC-005",
+      "method": "Exhaustive coset enumeration used as the decoding oracle",
+      "reference": "MacWilliams and Sloane, The Theory of Error-Correcting Codes (1977), chapter 1, section 4 (standard array)",
+      "implementation": "qfabric.research.decoders:coset_table",
+      "tests": [
+        "tests/test_decoder_benchmark.py::test_oracle_is_independent_of_the_decoders_it_judges",
+        "tests/test_decoder_benchmark.py::test_ambiguous_minimum_weight_is_reported_not_guessed"
+      ],
+      "assumption": "binary linear code of at most 12 bits"
+    },
+    {
+      "id": "TRC-006",
+      "method": "Exact block failure probability from failing-error weight counts",
+      "reference": "MacWilliams and Sloane (1977), chapter 1, section 5 (probability of error for a standard-array decoder)",
+      "implementation": "qfabric.research.decoders:failure_probability",
+      "tests": [
+        "tests/test_decoder_benchmark.py::test_failure_probability_is_exact_rational_arithmetic"
+      ],
+      "assumption": "independent bit flips; evaluated in exact rational arithmetic"
+    }
+  ]
+}
