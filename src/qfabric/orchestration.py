@@ -64,6 +64,30 @@ def _invalid_constant(value: str) -> None:
     raise ValueError(f"non-finite JSON constant: {value}")
 
 
+def _finite_float(value: str) -> float:
+    number = float(value)
+    if not math.isfinite(number):
+        raise ValueError("JSON number exceeds the finite floating-point range")
+    return number
+
+
+def _same_json(left: Any, right: Any) -> bool:
+    """JSON-model equality: Python's ``True == 1 == 1.0`` must not pass as agreement."""
+    if isinstance(left, bool) or isinstance(right, bool):
+        return left is right
+    if isinstance(left, (int, float)) and isinstance(right, (int, float)):
+        return left == right
+    if type(left) is not type(right):
+        return False
+    if isinstance(left, dict):
+        return left.keys() == right.keys() and all(
+            _same_json(item, right[key]) for key, item in left.items()
+        )
+    if isinstance(left, list):
+        return len(left) == len(right) and all(map(_same_json, left, right))
+    return left == right
+
+
 def _decode(raw: bytes, *, limit: int, label: str) -> dict[str, Any]:
     if not isinstance(raw, bytes):
         raise TypeError(f"{label} must be UTF-8 bytes")
@@ -74,6 +98,7 @@ def _decode(raw: bytes, *, limit: int, label: str) -> dict[str, Any]:
             raw.decode("utf-8"),
             object_pairs_hook=_unique_pairs,
             parse_constant=_invalid_constant,
+            parse_float=_finite_float,
         )
     except (UnicodeDecodeError, json.JSONDecodeError, RecursionError) as exc:
         raise ValueError(f"{label} must be UTF-8 JSON") from exc
@@ -260,7 +285,7 @@ def make_review(
         raise ValueError("decision must be approve or reject")
     expected = make_assessment(snapshot_raw, proposal_raw)
     reported = _decode(assessment_raw, limit=MAX_ASSESSMENT_BYTES, label="assessment")
-    if reported != expected:
+    if not _same_json(reported, expected):
         raise ValueError("assessment differs from recomputed source/proposal evidence")
     if decision == "approve" and expected["status"] != "ready_for_review":
         raise ValueError("cannot approve a rejected assessment")

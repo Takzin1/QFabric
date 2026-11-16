@@ -172,3 +172,63 @@ def test_cli_generate_and_verify_cycle(tmp_path) -> None:
     source.write_bytes(_encoded(_snapshot()))
     assert bridge.main([str(source), str(target), "--shots", "32"]) == 0
     assert bridge.main([str(source), str(target), "--verify"]) == 0
+
+
+def _report_text(shots: int = 16) -> tuple[bytes, str]:
+    raw = _encoded(_snapshot())
+    return raw, json.dumps(bridge.make_report(raw, shots=shots), indent=2)
+
+
+def test_strict_reader_refuses_duplicate_keys_and_nonfinite_constants() -> None:
+    raw, text = _report_text()
+    ambiguous = raw.replace(
+        b'"provenance": "synthetic"', b'"provenance": "measured", "provenance": "synthetic"',
+    )
+    assert ambiguous != raw
+    with pytest.raises(ValueError, match="duplicate JSON key"):
+        bridge.make_report(ambiguous)
+    doubled = text.replace(
+        '"hardwareExecuted": false,', '"hardwareExecuted": true, "hardwareExecuted": false,', 1,
+    )
+    with pytest.raises(ValueError, match="duplicate JSON key"):
+        bridge.verify_report(raw, doubled.encode())
+    with pytest.raises(ValueError, match="non-finite"):
+        bridge.verify_report(raw, text.replace('"meanI": ', '"meanI": NaN, "x": ', 1).encode())
+
+
+@pytest.mark.parametrize("path, key, value", [
+    ((), "measuredOnHardware", True),
+    (("source",), "authenticated", True),
+    (("qfabric",), "physicalDevice", "Ankaa-2"),
+    (("qfabric", "plan"), "executed", True),
+    (("analytics",), "speedupVsCpu", 40.0),
+])
+def test_verifier_refuses_unreviewed_claim_fields(path, key, value) -> None:
+    raw, text = _report_text()
+    report = json.loads(text)
+    target = report
+    for part in path:
+        target = target[part]
+    target[key] = value
+    with pytest.raises(ValueError, match="versioned report contract"):
+        bridge.verify_report(raw, _encoded(report))
+
+
+def test_verifier_refuses_type_confusion_altered_disclaimer_and_naive_timestamp() -> None:
+    raw, text = _report_text()
+    for mutate in (
+        lambda r: r["qfabric"]["plan"]["calls"][0].update(kwargs={"ch": False, "nqz": True}),
+        lambda r: r["qfabric"]["plan"]["calls"][0].update(note="acquire"),
+        lambda r: r["qfabric"]["readoutIntent"].update(shots=16.0, hardwareExecuted=0),
+        lambda r: r.update(disclaimer="Quantum advantage verified on hardware."),
+        lambda r: r.update(generatedAt="2026-11-16T00:00:00"),
+        lambda r: r.update(generatedAt=20261116),
+    ):
+        report = json.loads(text)
+        mutate(report)
+        with pytest.raises(ValueError):
+            bridge.verify_report(raw, _encoded(report))
+    # A JSON consumer may legitimately print 100.0 as 100; numbers compare by value.
+    report = json.loads(text)
+    report["qfabric"]["plan"]["calls"][1]["kwargs"].update(freq=100, length=1)
+    assert bridge.verify_report(raw, _encoded(report))["semantic_invariants_pass"] is True
