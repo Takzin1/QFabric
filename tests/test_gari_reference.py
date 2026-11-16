@@ -139,3 +139,23 @@ def test_upstream_csv_rejects_nan_and_invalid_scientific_counts() -> None:
     edited = raw.replace(b"    4.00", b"     nan", 1)
     with pytest.raises(ValueError):
         parse_author_si1000_csv(edited, enforce_upstream_blob=False)
+
+
+@pytest.mark.parametrize("old, new", [
+    (b"131072", b"131_072"),   # int() would accept digit separators
+    (b"131072", b"+131072"),
+    (b"    4.00", b"   4_0.0"),
+    (b"    4.00", b"infinity"),
+])
+def test_upstream_csv_refuses_lenient_python_number_syntax(old: bytes, new: bytes) -> None:
+    raw = UPSTREAM.read_bytes()
+    assert old in raw
+    with pytest.raises(ValueError):
+        parse_author_si1000_csv(raw.replace(old, new, 1), enforce_upstream_blob=False)
+
+
+def test_upstream_csv_short_or_overlong_row_fails_closed_as_value_error() -> None:
+    raw = UPSTREAM.read_bytes()
+    for extra in (b"5\n", b"1,0,0,1.0,d," + b"a" * 64 + b',"{}",,surplus\n'):
+        with pytest.raises(ValueError, match="missing or excess columns"):
+            parse_author_si1000_csv(raw + extra, enforce_upstream_blob=False)

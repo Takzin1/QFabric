@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "qfabric-experiment-manifest/1",
+  "kind": "offline_analysis",
+  "experimentId": "EXP-DBL-001-majority-vote-correctness",
+  "source": {
+    "origin": "synthetic_fixture",
+    "providerLabel": "offline",
+    "modelLabel": "none"
+  },
+  "hypothesis": "The majority-vote reference decoder returns a minimum-weight correction for every syndrome of the repetition codes with 3, 5 and 7 bits.",
+  "rationale": "Software-correctness check against an exhaustive oracle on synthetic syndromes; no statement about hardware.",
+  "analysis": "decoder_benchmark",
+  "inputs": [
+    {
+      "role": "spec",
+      "sha256": "a91c62a723bab094f1919ce1d31a2eecda9afe60f3ac5dd8f57ed1b36e4341bf",
+      "provenance": "synthetic"
+    }
+  ],
+  "endpoint": {
+    "metric": "oracleAgreementFraction",
+    "subject": "majority_vote",
+    "minimum": 1.0
+  },
+  "requestedAction": "offline_analysis_only"
+}

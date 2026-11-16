@@ -1,0 +1,9 @@
+{
+  "schemaVersion": "qfabric-decoder-benchmark-spec/1",
+  "kind": "synthetic_fixture",
+  "benchmarkId": "DBL-001",
+  "code": {"family": "repetition", "sizes": [3, 5, 7]},
+  "noise": {"model": "iid_bit_flip", "probabilities": [0.01, 0.05, 0.1, 0.2, 0.3, 0.45, 0.5, 0.6]},
+  "decoders": ["majority_vote", "negative_control_prefix"],
+  "sampling": {"shots": 4000, "seed": 20261116, "confidenceLevel": 0.95}
+}

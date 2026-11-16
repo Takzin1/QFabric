@@ -195,3 +195,25 @@ def test_multifield_plan_is_sorted_and_no_automatic_dispatch() -> None:
         "coolingRate", "stirringSpeed"
     ]
     assert report["hardwareDispatchAllowed"] is False
+
+
+@pytest.mark.parametrize("field, value", [
+    ("humanApproved", 0), ("reviewRequired", 1), ("hardwareDispatchAllowed", 0.0),
+    ("physicalMeasurement", 0), ("modelInvoked", None),
+])
+def test_review_refuses_type_confused_assessment_flags(field, value) -> None:
+    proposal = _raw(_proposal())
+    assessment = make_assessment(SOURCE, proposal)
+    assert make_review(
+        SOURCE, proposal, _raw(assessment), reviewer_label="r", decision="reject",
+    )["status"] == "rejected_by_reviewer"
+    with pytest.raises(ValueError, match="assessment differs"):
+        make_review(
+            SOURCE, proposal, _raw({**assessment, field: value}),
+            reviewer_label="r", decision="approve",
+        )
+
+
+def test_overflowing_json_number_is_refused_at_parse_time() -> None:
+    with pytest.raises(ValueError):
+        parse_proposal(_raw(_proposal()).replace(b"0.25", b"1e999"))
