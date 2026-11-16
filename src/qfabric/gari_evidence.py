@@ -38,6 +38,17 @@ def _no_nonfinite(value: str) -> None:
     raise ValueError(f"nonfinite JSON number {value}")
 
 
+_DECIMAL = re.compile(r"[0-9]+(?:\.[0-9]+)?(?:[eE][+-]?[0-9]+)?")
+
+
+def _count(text: str) -> int:
+    """Plain ASCII digits only: int() would also accept '1_000', '+5' or other scripts."""
+    text = text.strip()
+    if not (text.isascii() and text.isdecimal()):
+        raise ValueError("invalid simulation count values")
+    return int(text)
+
+
 def parse_author_si1000_csv(raw: bytes, *, enforce_upstream_blob: bool = True) -> dict[str, Any]:
     if not isinstance(raw, bytes) or not 0 < len(raw) <= MAX_CSV_BYTES:
         raise ValueError("bounded UTF-8 CSV bytes required")
@@ -50,17 +61,21 @@ def parse_author_si1000_csv(raw: bytes, *, enforce_upstream_blob: bool = True) -
         raise ValueError("unexpected author CSV schema")
     records = []
     for row in reader:
-        if None in row or not any((v or "").strip() for v in row.values()):
-            if not any((v or "").strip() for v in row.values()):
-                continue
-            raise ValueError("CSV row has excess columns")
+        cells = [value for key, value in row.items() if key is not None]
+        if None not in row and not any((value or "").strip() for value in cells):
+            continue
+        if None in row or any(value is None for value in cells):
+            raise ValueError("CSV row has missing or excess columns")
         if len(records) >= 100:
             raise ValueError("CSV record count exceeds audit limit")
-        n, k, discards = (int(row[name].strip()) for name in ("shots", "errors", "discards"))
-        if not 0 <= k <= n // 2 or n <= 0 or discards < 0:
+        n, k, discards = (_count(row[name]) for name in ("shots", "errors", "discards"))
+        if not 0 <= k <= n // 2 or n <= 0:
             raise ValueError("invalid simulation count values")
-        runtime = float(row["seconds"].strip())
-        if not math.isfinite(runtime) or runtime < 0:
+        seconds = row["seconds"].strip()
+        if not _DECIMAL.fullmatch(seconds):
+            raise ValueError("invalid runtime")
+        runtime = float(seconds)
+        if not math.isfinite(runtime):
             raise ValueError("invalid runtime")
         label = row["decoder"].strip()
         strong_id = row["strong_id"].strip()

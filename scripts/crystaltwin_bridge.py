@@ -18,6 +18,7 @@ from time import perf_counter
 from typing import Any
 
 from qfabric.models import ControlCommand, ExperimentRequest
+from qfabric.orchestration import _decode, _same_json
 from qfabric.profiles.qick import QickGeneratorBinding, QickPlanAdapter
 from qfabric.profiles.qick_readout import QickReadoutIntent, QickReadoutPlanner
 from qfabric.protocol import CommandEnvelope
@@ -38,6 +39,46 @@ SUMMARY_KEYS = frozenset({
 SERIES_KEYS = frozenset({
     "step", "temperature", "concentration", "growthRate", "crystalYield",
 })
+DISCLAIMER = (
+    "Synthetic educational bridge only. No physical quantum readout, "
+    "crystallization measurement, process control, verified speedup, "
+    "or quantum advantage is claimed."
+)
+# Exact report shape: an unknown field is an unreviewed claim, so --verify refuses it.
+_REPORT_KEYS = {
+    "report": {
+        "schemaVersion", "kind", "generatedAt", "source", "snapshot", "qfabric",
+        "analytics", "disclaimer",
+    },
+    "source": {"repository", "mode", "provenance", "sha256"},
+    "qfabric": {
+        "repository", "mode", "hardwareExecuted", "readoutStatus", "readoutIntent",
+        "qickReferenceCommit", "plan",
+    },
+    "plan": {
+        "device_id", "message_id", "profile_version", "qick_reference_repository",
+        "qick_reference_commit", "calls",
+    },
+    "analytics": {
+        "backend", "signalType", "algorithm", "shots", "meanI", "meanQ", "meanPower",
+        "elapsedMs", "physicalMeasurement",
+    },
+}
+_DEMO_CALLS = [
+    {"method": "declare_gen", "kwargs": {"ch": 0, "nqz": 1}},
+    {"method": "add_pulse", "kwargs": {
+        "ch": 0, "name": "qf_0000", "style": "const",
+        "freq": 100.0, "phase": 0.0, "gain": 0.25, "length": 1.0,
+    }},
+    {"method": "pulse", "kwargs": {"ch": 0, "name": "qf_0000", "t": 0.0}},
+]
+
+
+def _exact(value: Any, field: str) -> dict[str, Any]:
+    doc = _mapping(value, field)
+    if set(doc) != _REPORT_KEYS[field]:
+        raise ValueError(f"{field} fields differ from the versioned report contract")
+    return doc
 
 
 def _mapping(value: Any, field: str) -> dict[str, Any]:
@@ -177,10 +218,8 @@ def make_report(raw_snapshot: bytes, *, backend: str = "cpu", shots: int = 4096)
         raise ValueError("shots must be an integer in 1..2000000")
     if len(raw_snapshot) > MAX_INPUT_BYTES:
         raise ValueError("snapshot exceeds 512 KiB")
-    try:
-        snapshot = validate_snapshot(json.loads(raw_snapshot))
-    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
-        raise ValueError("snapshot must be UTF-8 JSON") from exc
+    # Same strict reader as the proposal gate: duplicate keys and NaN are refused.
+    snapshot = validate_snapshot(_decode(raw_snapshot, limit=MAX_INPUT_BYTES, label="snapshot"))
 
     # Standalone illustrative QICK control plan: intentionally independent of the
     # crystallization simulation, never an industrial or quantum measurement.
@@ -247,11 +286,7 @@ def make_report(raw_snapshot: bytes, *, backend: str = "cpu", shots: int = 4096)
             "plan": plan.to_dict(),
         },
         "analytics": analyze_iq(shots, backend),
-        "disclaimer": (
-            "Synthetic educational bridge only. No physical quantum readout, "
-            "crystallization measurement, process control, verified speedup, "
-            "or quantum advantage is claimed."
-        ),
+        "disclaimer": DISCLAIMER,
     }
     return result
 
@@ -264,40 +299,42 @@ def verify_report(raw_snapshot: bytes, raw_report: bytes) -> dict[str, bool]:
     """
     if len(raw_snapshot) > MAX_INPUT_BYTES or len(raw_report) > MAX_INPUT_BYTES:
         raise ValueError("snapshot/report exceeds 512 KiB")
-    try:
-        snapshot = validate_snapshot(json.loads(raw_snapshot))
-        report = _mapping(json.loads(raw_report), "report")
-    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
-        raise ValueError("snapshot and report must be UTF-8 JSON") from exc
+    snapshot = validate_snapshot(_decode(raw_snapshot, limit=MAX_INPUT_BYTES, label="snapshot"))
+    report = _exact(_decode(raw_report, limit=MAX_INPUT_BYTES, label="report"), "report")
 
-    if report.get("schemaVersion") != REPORT_VERSION or (
-        report.get("kind") != "qfabric_research_bridge_report"
+    if report["schemaVersion"] != REPORT_VERSION or (
+        report["kind"] != "qfabric_research_bridge_report"
     ):
         raise ValueError("unsupported QFabric report schema or kind")
-    source = _mapping(report.get("source"), "source")
+    try:
+        generated = datetime.fromisoformat(report["generatedAt"])
+    except (TypeError, ValueError) as exc:
+        raise ValueError("generatedAt must be an ISO-8601 timestamp") from exc
+    if generated.utcoffset() is None or report["disclaimer"] != DISCLAIMER:
+        raise ValueError("report timestamp or non-claim disclaimer was altered")
+    source = _exact(report["source"], "source")
     if (
-        source.get("repository") != "Takzin1/crystaltwinai"
-        or source.get("provenance") != "synthetic"
-        or source.get("mode") != "educational_simulation"
-        or source.get("sha256") != hashlib.sha256(raw_snapshot).hexdigest()
+        source["repository"] != "Takzin1/crystaltwinai"
+        or source["provenance"] != "synthetic"
+        or source["mode"] != "educational_simulation"
+        or source["sha256"] != hashlib.sha256(raw_snapshot).hexdigest()
     ):
         raise ValueError("report source provenance or snapshot SHA-256 does not match")
-    reported_snapshot = _mapping(report.get("snapshot"), "snapshot")
-    if reported_snapshot != {
+    if not _same_json(report["snapshot"], {
         "input": snapshot["input"],
         "summary": snapshot["summary"],
         "rowCount": len(snapshot["trajectory"]),
-    }:
+    }):
         raise ValueError("report summary/inputs do not match source snapshot")
-    qfabric = _mapping(report.get("qfabric"), "qfabric")
+    qfabric = _exact(report["qfabric"], "qfabric")
     if (
-        qfabric.get("repository") != "Takzin1/QFabric"
-        or qfabric.get("mode") != "plan_only"
-        or qfabric.get("hardwareExecuted") is not False
-        or qfabric.get("readoutStatus") != "intent_only"
+        qfabric["repository"] != "Takzin1/QFabric"
+        or qfabric["mode"] != "plan_only"
+        or qfabric["hardwareExecuted"] is not False
+        or qfabric["readoutStatus"] != "intent_only"
     ):
         raise ValueError("report falsely asserts quantum hardware or acquisition")
-    readout = _mapping(qfabric.get("readoutIntent"), "readoutIntent")
+    readout = _mapping(qfabric["readoutIntent"], "readoutIntent")
     if (
         readout.get("kind") != "qick_readout_proposal"
         or readout.get("status") != "intent_only"
@@ -305,29 +342,16 @@ def verify_report(raw_snapshot: bytes, raw_report: bytes) -> dict[str, bool]:
         or readout.get("hardwareExecuted") is not False
     ):
         raise ValueError("invalid or missing readout-intent-only claims")
-    plan = _mapping(qfabric.get("plan"), "plan")
+    plan = _exact(qfabric["plan"], "plan")
     if (
-        qfabric.get("qickReferenceCommit") != plan.get("qick_reference_commit")
-        or qfabric.get("qickReferenceCommit") != readout.get("qick_reference_commit")
-        or plan.get("device_id") != readout.get("device_id")
+        qfabric["qickReferenceCommit"] != plan["qick_reference_commit"]
+        or qfabric["qickReferenceCommit"] != readout.get("qick_reference_commit")
+        or plan["device_id"] != readout.get("device_id")
     ):
         raise ValueError("inconsistent QICK profile reference/device")
-    calls = plan.get("calls")
-    if (
-        not isinstance(calls, list)
-        or len(calls) != 3
-        or not all(isinstance(call, dict) for call in calls)
-        or [call.get("method") for call in calls]
-        != ["declare_gen", "add_pulse", "pulse"]
-        or calls[0].get("kwargs") != {"ch": 0, "nqz": 1}
-        or calls[1].get("kwargs") != {
-            "ch": 0, "name": "qf_0000", "style": "const",
-            "freq": 100.0, "phase": 0.0, "gain": 0.25, "length": 1.0,
-        }
-        or calls[2].get("kwargs") != {"ch": 0, "name": "qf_0000", "t": 0.0}
-    ):
+    if not _same_json(plan["calls"], _DEMO_CALLS):
         raise ValueError("unknown or altered QICK demo plan shape")
-    analytics = _mapping(report.get("analytics"), "analytics")
+    analytics = _exact(report["analytics"], "analytics")
     if (
         analytics.get("signalType") != "synthetic_iq"
         or analytics.get("algorithm") != "analytic_unit_circle_v1"
@@ -353,7 +377,7 @@ def verify_report(raw_snapshot: bytes, raw_report: bytes) -> dict[str, bool]:
             shots=shots,
         )
     ).to_dict()
-    if readout != expected_readout:
+    if not _same_json(readout, expected_readout):
         raise ValueError("readout proposal has altered or unexpected fields")
     if (
         plan.get("message_id") != "qfabric-crystaltwin-demo"
