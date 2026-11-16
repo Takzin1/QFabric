@@ -9,7 +9,10 @@ Output derived statistics only: do not redistribute experimental raw bytes.
 from __future__ import annotations
 
 import hashlib
+import io
 import math
+import os
+import stat
 from pathlib import Path
 from statistics import fmean
 from typing import Any
@@ -23,26 +26,37 @@ SCHEMA = "qfabric-caune-2024-fast-feedback-hdf5-audit/1"
 EXPECTED_QUBITS = {"36", "37", "38", "43", "45", "50", "51", "52"}
 
 
-def _hashed_path(path: Path, *, enforce_pin: bool) -> tuple[str, int]:
-    if path.name != HDF5_NAME or not path.is_file():
+def _read_verified(path: Path, *, enforce_pin: bool) -> tuple[bytes, str]:
+    """Read the file once through one descriptor and hash those bytes.
+
+    The caller parses the returned bytes, never the path again, so a file
+    swapped after hashing cannot be what gets analysed. Symbolic links, FIFOs
+    and devices are refused.
+    """
+    if path.name != HDF5_NAME or path.is_symlink():
         raise ValueError("expected local fast_feedback_raw_data.h5")
-    size = path.stat().st_size
-    if not 0 < size <= MAX_HDF5_BYTES:
-        raise ValueError("HDF5 exceeds audited size limit")
-    digest = hashlib.sha256()
-    total = 0
-    with path.open("rb") as source:
-        while block := source.read(1024 * 1024):
-            total += len(block)
-            if total > MAX_HDF5_BYTES:
-                raise ValueError("HDF5 grew during hash")
-            digest.update(block)
-    if total != size:
-        raise ValueError("HDF5 changed during hash")
-    actual = digest.hexdigest()
+    flags = os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0) | getattr(os, "O_NONBLOCK", 0)
+    try:
+        descriptor = os.open(path, flags)
+    except OSError as exc:
+        raise ValueError("expected local fast_feedback_raw_data.h5") from exc
+    try:
+        info = os.fstat(descriptor)
+        if not stat.S_ISREG(info.st_mode):
+            raise ValueError("expected local fast_feedback_raw_data.h5")
+        if not 0 < info.st_size <= MAX_HDF5_BYTES:
+            raise ValueError("HDF5 exceeds audited size limit")
+    except BaseException:
+        os.close(descriptor)
+        raise
+    with os.fdopen(descriptor, "rb") as source:
+        raw = source.read(MAX_HDF5_BYTES + 1)
+    if len(raw) != info.st_size:
+        raise ValueError("HDF5 changed during read")
+    actual = hashlib.sha256(raw).hexdigest()
     if enforce_pin and actual != HDF5_SHA256:
         raise ValueError("HDF5 SHA-256 differs from pinned user-provided file")
-    return actual, size
+    return raw, actual
 
 
 def _child(parent: Any, path: str, h5py: Any, *, dataset: bool = False) -> Any:
@@ -159,9 +173,9 @@ def audit_fast_feedback_hdf5(
             'Install the optional "research-hdf5" extra to audit HDF5.'
         ) from exc
 
-    path = Path(source)
-    digest, size = _hashed_path(path, enforce_pin=enforce_pin)
-    with h5py.File(path, "r") as root:
+    raw, digest = _read_verified(Path(source), enforce_pin=enforce_pin)
+    size = len(raw)
+    with h5py.File(io.BytesIO(raw), "r") as root:
         required = {*(f"circuit_{n}" for n in range(8)), "reference_data", "session_data"}
         if set(root.keys()) != required:
             raise ValueError("unexpected HDF5 root schema")

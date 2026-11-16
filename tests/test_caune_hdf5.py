@@ -170,3 +170,46 @@ def test_double_measurement_rejects_wrong_shape_and_external_link(tmp_path: Path
         f[name] = h5py.ExternalLink("/tmp/untrusted.h5", "fake")
     with pytest.raises(ValueError, match="nonlocal HDF5 link"):
         audit_fast_feedback_hdf5(path, enforce_pin=False)
+
+
+def test_parsed_bytes_are_the_hashed_bytes_even_if_the_file_is_swapped(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """TOCTOU regression: replacing the file after hashing must not change what is parsed."""
+    path = _fixture(tmp_path)
+    expected = audit_fast_feedback_hdf5(path, enforce_pin=False)
+    real_open = h5py.File
+
+    def swap_then_open(source, *args, **kwargs):
+        assert not isinstance(source, (str, Path))  # never reopened by path
+        path.write_bytes(b"swapped after the hash was taken")
+        return real_open(source, *args, **kwargs)
+
+    monkeypatch.setattr(h5py, "File", swap_then_open)
+    assert audit_fast_feedback_hdf5(path, enforce_pin=False) == expected
+
+
+def test_symlink_directory_and_fifo_sources_are_refused(tmp_path: Path) -> None:
+    import os
+
+    real = tmp_path / "real"
+    real.mkdir()
+    target = _fixture(real)
+    link_dir = tmp_path / "link"
+    link_dir.mkdir()
+    link = link_dir / "fast_feedback_raw_data.h5"
+    link.symlink_to(target)
+    fifo_dir = tmp_path / "fifo"
+    fifo_dir.mkdir()
+    os.mkfifo(fifo_dir / "fast_feedback_raw_data.h5")
+    folder = tmp_path / "dir" / "fast_feedback_raw_data.h5"
+    folder.mkdir(parents=True)
+    for source in (link, fifo_dir / "fast_feedback_raw_data.h5", folder,
+                   tmp_path / "missing" / "fast_feedback_raw_data.h5"):
+        with pytest.raises(ValueError, match="expected local fast_feedback_raw_data.h5"):
+            audit_fast_feedback_hdf5(source, enforce_pin=False)
+    empty = tmp_path / "empty" / "fast_feedback_raw_data.h5"
+    empty.parent.mkdir()
+    empty.write_bytes(b"")
+    with pytest.raises(ValueError, match="size limit"):
+        audit_fast_feedback_hdf5(empty, enforce_pin=False)
