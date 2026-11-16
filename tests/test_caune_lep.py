@@ -120,3 +120,25 @@ def test_nonmonotonic_source_lep_is_not_silently_smoothed_or_rejected() -> None:
     parsed = parse_lep_table(raw, "lep_fpga.txt", enforce_pin=False)
     assert parsed["observations"][-2]["lep"] == pytest.approx(0.35)
     assert parsed["observations"][-3]["lep"] < parsed["observations"][-2]["lep"]
+
+
+def test_lep_comparisons_are_declared_descriptive_and_stability_9_is_refused() -> None:
+    from qfabric.caune_lep import lep_observation
+    from qfabric.research.comparability import IncomparableObservations, assess_comparison
+
+    fpga = lep_observation("lep_fpga.txt")
+    soft = lep_observation("lep_mwpm_soft_info_pairwise_correlation_graph.txt")
+    reset = lep_observation("lep_mwpm_soft_info_pairwise_correlation_graph_with_resets.txt")
+    for first, second, varied in ((fpga, soft, "decoder"), (soft, reset, "reset")):
+        verdict = assess_comparison(first, second, varied=frozenset({varied}))
+        assert verdict["tests"] == "scientific_hypothesis"
+        assert verdict["inference"] == "descriptive_only" and len(verdict["notes"]) == 2
+    # FPGA no-reset vs offline with-reset differs in two conditions: a confounded comparison.
+    with pytest.raises(IncomparableObservations, match="undeclared differing"):
+        assess_comparison(fpga, reset, varied=frozenset({"decoder"}))
+    # The stability-9 table is a different experiment; no cross-experiment difference is formed.
+    stability9 = lep_observation("lep_mwpm.txt", experiment="caune2024/stability-9")
+    with pytest.raises(IncomparableObservations, match="experiment differs"):
+        assess_comparison(
+            lep_observation("lep_fpga.txt"), stability9, varied=frozenset({"decoder"}),
+        )

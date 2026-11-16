@@ -16,6 +16,8 @@ from collections import defaultdict
 from statistics import fmean
 from typing import Any
 
+from qfabric.research.latency import summarize_latency
+
 PAPER_URL = "https://arxiv.org/abs/2410.05202"
 DATASET_RECORD_CANDIDATE = "https://zenodo.org/records/15364358"
 SCHEMA = "qfabric-caune-2024-user-supplied-data-audit/1"
@@ -119,6 +121,12 @@ def audit_decoder_timings(
             "repetitionFractionAbove1UsPerRound":
                 sum(v > 1.0 for v in ordered) / len(ordered),
             "repetitionCountAbove1UsPerRound": sum(v > 1.0 for v in ordered),
+            # Intervals for the point values above. Row order is the file's order;
+            # the source does not say whether that is acquisition order.
+            "uncertainty": summarize_latency(
+                series[rounds], quantity="decoding time per round, averaged over one repetition",
+                unit="microseconds", provenance="measured", ordered=True, thresholds=(1.0,),
+            ),
         })
     return {
         "filename": "decoder_timings_each_repetition.csv",

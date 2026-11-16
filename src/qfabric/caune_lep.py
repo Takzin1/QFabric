@@ -13,6 +13,8 @@ import math
 from collections.abc import Mapping
 from typing import Any
 
+from qfabric.research.comparability import Observation, assess_comparison
+
 SCHEMA = "qfabric-caune-2024-lep-figure-audit/1"
 PAPER_URL = "https://arxiv.org/abs/2410.05202"
 MAX_BYTES_PER_FILE = 4096
@@ -60,6 +62,20 @@ SOURCE_SPECS = {
         "errorBarDefinition": "author_supplementary_figure_6_standard_deviation_of_mean_values",
     },
 }
+
+
+def lep_observation(filename: str, *, experiment: str = "caune2024/stability-8") -> Observation:
+    """Declare what one author LEP table is, for the comparability check.
+
+    Every table is an author-reported hardware aggregate with no per-shot
+    records and no documented acquisition session.
+    """
+    spec = SOURCE_SPECS[filename]
+    return Observation(
+        label=filename, quantity="logical_error_probability", unit="fraction",
+        provenance="measured", aggregation="figure_aggregate", experiment=experiment,
+        conditions={"decoder": spec["method"], "reset": spec["condition"]},
+    )
 
 
 def parse_lep_table(
@@ -168,7 +184,17 @@ def audit_caune_lep_bundle(
         "sourceFileRedistributionRightsVerified": False,
         "tables": tables,
         "fpgaVersusOfflineSoftComparison": hard_comparison,
+        "fpgaVersusOfflineSoftComparability": assess_comparison(
+            lep_observation("lep_fpga.txt"),
+            lep_observation("lep_mwpm_soft_info_pairwise_correlation_graph.txt"),
+            varied=frozenset({"decoder"}),
+        ),
         "resetVersusNonresetDescriptiveComparison": reset_comparison,
+        "resetVersusNonresetComparability": assess_comparison(
+            lep_observation("lep_mwpm_soft_info_pairwise_correlation_graph.txt"),
+            lep_observation("lep_mwpm_soft_info_pairwise_correlation_graph_with_resets.txt"),
+            varied=frozenset({"reset"}),
+        ),
         "fpgaAllRoundsAboveSoftLep": all(
             row["absoluteReductionProbabilityPoints"] > 0 for row in hard_comparison
         ),

@@ -1,5 +1,6 @@
 """Offline checks for a research-data catalog and a synthetic count baseline.
 
+Also runs the synthetic decoder benchmark and preregistered experiment manifests.
 Never downloads, parses archives, invokes quantum hardware or claims measurements.
 """
 
@@ -24,6 +25,15 @@ from qfabric.falsification import (
     evaluate_synthetic_falsification,
     validate_baseline_sources,
 )
+from qfabric.orchestration import (
+    MAX_ASSESSMENT_BYTES,
+    MAX_MANIFEST_BYTES,
+    MAX_RESULT_BYTES,
+    make_manifest_review,
+    replay_experiment,
+    run_experiment,
+)
+from qfabric.research.benchmark import MAX_SPEC_BYTES, measure_runtime, run_decoder_benchmark
 from qfabric.source_intake import summarize_source_intake
 
 
@@ -65,6 +75,15 @@ def _write_new_report(output: Path, result: str, *source_paths: Path) -> None:
         handle.write(result)
 
 
+def _emit(document: dict, output: Path | None, label: str, *source_paths: Path) -> None:
+    result = json.dumps(document, indent=2, allow_nan=False) + "\n"
+    if output:
+        _write_new_report(output, result, *source_paths)
+        print(f"Wrote {label}: {output}")
+    else:
+        print(result, end="")
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     modes = parser.add_subparsers(dest="mode", required=True)
@@ -96,9 +115,61 @@ def main(argv: list[str] | None = None) -> int:
     baseline = modes.add_parser("synthetic-baseline", help="Compute synthetic error rates and CI")
     baseline.add_argument("counts", type=Path)
     baseline.add_argument("--output", type=Path)
+    for name, text in (
+        ("decoder-benchmark", "Check reference decoders against an exhaustive oracle"),
+        ("decoder-runtime", "Time the reference decoders on this host (not reproducible)"),
+    ):
+        lab = modes.add_parser(name, help=text)
+        lab.add_argument("spec", type=Path)
+        lab.add_argument("--output", type=Path)
+    review = modes.add_parser(
+        "experiment-review", help="Self-attest a review of one experiment manifest",
+    )
+    review.add_argument("manifest", type=Path)
+    review.add_argument("--reviewer-label", required=True)
+    review.add_argument("--decision", required=True, choices=("approve", "reject"))
+    review.add_argument("--output", type=Path)
+    for name, text in (
+        ("experiment-run", "Run one preregistered offline analysis"),
+        ("experiment-replay", "Recompute a stored result and compare it exactly"),
+    ):
+        run = modes.add_parser(name, help=text)
+        run.add_argument("manifest", type=Path)
+        if name == "experiment-replay":
+            run.add_argument("result", type=Path)
+        else:
+            run.add_argument("--output", type=Path)
+        run.add_argument("--spec", type=Path, required=True)
+        run.add_argument("--review", type=Path)
     args = parser.parse_args(argv)
     try:
-        if args.mode == "validate-catalog":
+        if args.mode in ("decoder-benchmark", "decoder-runtime"):
+            raw = _read(args.spec, MAX_SPEC_BYTES)
+            if args.mode == "decoder-benchmark":
+                _emit(run_decoder_benchmark(raw), args.output, "synthetic decoder benchmark",
+                      args.spec)
+            else:
+                _emit(measure_runtime(raw), args.output, "host timing measurement", args.spec)
+        elif args.mode == "experiment-review":
+            _emit(make_manifest_review(
+                _read(args.manifest, MAX_MANIFEST_BYTES),
+                reviewer_label=args.reviewer_label, decision=args.decision,
+            ), args.output, "self-attested manifest review", args.manifest)
+        elif args.mode in ("experiment-run", "experiment-replay"):
+            manifest = _read(args.manifest, MAX_MANIFEST_BYTES)
+            inputs = {"spec": _read(args.spec, MAX_SPEC_BYTES)}
+            review_raw = _read(args.review, MAX_ASSESSMENT_BYTES) if args.review else None
+            if args.mode == "experiment-run":
+                result = run_experiment(manifest, inputs, review_raw=review_raw)
+                _emit(result, args.output, f"experiment result ({result['status']})",
+                      args.manifest, args.spec)
+                return 0 if result["endpoint"]["status"] == "met" else 2
+            verdict = replay_experiment(
+                manifest, inputs, _read(args.result, MAX_RESULT_BYTES), review_raw=review_raw,
+            )
+            print(json.dumps(verdict, indent=2))
+            return 0 if verdict["identical"] else 3
+        elif args.mode == "validate-catalog":
             doc = validate_catalog(_read(args.catalog, MAX_CATALOG_BYTES))
             print(json.dumps({
                 "schemaVersion": doc["schemaVersion"],

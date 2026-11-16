@@ -125,3 +125,45 @@ def test_reject_27_round_anonymous_data_mislabelled_as_25_round_qubit_series() -
         audit_defect_rates(
             _defect_text(), filename="unknown.txt", enforce_pin=False,
         )
+
+
+def _large_timing_csv(rows_per_group: int = 3000) -> bytes:
+    """Synthetic cycles only; a deterministic skewed pattern, not author data."""
+    lines = ["rounds,cycles,time_per_round"]
+    for rounds in (9, 17, 25):
+        for index in range(rows_per_group):
+            cycles = rounds * (60 + (index * 7919) % 97 + (400 if index % 250 == 0 else 0))
+            lines.append(f"{rounds},{float(cycles)},{cycles / 156.25 / rounds!r}")
+    return ("\n".join(lines) + "\n").encode()
+
+
+def test_tail_percentiles_carry_intervals_and_stated_assumptions() -> None:
+    report = audit_decoder_timings(
+        _large_timing_csv(), enforce_pin=False, enforce_complete=False,
+    )
+    for group in report["groups"]:
+        detail = group["uncertainty"]
+        assert detail["provenance"] == "measured" and detail["unit"] == "microseconds"
+        assert detail["samples"] == group["records"] == 3000
+        by_q = {row["probability"]: row for row in detail["quantiles"]}
+        # Same nearest-rank point estimates as the existing fields.
+        assert by_q[0.5]["estimate"] == group["medianUsPerRound"]
+        assert by_q[0.95]["estimate"] == group["p95UsPerRound"]
+        assert by_q[0.99]["estimate"] == group["p99UsPerRound"]
+        for row in detail["quantiles"][:-1]:
+            assert row["resolved"] and row["lower"] <= row["estimate"] <= row["upper"]
+        # 0.999**3000 > 2.5%: 3000 repetitions cannot bound the 99.9th percentile from above.
+        assert by_q[0.999]["upper"] is None and by_q[0.999]["resolved"] is False
+        over = detail["exceedance"][0]
+        assert over["threshold"] == 1.0
+        assert over["count"] == group["repetitionCountAbove1UsPerRound"]
+        assert over["wilsonLower"] < over["fraction"] < over["wilsonUpper"]
+        assert detail["mean"]["lower"] < group["meanUsPerRound"] < detail["mean"]["upper"]
+        assert any("independent and identically distributed" in a for a in detail["assumptions"])
+
+
+def test_small_groups_report_unresolved_tails_instead_of_inventing_bounds() -> None:
+    report = audit_decoder_timings(_timing_csv(), enforce_pin=False, enforce_complete=False)
+    detail = report["groups"][0]["uncertainty"]
+    assert detail["mean"] is None
+    assert all(row["resolved"] is False for row in detail["quantiles"])

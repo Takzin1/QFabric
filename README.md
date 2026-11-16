@@ -400,6 +400,25 @@ new quantum simulation or FPGA hardware is executed by this module.**
 python scripts/gari_reference_check.py
 ~~~
 
+## Research verification layers (offline, synthetic-first)
+
+`qfabric.research` adds a classical decoder benchmark laboratory, interval
+statistics with stated assumptions, a comparability check that refuses
+scientifically incomparable observations, and preregistered experiment
+manifests with a human-review gate and exact replay. It runs on synthetic
+syndromes only: no authenticated syndrome-level measurement source exists yet.
+
+```bash
+python scripts/quantum_dataset_baseline.py decoder-benchmark tests/fixtures/decoder_benchmark.synthetic.json
+```
+
+- [Research architecture, limitations and roadmap](docs/research/architecture.md)
+- [Repository audit, 2026-11-16](docs/research/audit-2026-11.md)
+- [Benchmark results and how to regenerate them](docs/research/benchmark-results-2026-11.md)
+
+No hardware is addressed, and passing these checks is evidence about the
+software only.
+
 ## Open-core boundary
 
 QFabric publishes the reusable protocol, SDK boundary, schemas, planning profiles,
